@@ -3,27 +3,27 @@
 [RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider))]
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private Rigidbody _rigidbody;
-    [SerializeField] private FixedJoystick _joystick;
-    [SerializeField] private Animator _animator;
+    [SerializeField] private Rigidbody rb;
+    [SerializeField] private FixedJoystick joystick;
+    [SerializeField] private Animator animator;
 
     [SerializeField] private float _moveSpeed;
 
 
 
-    private void FixedUpdate()
+    private void Update() //Fixedupdate
     {
-        _rigidbody.velocity = new Vector3(_joystick.Horizontal * _moveSpeed, _rigidbody.velocity.y, _joystick.Vertical * _moveSpeed);
+        rb.velocity = new Vector3(joystick.Horizontal * _moveSpeed, rb.velocity.y, joystick.Vertical * _moveSpeed);
 
-        if (_joystick.Horizontal != 0 || _joystick.Vertical != 0)
+        if (joystick.Horizontal != 0 || joystick.Vertical != 0)
         {
-            transform.rotation = Quaternion.LookRotation(_rigidbody.velocity);
-            _animator.Play("RunFWD_AR_Anim");
+            transform.rotation = Quaternion.LookRotation(rb.velocity);
+            animator.Play("RunFWD_AR_Anim");
 
         }
         else
         {
-            _animator.Play("IdleBattle01_AR_Anim");
+            animator.Play("IdleBattle01_AR_Anim");
         }
     }
 }

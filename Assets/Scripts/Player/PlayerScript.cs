@@ -17,6 +17,8 @@ public class PlayerScript : MonoBehaviour
     private bool isShootPressed;
     private bool isShooting;
 
+    private InputManager inputManager;
+
     [SerializeField] private float attackDelay = 0.3f;
 
     //ANIMATION STATE
@@ -29,8 +31,13 @@ public class PlayerScript : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
-    }
 
+        inputManager = InputManager.Instance;
+    }
+    private void Update()
+    {
+        
+    }
     private void FixedUpdate()
     {
         // GROUND CHECK

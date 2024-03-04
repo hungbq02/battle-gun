@@ -4,11 +4,30 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
+    private static InputManager instance;
+
+    public static InputManager Instance
+    {
+        get { return instance; }
+    }
+
+
+
     private PlayerControls playerControls;
     private void Awake()
     {
+        if(instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            instance = this;
+        }
         playerControls = new PlayerControls();
     }
+
+
     private void OnEnable()
     {
         playerControls.Enable();
