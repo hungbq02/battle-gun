@@ -1303,7 +1303,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2025280915}
   m_Layer: 3
-  m_Name: Level
+  m_Name: Map
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2038,8 +2038,8 @@ MonoBehaviour:
   JumpHeight: 1.2
   Gravity: -9.81
   Grounded: 1
-  GroundedOffset: -0.07
-  GroundedRadius: 0.1
+  GroundedOffset: -0.1
+  GroundedRadius: 0.18
   GroundLayers:
     serializedVersion: 2
     m_Bits: 8
@@ -2048,6 +2048,7 @@ MonoBehaviour:
   BottomClamp: -30
   CameraAngleOverride: 0
   LockCameraPosition: 0
+  _verticalVelocity: 0
   turnSmoothTime: 0.1
 --- !u!114 &2815470918922109908
 MonoBehaviour:
@@ -3013,6 +3014,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 901182334643ba1438a25accc6bd0c79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerInput: {fileID: 0}
 --- !u!1 &6751388635443271766
 GameObject:
   m_ObjectHideFlags: 0
@@ -5239,6 +5241,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 901182334643ba1438a25accc6bd0c79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerInput: {fileID: 0}
 --- !u!1 &8946921409131764513
 GameObject:
   m_ObjectHideFlags: 0

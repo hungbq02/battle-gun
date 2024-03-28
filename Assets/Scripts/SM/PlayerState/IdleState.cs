@@ -14,9 +14,13 @@ public class IdleState : State
     }
     public override void Update()
     {
-        Debug.Log("IDLE STATE");
 
         if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("JUMP STATE");
             _player.ChangeState(new JumpState(_player));
+
+        }
+
     }
 }

@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
     private float _speed;
     private float _targetRotation = 0.0f;
     private float _rotationVelocity;
-    private float _verticalVelocity;
+    public float _verticalVelocity;
     private float _terminalVelocity = 53.0f;
 
 
@@ -130,9 +130,10 @@ public class PlayerController : MonoBehaviour
     {
         ApplyGravity();
         GroundedCheck();
-        _currentState.Update();
+        //  _currentState.Update();
         //  CheckAnimation();
         Move();
+        Jump();
 
 
     }
@@ -177,16 +178,16 @@ public class PlayerController : MonoBehaviour
     {
         // set target speed based on move speed, sprint speed and if sprint is pressed
         //float targetSpeed = MoveSpeed;
+        /*
+                if (_input.move != Vector2.zero)
+                {
+                    _animator.Play(PLAYER_RUN_BWD);
 
-        if (_input.move != Vector2.zero)
-        {
-            _animator.Play(PLAYER_RUN_BWD);
-
-        }
-        else
-        {
-            ChangeState(new IdleState(this));
-        }
+                }
+                else
+                {
+                    ChangeState(new IdleState(this));
+                }*/
 
 
 
@@ -209,7 +210,7 @@ public class PlayerController : MonoBehaviour
             moveDir.z = 0f;
         }
 
-        moveDir.y = -_verticalVelocity;
+        // moveDir.y = _verticalVelocity;
 
         _controller.Move(moveDir.normalized * MoveSpeed * Time.deltaTime);
 
@@ -217,12 +218,18 @@ public class PlayerController : MonoBehaviour
     }
     private void ApplyGravity()
     {
-        _verticalVelocity -= Gravity * Time.deltaTime;
 
-        if (Grounded)
+        if (!Grounded)
+        {
+            _verticalVelocity += Gravity * Time.deltaTime;
+        }
+        else
         {
             _verticalVelocity = 0f;
         }
+        Vector3 moveDirection = new Vector3(0, _verticalVelocity, 0) * Time.deltaTime;
+
+        _controller.Move(moveDirection);
 
     }
 
@@ -236,19 +243,18 @@ public class PlayerController : MonoBehaviour
 
 
             // Jump
-            /*            if (Input.GetKeyDown(KeyCode.V))
-                        {
-                            //anim
-                            _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
-                        }*/
+            if (Input.GetKeyDown(KeyCode.V))
+            {
+                //anim
+                _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+            }
         }
         /////
 
         // Move character using the calculated vertical velocity
 
-        Vector3 moveVector = new Vector3(0, _verticalVelocity, 0) * Time.deltaTime;
-        Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
-        _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) + moveVector);
+        /* Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
+         _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime));*/
     }
 
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
@@ -288,10 +294,14 @@ public class PlayerController : MonoBehaviour
             }*/
     public void ChangeState(State newState)
     {
+        Debug.Log("CURRENT STATE = " + _currentState);
         if (_currentState != null)
             _currentState.Exit();
         _currentState = newState;
-        _currentState.Enter();
+        Debug.Log("CURRENT STATE = " + _currentState);
+
+        if (_currentState != null)
+            _currentState.Enter();
     }
 }
 

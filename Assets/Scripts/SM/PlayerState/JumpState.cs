@@ -3,13 +3,12 @@ using UnityEngine;
 public class JumpState : State
 {
     public JumpState(PlayerController player) : base(player) { }
-    public float JumpHeight = 1.2f;
-    public float Gravity = -15.0f;
-    private float _verticalVelocity;
 
     public override void Enter()
     {
-        base.Enter();
+        Debug.Log("ENTER JUMP" + "JumH = "+_player.JumpHeight +"------Gravity = "+ _player.Gravity);
+
+        _player._verticalVelocity = Mathf.Sqrt(_player.JumpHeight * -2f * _player.Gravity);
     }
     public override void Exit()
     {
@@ -17,10 +16,10 @@ public class JumpState : State
     }
     public override void Update()
     {
-        Debug.Log("JUMP STATE");
-        if(_player.Grounded)
+        if (_player.Grounded)
         {
+            Debug.Log("IDLE STATE");
             _player.ChangeState(new IdleState(_player));
-        }    
+        }
     }
 }
