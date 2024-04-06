@@ -4,11 +4,11 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(PlayerInput))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : Singleton<PlayerController>
 {
     [Header("Player")]
 
-    [Tooltip("Move speed of the character in m/s")]
+    [Tooltip("Run speed of the character in m/s")]
     public float MoveSpeed = 2.0f;
 
     [Tooltip("Sprint speed of the character in m/s")]
@@ -26,16 +26,18 @@ public class PlayerController : MonoBehaviour
 
     [Space(10)]
     [Tooltip("The height the player can jump")]
-    public float JumpHeight = 1.2f;
+    [SerializeField] float jumpHeight;
 
     [Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
-    public float Gravity = -9.81f;
+    public float gravity = -9.81f;
+    float gravityMultiplier = 1.5f;
+
+    public float groundedGravity = -0.05f;
 
 
-
-    [Header("Player Grounded")]
+    [Header("Player isGrounded")]
     [Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
-    public bool Grounded = true;
+    public bool isGrounded = true;
 
     [Tooltip("Useful for rough ground")]
     public float GroundedOffset = -0.14f;
@@ -67,33 +69,28 @@ public class PlayerController : MonoBehaviour
     private float _cinemachineTargetPitch;
 
     // player
-    private float _speed;
-    private float _targetRotation = 0.0f;
-    private float _rotationVelocity;
     public float _verticalVelocity;
-    private float _terminalVelocity = 53.0f;
-
+    Vector3 inputDirection;
 
     private PlayerInput _playerInput;
-    private Animator _animator;
-    private CharacterController _controller;
-    private PlayerInputHandler _input;
-    private GameObject _mainCamera;
-    private State _currentState;
+    [HideInInspector] public Animator _animator;
+    [HideInInspector] public CharacterController _controller;
+    public PlayerInputHandler _input { get; private set; }
+    public GameObject _mainCamera { get; private set; }
 
     //ANIMATION STATE
-    const string PLAYER_IDLE = "IdleBattle01_AR_Anim";
-    const string PLAYER_JUMP = "Jump_AR_Anim";
-    const string PLAYER_RUN_FWD = "RunFWD_AR_Anim";
-    const string PLAYER_RUN_BWD = "RunBWD_AR_Anim";
-    const string PLAYER_RUN_LEFT = "RunLeft_AR_Anim";
-    const string PLAYER_RUN_RIGHT = "RunRight_AR_Anim";
+    public const string PLAYER_IDLE = "IdleBattle01_AR_Anim";
+    public const string PLAYER_JUMP = "Jump_AR_Anim";
+    public const string PLAYER_RUN_FWD = "RunFWD_AR_Anim";
+    public const string PLAYER_RUN_BWD = "RunBWD_AR_Anim";
+    public const string PLAYER_RUN_LEFT = "RunLeft_AR_Anim";
+    public const string PLAYER_RUN_RIGHT = "RunRight_AR_Anim";
 
 
     public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
     Vector3 moveDir = Vector3.zero;
-
+    public bool isJumping = true;
     private const float _threshold = 0.01f;
 
 
@@ -106,13 +103,14 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    private void Awake()
+    protected override void Awake()
     {
         // get a reference to our main camera
         if (_mainCamera == null)
         {
             _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         }
+        base.Awake();
     }
 
     private void Start()
@@ -123,18 +121,19 @@ public class PlayerController : MonoBehaviour
         _input = GetComponent<PlayerInputHandler>();
         _playerInput = GetComponent<PlayerInput>();
 
-        _currentState = new IdleState(this);
     }
 
     private void Update()
     {
-        ApplyGravity();
         GroundedCheck();
-        //  _currentState.Update();
-        //  CheckAnimation();
-        Move();
-        Jump();
+        // Run();
+        ApplyGravity();
 
+
+        if (isGrounded)
+        {
+            isJumping = false;
+        }
 
     }
 
@@ -148,7 +147,7 @@ public class PlayerController : MonoBehaviour
         // set sphere position, with offset
         Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
             transform.position.z);
-        Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
+        isGrounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
             QueryTriggerInteraction.Ignore);
 
     }
@@ -173,88 +172,44 @@ public class PlayerController : MonoBehaviour
         CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
             _cinemachineTargetYaw, 0.0f);
     }
-
-    private void Move()
-    {
-        // set target speed based on move speed, sprint speed and if sprint is pressed
-        //float targetSpeed = MoveSpeed;
-        /*
-                if (_input.move != Vector2.zero)
-                {
-                    _animator.Play(PLAYER_RUN_BWD);
-
-                }
-                else
-                {
-                    ChangeState(new IdleState(this));
-                }*/
-
-
-
-
-
-        // normalise input direction
-        Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
-
-        if (inputDirection.sqrMagnitude >= 0.1f)
-        {
-            float targetAngle = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
-            moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-        }
-        else
-        {
-            moveDir.x = 0f;
-            moveDir.z = 0f;
-        }
-
-        // moveDir.y = _verticalVelocity;
-
-        _controller.Move(moveDir.normalized * MoveSpeed * Time.deltaTime);
-
-
-    }
+    //Fake gravity
     private void ApplyGravity()
     {
 
-        if (!Grounded)
+        if (isGrounded && _verticalVelocity < 0.0f)
         {
-            _verticalVelocity += Gravity * Time.deltaTime;
+            _verticalVelocity = -2.0f;
         }
+
         else
         {
-            _verticalVelocity = 0f;
+            _verticalVelocity += gravity * gravityMultiplier * Time.deltaTime;
         }
-        Vector3 moveDirection = new Vector3(0, _verticalVelocity, 0) * Time.deltaTime;
+        _controller.Move(new Vector3(0, _verticalVelocity, 0) * Time.deltaTime);
 
-        _controller.Move(moveDirection);
 
     }
-
-    private void Jump()
+    public void Run()
     {
-        if (Grounded)
-        {
-            // update animator if using character
-            //  ChangeAnimationState(PLAYER_JUMP);
+        // normalise input direction
+        inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+
+        if (inputDirection.sqrMagnitude == 0f) return;
+        float targetAngle = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
+        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+        transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+        moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+
+        _controller.Move(moveDir.normalized * MoveSpeed * Time.deltaTime);
+    }
 
 
-
-            // Jump
-            if (Input.GetKeyDown(KeyCode.V))
-            {
-                //anim
-                _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
-            }
-        }
-        /////
-
-        // Move character using the calculated vertical velocity
-
-        /* Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
-         _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime));*/
+    public void Jump()
+    {
+            isJumping = true;
+            Debug.Log("JUMP");
+            _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
     }
 
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
@@ -263,13 +218,12 @@ public class PlayerController : MonoBehaviour
         if (lfAngle > 360f) lfAngle -= 360f;
         return Mathf.Clamp(lfAngle, lfMin, lfMax);
     }
-
     private void OnDrawGizmosSelected()
     {
         Color transparentGreen = new Color(0.0f, 1.0f, 0.0f, 0.35f);
         Color transparentRed = new Color(1.0f, 0.0f, 0.0f, 0.35f);
 
-        if (Grounded) Gizmos.color = transparentGreen;
+        if (isGrounded) Gizmos.color = transparentGreen;
         else Gizmos.color = transparentRed;
 
         // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
@@ -278,30 +232,5 @@ public class PlayerController : MonoBehaviour
             GroundedRadius);
     }
 
-
-    /*        void CheckAnimation()
-            {
-                if (_input.move.y == 1)
-                    ChangeAnimationState(PLAYER_RUN_FWD);
-                else if (_input.move.y == -1)
-                    ChangeAnimationState(PLAYER_RUN_BWD);
-                else if (_input.move.x == -1)
-                    ChangeAnimationState(PLAYER_RUN_LEFT);
-                else if (_input.move.x == 1)
-                    ChangeAnimationState(PLAYER_RUN_RIGHT);
-                else
-                    ChangeAnimationState(PLAYER_IDLE);
-            }*/
-    public void ChangeState(State newState)
-    {
-        Debug.Log("CURRENT STATE = " + _currentState);
-        if (_currentState != null)
-            _currentState.Exit();
-        _currentState = newState;
-        Debug.Log("CURRENT STATE = " + _currentState);
-
-        if (_currentState != null)
-            _currentState.Enter();
-    }
 }
 

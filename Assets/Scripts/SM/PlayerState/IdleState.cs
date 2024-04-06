@@ -1,26 +1,26 @@
 using UnityEngine;
 
-public class IdleState : State
+public class IdleState : Grounded
 {
-    public IdleState(PlayerController player) : base(player) { }
+    public IdleState(MovementSM stateMachine) : base("Idle", stateMachine) { }
 
     public override void Enter()
     {
         base.Enter();
-    }
-    public override void Exit()
-    {
-        base.Exit();
-    }
-    public override void Update()
-    {
+  
+        PlayerController.Instance._animator.Play("IdleBattle01_AR_Anim");
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        Debug.Log("ENter Idle");
+        
+    }
+
+    public override void UpdateLogic()
+    {
+        base.UpdateLogic();
+        Vector3 inputDirection = new Vector3(PlayerController.Instance._input.move.x, 0.0f, PlayerController.Instance._input.move.y).normalized;
+        if (inputDirection.sqrMagnitude >= 0.1f)
         {
-            Debug.Log("JUMP STATE");
-            _player.ChangeState(new JumpState(_player));
-
-        }
-
+            stateMachine.ChangeState(sm.moveState);
+        }    
     }
 }

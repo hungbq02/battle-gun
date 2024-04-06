@@ -1,25 +1,40 @@
-using UnityEngine;
+using System;
 
-public class JumpState : State
+public class JumpState : BaseState
 {
-    public JumpState(PlayerController player) : base(player) { }
+    private MovementSM _sm;
+
+    // private int _groundLayer = 1 << 6;
+
+    public JumpState(MovementSM stateMachine) : base("Jump", stateMachine)
+    {
+        _sm = (MovementSM)this.stateMachine;
+    }
 
     public override void Enter()
     {
-        Debug.Log("ENTER JUMP" + "JumH = "+_player.JumpHeight +"------Gravity = "+ _player.Gravity);
+        base.Enter();
+        PlayerController.Instance._animator.Play("Jump_AR_Anim");
+        Console.WriteLine("ENter Jump");
+        
 
-        _player._verticalVelocity = Mathf.Sqrt(_player.JumpHeight * -2f * _player.Gravity);
     }
-    public override void Exit()
+
+    public override void UpdateLogic()
     {
-        base.Exit();
-    }
-    public override void Update()
-    {
-        if (_player.Grounded)
+        base.UpdateLogic();
+        if (PlayerController.Instance.isGrounded && !PlayerController.Instance.isJumping)
         {
-            Debug.Log("IDLE STATE");
-            _player.ChangeState(new IdleState(_player));
+            Console.WriteLine("Change state jump to idle in jumpsate");
+
+            stateMachine.ChangeState(_sm.idleState);
         }
+
+    }
+
+    public override void UpdatePhysics()
+    {
+        base.UpdatePhysics();
+        // _grounded = _sm.rigidbody.velocity.y < Mathf.Epsilon && _sm.rigidbody.IsTouchingLayers(_groundLayer);
     }
 }

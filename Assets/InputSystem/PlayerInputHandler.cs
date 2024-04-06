@@ -21,6 +21,7 @@ public class PlayerInputHandler : MonoBehaviour
     public void OnMove(InputValue value)
     {
         MoveInput(value.Get<Vector2>());
+       // move = value.Get<Vector2>();
     }
 
     public void OnLook(InputValue value)
@@ -33,7 +34,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void OnJump(InputValue value)
     {
-        JumpInput(value.isPressed);
+            JumpInput(value.isPressed);
     }
     public void OnAim(InputValue value)
     {
