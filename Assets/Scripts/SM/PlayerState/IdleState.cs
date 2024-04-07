@@ -9,7 +9,6 @@ public class IdleState : Grounded
         base.Enter();
   
         PlayerController.Instance._animator.Play("IdleBattle01_AR_Anim");
-
         Debug.Log("ENter Idle");
         
     }

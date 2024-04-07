@@ -1,8 +1,10 @@
 using System;
+using UnityEngine;
 
 public class JumpState : BaseState
 {
     private MovementSM _sm;
+    private bool _grounded;
 
     // private int _groundLayer = 1 << 6;
 
@@ -16,6 +18,7 @@ public class JumpState : BaseState
         base.Enter();
         PlayerController.Instance._animator.Play("Jump_AR_Anim");
         Console.WriteLine("ENter Jump");
+        PlayerController.Instance.Jump();
         
 
     }
@@ -23,7 +26,7 @@ public class JumpState : BaseState
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        if (PlayerController.Instance.isGrounded && !PlayerController.Instance.isJumping)
+        if (!PlayerController.Instance.isJumping)
         {
             Console.WriteLine("Change state jump to idle in jumpsate");
 
@@ -35,6 +38,6 @@ public class JumpState : BaseState
     public override void UpdatePhysics()
     {
         base.UpdatePhysics();
-        // _grounded = _sm.rigidbody.velocity.y < Mathf.Epsilon && _sm.rigidbody.IsTouchingLayers(_groundLayer);
+      //  _grounded = PlayerController.Instance.isGrounded;
     }
 }

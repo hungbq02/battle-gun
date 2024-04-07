@@ -90,7 +90,7 @@ public class PlayerController : Singleton<PlayerController>
     public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
     Vector3 moveDir = Vector3.zero;
-    public bool isJumping = true;
+    public bool isJumping = false;
     private const float _threshold = 0.01f;
 
 
@@ -129,12 +129,10 @@ public class PlayerController : Singleton<PlayerController>
         // Run();
         ApplyGravity();
 
-
-        if (isGrounded)
+        if(isGrounded && _verticalVelocity < 0.0f)
         {
             isJumping = false;
-        }
-
+        }    
     }
 
     private void LateUpdate()
@@ -208,8 +206,16 @@ public class PlayerController : Singleton<PlayerController>
     public void Jump()
     {
             isJumping = true;
-            Debug.Log("JUMP");
+        Debug.Log("JUMP CONTROLLER");
+        inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+
+        moveDir = Quaternion.Euler(0f, transform.eulerAngles.y, 0f) * inputDirection;
+        Debug.Log("JUMP");
             _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        Vector3 horizontalDirection = moveDir.normalized;
+        Vector3 horizontalVelocity = horizontalDirection * MoveSpeed;
+        _controller.Move(horizontalVelocity * Time.deltaTime);
+
     }
 
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)

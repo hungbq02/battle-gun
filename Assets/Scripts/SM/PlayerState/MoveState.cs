@@ -7,10 +7,8 @@ public class MoveState : Grounded
     public override void Enter()
     {
         base.Enter();
-        Vector3 inputDirection = Vector3.zero;
-       
-            PlayerController.Instance._animator.Play("RunFWD_AR_Anim");
-        
+        PlayerController.Instance._animator.Play("RunFWD_AR_Anim");
+
     }
 
     public override void UpdateLogic()
