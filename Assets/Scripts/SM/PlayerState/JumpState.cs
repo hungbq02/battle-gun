@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 public class JumpState : BaseState
 {
@@ -16,10 +15,10 @@ public class JumpState : BaseState
     public override void Enter()
     {
         base.Enter();
-        PlayerController.Instance._animator.Play("Jump_AR_Anim");
+        PlayerController.Instance._animator.CrossFade(PlayerController.PLAYER_JUMP, 0.1f);
         Console.WriteLine("ENter Jump");
         PlayerController.Instance.Jump();
-        
+
 
     }
 
@@ -38,6 +37,6 @@ public class JumpState : BaseState
     public override void UpdatePhysics()
     {
         base.UpdatePhysics();
-      //  _grounded = PlayerController.Instance.isGrounded;
+        //  _grounded = PlayerController.Instance.isGrounded;
     }
 }

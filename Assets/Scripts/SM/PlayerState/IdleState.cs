@@ -7,10 +7,10 @@ public class IdleState : Grounded
     public override void Enter()
     {
         base.Enter();
-  
-        PlayerController.Instance._animator.Play("IdleBattle01_AR_Anim");
+
+        PlayerController.Instance._animator.CrossFade(PlayerController.PLAYER_IDLE, 0.1f);
         Debug.Log("ENter Idle");
-        
+
     }
 
     public override void UpdateLogic()
@@ -20,6 +20,7 @@ public class IdleState : Grounded
         if (inputDirection.sqrMagnitude >= 0.1f)
         {
             stateMachine.ChangeState(sm.moveState);
-        }    
+        }
+
     }
 }

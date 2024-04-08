@@ -8,7 +8,7 @@ public class PlayerController : Singleton<PlayerController>
 {
     [Header("Player")]
 
-    [Tooltip("Run speed of the character in m/s")]
+    [Tooltip("Move speed of the character in m/s")]
     public float MoveSpeed = 2.0f;
 
     [Tooltip("Sprint speed of the character in m/s")]
@@ -126,13 +126,13 @@ public class PlayerController : Singleton<PlayerController>
     private void Update()
     {
         GroundedCheck();
-        // Run();
+        // Move();
         ApplyGravity();
 
-        if(isGrounded && _verticalVelocity < 0.0f)
+        if (isGrounded && _verticalVelocity < 0.0f)
         {
             isJumping = false;
-        }    
+        }
     }
 
     private void LateUpdate()
@@ -187,7 +187,7 @@ public class PlayerController : Singleton<PlayerController>
 
 
     }
-    public void Run()
+    public void Move()
     {
         // normalise input direction
         inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
@@ -195,23 +195,27 @@ public class PlayerController : Singleton<PlayerController>
         if (inputDirection.sqrMagnitude == 0f) return;
         float targetAngle = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
         float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-        transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
         moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-
         _controller.Move(moveDir.normalized * MoveSpeed * Time.deltaTime);
+
+        // Update the forward direction of the character if the camera direction changes.
+        if (_input.move.y == -1 || _input.move.x != 0) return;
+        transform.rotation = Quaternion.Euler(0f, angle, 0f);
     }
+
 
 
     public void Jump()
     {
-            isJumping = true;
+        isJumping = true;
+        _input.jump = false;
         Debug.Log("JUMP CONTROLLER");
         inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
 
         moveDir = Quaternion.Euler(0f, transform.eulerAngles.y, 0f) * inputDirection;
         Debug.Log("JUMP");
-            _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
         Vector3 horizontalDirection = moveDir.normalized;
         Vector3 horizontalVelocity = horizontalDirection * MoveSpeed;
         _controller.Move(horizontalVelocity * Time.deltaTime);

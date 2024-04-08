@@ -13,7 +13,8 @@ public class Grounded : BaseState
     {
         base.UpdateLogic();
         Debug.Log("update jump Grounded");
-        if (!Input.GetKeyDown(KeyCode.V) || !PlayerController.Instance.isGrounded) return;
+
+        if (!PlayerController.Instance._input.jump || !PlayerController.Instance.isGrounded || PlayerController.Instance.isJumping) return;
         stateMachine.ChangeState(sm.jumpingState);
     }
 }

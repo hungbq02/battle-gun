@@ -2435,7 +2435,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 67c8b33e424ccdc4486edf538ab91c5a, type: 3}
   - {fileID: 8300000, guid: 274649b0e221539409070ebf6c18918b, type: 3}
   - {fileID: 8300000, guid: a3194b8bbc96ef84fab1f98f4b7dae3e, type: 3}
-  jumpHeight: 1.2
+  jumpHeight: 2
   gravity: -9.81
   groundedGravity: -0.05
   isGrounded: 1
