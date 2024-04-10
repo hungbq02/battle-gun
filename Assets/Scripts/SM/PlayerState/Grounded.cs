@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Grounded : BaseState
 {
@@ -13,8 +13,14 @@ public class Grounded : BaseState
     {
         base.UpdateLogic();
         Debug.Log("update jump Grounded");
+        if (PlayerController.Instance.isGrounded)
+        {
+            PlayerController.Instance.isJumping = false;
+        }
 
-        if (!PlayerController.Instance._input.jump || !PlayerController.Instance.isGrounded || PlayerController.Instance.isJumping) return;
-        stateMachine.ChangeState(sm.jumpingState);
+        if (PlayerController.Instance._input.jump && !PlayerController.Instance.isJumping)
+        {
+            stateMachine.ChangeState(sm.jumpingState);
+        }
     }
 }

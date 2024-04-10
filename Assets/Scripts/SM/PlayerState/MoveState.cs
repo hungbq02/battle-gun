@@ -9,22 +9,24 @@ public class MoveState : Grounded
         base.Enter();
         Vector2 input = PlayerController.Instance._input.move;
 
-        if (input.y == 1f)
-        {
-            PlayerController.Instance._animator.CrossFade(PlayerController.PLAYER_RUN_FWD, 0.1f);
-        }
-        else if (input.y == -1f)
-        {
-            PlayerController.Instance._animator.CrossFade(PlayerController.PLAYER_RUN_BWD, 0.1f);
-        }
-        else if (input.x == 1f)
-        {
-            PlayerController.Instance._animator.CrossFade(PlayerController.PLAYER_RUN_RIGHT, 0.1f);
-        }
-        else if (input.x == -1f)
-        {
-            PlayerController.Instance._animator.CrossFade(PlayerController.PLAYER_RUN_LEFT, 0.1f);
-        }
+        PlayerController.Instance._animator.CrossFade(PlayerController.PLAYER_RUN_FWD, 0.1f);
+
+        /*        if (input.y == 1f)
+                {
+                    PlayerController.Instance._animator.CrossFade(PlayerController.PLAYER_RUN_FWD, 0.1f);
+                }
+                else if (input.y == -1f)
+                {
+                    PlayerController.Instance._animator.CrossFade(PlayerController.PLAYER_RUN_BWD, 0.1f);
+                }
+                else if (input.x == 1f)
+                {
+                    PlayerController.Instance._animator.CrossFade(PlayerController.PLAYER_RUN_RIGHT, 0.1f);
+                }
+                else if (input.x == -1f)
+                {
+                    PlayerController.Instance._animator.CrossFade(PlayerController.PLAYER_RUN_LEFT, 0.1f);
+                }*/
 
     }
 

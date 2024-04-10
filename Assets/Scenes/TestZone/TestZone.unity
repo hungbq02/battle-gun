@@ -2435,9 +2435,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 67c8b33e424ccdc4486edf538ab91c5a, type: 3}
   - {fileID: 8300000, guid: 274649b0e221539409070ebf6c18918b, type: 3}
   - {fileID: 8300000, guid: a3194b8bbc96ef84fab1f98f4b7dae3e, type: 3}
-  jumpHeight: 2
+  jumpHeight: 0.6
   gravity: -9.81
-  groundedGravity: -0.05
+  _direction: {x: 0, y: 0, z: 0}
   isGrounded: 1
   GroundedOffset: -0.1
   GroundedRadius: 0.18
@@ -2452,8 +2452,10 @@ MonoBehaviour:
   _verticalVelocity: 0
   _animator: {fileID: 0}
   _controller: {fileID: 2815470918922109906}
+  _input: {fileID: 0}
+  _mainCamera: {fileID: 0}
   turnSmoothTime: 0.1
-  isJumping: 1
+  isJumping: 0
 --- !u!114 &2815470918922109908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8083,7 +8085,7 @@ MonoBehaviour:
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
-    m_Time: 2
+    m_Time: 0.5
     m_CustomCurve:
       serializedVersion: 2
       m_Curve: []

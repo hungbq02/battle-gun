@@ -30,9 +30,9 @@ public class PlayerController : Singleton<PlayerController>
 
     [Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
     public float gravity = -9.81f;
-    float gravityMultiplier = 1.5f;
+    float gravityMultiplier = 1f;
 
-    public float groundedGravity = -0.05f;
+    public Vector3 _direction;
 
 
     [Header("Player isGrounded")]
@@ -70,13 +70,12 @@ public class PlayerController : Singleton<PlayerController>
 
     // player
     public float _verticalVelocity;
-    Vector3 inputDirection;
 
     private PlayerInput _playerInput;
     [HideInInspector] public Animator _animator;
     [HideInInspector] public CharacterController _controller;
-    public PlayerInputHandler _input { get; private set; }
-    public GameObject _mainCamera { get; private set; }
+    public PlayerInputHandler _input;
+    public GameObject _mainCamera;
 
     //ANIMATION STATE
     public const string PLAYER_IDLE = "IdleBattle01_AR_Anim";
@@ -126,13 +125,9 @@ public class PlayerController : Singleton<PlayerController>
     private void Update()
     {
         GroundedCheck();
-        // Move();
         ApplyGravity();
+        _controller.Move(_direction * MoveSpeed * Time.deltaTime);
 
-        if (isGrounded && _verticalVelocity < 0.0f)
-        {
-            isJumping = false;
-        }
     }
 
     private void LateUpdate()
@@ -140,7 +135,7 @@ public class PlayerController : Singleton<PlayerController>
         CameraRotation();
     }
 
-    private void GroundedCheck()
+    public void GroundedCheck()
     {
         // set sphere position, with offset
         Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
@@ -178,30 +173,30 @@ public class PlayerController : Singleton<PlayerController>
         {
             _verticalVelocity = -2.0f;
         }
-
         else
         {
             _verticalVelocity += gravity * gravityMultiplier * Time.deltaTime;
         }
-        _controller.Move(new Vector3(0, _verticalVelocity, 0) * Time.deltaTime);
+        //_controller.Move(new Vector3(0, _verticalVelocity, 0) * Time.deltaTime);
+        _direction.y = _verticalVelocity;
 
 
     }
     public void Move()
     {
         // normalise input direction
-        inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+        _direction = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
 
-        if (inputDirection.sqrMagnitude == 0f) return;
-        float targetAngle = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
+        if (_direction.sqrMagnitude == 0f) return;
+        float targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
         float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
 
-        moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-        _controller.Move(moveDir.normalized * MoveSpeed * Time.deltaTime);
-
-        // Update the forward direction of the character if the camera direction changes.
-        if (_input.move.y == -1 || _input.move.x != 0) return;
         transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+        moveDir = (Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward).normalized;
+        _direction = moveDir;
+       // _controller.Move(moveDir.normalized * MoveSpeed * Time.deltaTime);
+
     }
 
 
@@ -210,15 +205,8 @@ public class PlayerController : Singleton<PlayerController>
     {
         isJumping = true;
         _input.jump = false;
-        Debug.Log("JUMP CONTROLLER");
-        inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
-
-        moveDir = Quaternion.Euler(0f, transform.eulerAngles.y, 0f) * inputDirection;
-        Debug.Log("JUMP");
         _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
-        Vector3 horizontalDirection = moveDir.normalized;
-        Vector3 horizontalVelocity = horizontalDirection * MoveSpeed;
-        _controller.Move(horizontalVelocity * Time.deltaTime);
+        _direction.y = _verticalVelocity;
 
     }
 

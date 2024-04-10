@@ -3,7 +3,6 @@ using System;
 public class JumpState : BaseState
 {
     private MovementSM _sm;
-    private bool _grounded;
 
     // private int _groundLayer = 1 << 6;
 
@@ -25,10 +24,12 @@ public class JumpState : BaseState
     public override void UpdateLogic()
     {
         base.UpdateLogic();
+        if (PlayerController.Instance.isGrounded && PlayerController.Instance._direction.y < 0.0f)
+            PlayerController.Instance.isJumping = false;
+
         if (!PlayerController.Instance.isJumping)
         {
             Console.WriteLine("Change state jump to idle in jumpsate");
-
             stateMachine.ChangeState(_sm.idleState);
         }
 
@@ -37,6 +38,6 @@ public class JumpState : BaseState
     public override void UpdatePhysics()
     {
         base.UpdatePhysics();
-        //  _grounded = PlayerController.Instance.isGrounded;
+
     }
 }
