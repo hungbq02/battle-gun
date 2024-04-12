@@ -8,11 +8,7 @@ public class PlayerController : Singleton<PlayerController>
 {
     [Header("Player")]
 
-    [Tooltip("Move speed of the character in m/s")]
     public float MoveSpeed = 2.0f;
-
-    [Tooltip("Sprint speed of the character in m/s")]
-    public float SprintSpeed = 5.335f;
 
     [Tooltip("How fast the character turns to face movement direction")]
     [Range(0.0f, 0.3f)]
@@ -24,19 +20,16 @@ public class PlayerController : Singleton<PlayerController>
     public AudioClip LandingAudioClip;
     public AudioClip[] FootstepAudioClips;
 
-    [Space(10)]
-    [Tooltip("The height the player can jump")]
-    [SerializeField] float jumpHeight;
+    [SerializeField] float jumpForce;
 
-    [Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
     public float gravity = -9.81f;
+    [HideInInspector] public float _verticalVelocity;
     float gravityMultiplier = 1f;
 
     public Vector3 _direction;
 
-
+    #region Variables: Ground
     [Header("Player isGrounded")]
-    [Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
     public bool isGrounded = true;
 
     [Tooltip("Useful for rough ground")]
@@ -47,6 +40,9 @@ public class PlayerController : Singleton<PlayerController>
 
     [Tooltip("What layers the character uses as ground")]
     public LayerMask GroundLayers;
+    #endregion
+
+    #region Variables: Cinemachine
 
     [Header("Cinemachine")]
     [Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
@@ -68,23 +64,23 @@ public class PlayerController : Singleton<PlayerController>
     private float _cinemachineTargetYaw;
     private float _cinemachineTargetPitch;
 
+    #endregion
     // player
-    public float _verticalVelocity;
 
     private PlayerInput _playerInput;
     [HideInInspector] public Animator _animator;
     [HideInInspector] public CharacterController _controller;
-    public PlayerInputHandler _input;
-    public GameObject _mainCamera;
+    [HideInInspector] public PlayerInputHandler _input;
+    [HideInInspector] public GameObject _mainCamera;
 
-    //ANIMATION STATE
+    #region STRING ANIMATION
     public const string PLAYER_IDLE = "IdleBattle01_AR_Anim";
     public const string PLAYER_JUMP = "Jump_AR_Anim";
     public const string PLAYER_RUN_FWD = "RunFWD_AR_Anim";
     public const string PLAYER_RUN_BWD = "RunBWD_AR_Anim";
     public const string PLAYER_RUN_LEFT = "RunLeft_AR_Anim";
     public const string PLAYER_RUN_RIGHT = "RunRight_AR_Anim";
-
+    #endregion
 
     public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
@@ -171,11 +167,11 @@ public class PlayerController : Singleton<PlayerController>
 
         if (isGrounded && _verticalVelocity < 0.0f)
         {
-            _verticalVelocity = -2.0f;
+            _verticalVelocity = -1.0f;
         }
         else
         {
-            _verticalVelocity += gravity * gravityMultiplier * Time.deltaTime;
+            _verticalVelocity += gravity * Time.deltaTime;
         }
         //_controller.Move(new Vector3(0, _verticalVelocity, 0) * Time.deltaTime);
         _direction.y = _verticalVelocity;
@@ -195,7 +191,6 @@ public class PlayerController : Singleton<PlayerController>
 
         moveDir = (Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward).normalized;
         _direction = moveDir;
-       // _controller.Move(moveDir.normalized * MoveSpeed * Time.deltaTime);
 
     }
 
@@ -203,11 +198,8 @@ public class PlayerController : Singleton<PlayerController>
 
     public void Jump()
     {
-        isJumping = true;
-        _input.jump = false;
-        _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        _verticalVelocity = Mathf.Sqrt(jumpForce * -2f * gravity);
         _direction.y = _verticalVelocity;
-
     }
 
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)

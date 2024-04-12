@@ -7,6 +7,7 @@ public class IdleState : Grounded
     public override void Enter()
     {
         base.Enter();
+        PlayerController.Instance._direction = Vector3.zero;
 
         PlayerController.Instance._animator.CrossFade(PlayerController.PLAYER_IDLE, 0.1f);
         Debug.Log("ENter Idle");

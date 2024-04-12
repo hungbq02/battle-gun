@@ -2420,7 +2420,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dontDestroyOnLoad: 0
   MoveSpeed: 4.5
-  SprintSpeed: 5.335
   RotationSmoothTime: 0.12
   SpeedChangeRate: 10
   LandingAudioClip: {fileID: 8300000, guid: ff697d3070687ce4583faa0561a145a2, type: 3}
@@ -2435,8 +2434,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 67c8b33e424ccdc4486edf538ab91c5a, type: 3}
   - {fileID: 8300000, guid: 274649b0e221539409070ebf6c18918b, type: 3}
   - {fileID: 8300000, guid: a3194b8bbc96ef84fab1f98f4b7dae3e, type: 3}
-  jumpHeight: 0.6
+  jumpForce: 0.6
   gravity: -9.81
+  _verticalVelocity: 0
   _direction: {x: 0, y: 0, z: 0}
   isGrounded: 1
   GroundedOffset: -0.1
@@ -2449,7 +2449,6 @@ MonoBehaviour:
   BottomClamp: -30
   CameraAngleOverride: 0
   LockCameraPosition: 0
-  _verticalVelocity: 0
   _animator: {fileID: 0}
   _controller: {fileID: 2815470918922109906}
   _input: {fileID: 0}
@@ -2568,8 +2567,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca2f08a808bdff140a1b71276fb1a216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 4
-  jumpForce: 14
 --- !u!114 &2854614339391789174
 MonoBehaviour:
   m_ObjectHideFlags: 0

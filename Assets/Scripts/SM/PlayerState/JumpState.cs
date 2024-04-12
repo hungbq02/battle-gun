@@ -4,7 +4,6 @@ public class JumpState : BaseState
 {
     private MovementSM _sm;
 
-    // private int _groundLayer = 1 << 6;
 
     public JumpState(MovementSM stateMachine) : base("Jump", stateMachine)
     {
@@ -14,8 +13,11 @@ public class JumpState : BaseState
     public override void Enter()
     {
         base.Enter();
+
+        //Play Anim run
         PlayerController.Instance._animator.CrossFade(PlayerController.PLAYER_JUMP, 0.1f);
         Console.WriteLine("ENter Jump");
+
         PlayerController.Instance.Jump();
 
 
@@ -24,20 +26,24 @@ public class JumpState : BaseState
     public override void UpdateLogic()
     {
         base.UpdateLogic();
+        //Check Jumping
         if (PlayerController.Instance.isGrounded && PlayerController.Instance._direction.y < 0.0f)
             PlayerController.Instance.isJumping = false;
 
+        //JumpState -> IdleState
         if (!PlayerController.Instance.isJumping)
-        {
-            Console.WriteLine("Change state jump to idle in jumpsate");
             stateMachine.ChangeState(_sm.idleState);
-        }
-
     }
 
     public override void UpdatePhysics()
     {
         base.UpdatePhysics();
+
+    }
+    public override void Exit()
+    {
+        base.Exit();
+        PlayerController.Instance._input.jump = false;
 
     }
 }
