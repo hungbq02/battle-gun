@@ -123,6 +123,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         GroundedCheck();
         ApplyGravity();
+        RotateTowardsCamera();
         _controller.Move(_direction * MoveSpeed * Time.deltaTime);
 
     }
@@ -179,20 +180,43 @@ public class PlayerController : Singleton<PlayerController>
 
 
     }
+    /*    public void Move()
+        {
+            // normalise input direction
+            _direction = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+
+            if (_direction.sqrMagnitude == 0f) return;
+            float targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+
+            transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+            moveDir = (Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward).normalized;
+            _direction = moveDir;
+
+        }*/
     public void Move()
     {
         // normalise input direction
         _direction = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
 
         if (_direction.sqrMagnitude == 0f) return;
-        float targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
-        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
 
-        transform.rotation = Quaternion.Euler(0f, angle, 0f);
+        float targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
+
 
         moveDir = (Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward).normalized;
         _direction = moveDir;
+    }
 
+    private void RotateTowardsCamera()
+    {
+        // Get the angle between the character's current forward direction and the camera's forward direction
+        float targetAngle = Mathf.Atan2(_mainCamera.transform.forward.x, _mainCamera.transform.forward.z) * Mathf.Rad2Deg;
+
+        // Smoothly rotate the character towards the camera's forward direction
+        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+        transform.rotation = Quaternion.Euler(0f, angle, 0f);
     }
 
 

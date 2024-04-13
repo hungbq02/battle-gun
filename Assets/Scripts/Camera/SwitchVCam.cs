@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class SwitchVCam : MonoBehaviour
 {
     public PlayerInputHandler input;
-    public GameObject followPlayerCamera;
+    public GameObject thirdPersonCamera;
     public GameObject aimCamera;
 
     public bool isAiming = false;
@@ -19,7 +19,7 @@ public class SwitchVCam : MonoBehaviour
             isAiming = !isAiming;
             input.aim = false;
             aimCamera.SetActive(isAiming);
-            followPlayerCamera.SetActive(!isAiming);
+            thirdPersonCamera.SetActive(!isAiming);
 
             //Allow time for the camera to blend before enabling the UI
             //  StartCoroutine(ShowReticle());
