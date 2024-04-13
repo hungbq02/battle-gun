@@ -9,6 +9,7 @@ public class PlayerInputHandler : MonoBehaviour
     public Vector2 move;
     public Vector2 look;
     public bool jump;
+    public bool aim;
     public float aimValue;
 
     [Header("Movement Settings")]
@@ -33,11 +34,11 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void OnJump(InputValue value)
     {
-            JumpInput(value.isPressed);
+        JumpInput(value.isPressed);
     }
     public void OnAim(InputValue value)
     {
-        aimValue = value.Get<float>();
+        AimInput(value.isPressed);
     }
 
     public void MoveInput(Vector2 newMoveDirection)
@@ -54,6 +55,12 @@ public class PlayerInputHandler : MonoBehaviour
     {
         jump = newJumpState;
     }
+    public void AimInput(bool newAimInput)
+    {
+        aim = newAimInput;
+    }
+
+
 
     private void OnApplicationFocus(bool hasFocus)
     {

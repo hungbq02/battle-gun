@@ -10,7 +10,7 @@ public class IdleState : Grounded
         PlayerController.Instance._direction = Vector3.zero;
 
         PlayerController.Instance._animator.CrossFade(PlayerController.PLAYER_IDLE, 0.1f);
-        Debug.Log("ENter Idle");
+        //Debug.Log("ENter Idle");
 
     }
 

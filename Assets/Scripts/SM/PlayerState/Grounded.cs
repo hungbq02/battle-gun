@@ -12,7 +12,7 @@ public class Grounded : BaseState
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        Debug.Log("update Grounded");
+        //Debug.Log("update Grounded");
 
         if (!PlayerController.Instance._input.jump) return;
         stateMachine.ChangeState(sm.jumpingState);

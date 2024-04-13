@@ -9,6 +9,7 @@ public class PlayerController : Singleton<PlayerController>
     [Header("Player")]
 
     public float MoveSpeed = 2.0f;
+    [SerializeField] float jumpForce;
 
     [Tooltip("How fast the character turns to face movement direction")]
     [Range(0.0f, 0.3f)]
@@ -20,13 +21,15 @@ public class PlayerController : Singleton<PlayerController>
     public AudioClip LandingAudioClip;
     public AudioClip[] FootstepAudioClips;
 
-    [SerializeField] float jumpForce;
 
+    #region Variables: Gravity & direction
     public float gravity = -9.81f;
     [HideInInspector] public float _verticalVelocity;
-    float gravityMultiplier = 1f;
-
+    //float gravityMultiplier = 1f;
     public Vector3 _direction;
+    Vector3 moveDir = Vector3.zero;
+
+    #endregion
 
     #region Variables: Ground
     [Header("Player isGrounded")]
@@ -66,7 +69,6 @@ public class PlayerController : Singleton<PlayerController>
 
     #endregion
     // player
-
     private PlayerInput _playerInput;
     [HideInInspector] public Animator _animator;
     [HideInInspector] public CharacterController _controller;
@@ -84,7 +86,6 @@ public class PlayerController : Singleton<PlayerController>
 
     public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
-    Vector3 moveDir = Vector3.zero;
     public bool isJumping = false;
     private const float _threshold = 0.01f;
 
