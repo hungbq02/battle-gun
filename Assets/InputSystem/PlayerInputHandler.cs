@@ -10,7 +10,7 @@ public class PlayerInputHandler : MonoBehaviour
     public Vector2 look;
     public bool jump;
     public bool aim;
-    public float aimValue;
+    public bool shoot;
 
     [Header("Movement Settings")]
     public bool analogMovement;
@@ -39,6 +39,10 @@ public class PlayerInputHandler : MonoBehaviour
     public void OnAim(InputValue value)
     {
         AimInput(value.isPressed);
+    }    
+    public void OnShoot(InputValue value)
+    {
+        ShootInput(value.isPressed);
     }
 
     public void MoveInput(Vector2 newMoveDirection)
@@ -58,6 +62,10 @@ public class PlayerInputHandler : MonoBehaviour
     public void AimInput(bool newAimInput)
     {
         aim = newAimInput;
+    }
+    public void ShootInput(bool newShootInput)
+    {
+        shoot = newShootInput;
     }
 
 

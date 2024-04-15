@@ -76,12 +76,14 @@ public class PlayerController : Singleton<PlayerController>
     [HideInInspector] public GameObject _mainCamera;
 
     #region STRING ANIMATION
-    public const string PLAYER_IDLE = "IdleBattle01_AR_Anim";
-    public const string PLAYER_JUMP = "Jump_AR_Anim";
-    public const string PLAYER_RUN_FWD = "RunFWD_AR_Anim";
-    public const string PLAYER_RUN_BWD = "RunBWD_AR_Anim";
-    public const string PLAYER_RUN_LEFT = "RunLeft_AR_Anim";
-    public const string PLAYER_RUN_RIGHT = "RunRight_AR_Anim";
+    public const string PLAYER_IDLE = "IdleBattle01_HG01_Anim";
+    public const string PLAYER_JUMP = "Jump_HG01_Anim";
+    public const string PLAYER_RUN_FWD = "RunFWD_HG01_Anim";
+    public const string PLAYER_RUN_BWD = "RunBWD_HG01_Anim";
+    public const string PLAYER_RUN_LEFT = "RunLeft_HG01_Anim";
+    public const string PLAYER_RUN_RIGHT = "RunRight_HG01_Anim";
+    public const string PLAYER_SHOT = "ShootSingleshot_HG01_Anim";
+
     #endregion
 
     public float turnSmoothTime = 0.1f;
@@ -89,7 +91,10 @@ public class PlayerController : Singleton<PlayerController>
     public bool isJumping = false;
     private const float _threshold = 0.01f;
 
-
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private GameObject parentBullet;
+    [SerializeField] private Transform barrelTransform;
+    [SerializeField] private float bulletHitMissDistance = 25f;
     private bool IsCurrentDeviceMouse
     {
         get
@@ -121,6 +126,12 @@ public class PlayerController : Singleton<PlayerController>
 
     private void Update()
     {
+        if (_input.shoot)
+        {
+            _input.shoot = false;
+            _animator.Play(PLAYER_SHOT);
+            Shoot();
+        }
         GroundedCheck();
         ApplyGravity();
         RotateTowardsCamera();
@@ -227,25 +238,46 @@ public class PlayerController : Singleton<PlayerController>
         _direction.y = _verticalVelocity;
     }
 
+    public void Shoot()
+    {
+        RaycastHit hit;
+        GameObject bullet = GameObject.Instantiate(bulletPrefab, barrelTransform.position, Quaternion.identity, parentBullet.transform);
+        BulletController bulletController = bullet.GetComponent<BulletController>();
+
+        if (Physics.Raycast(_mainCamera.transform.position, _mainCamera.transform.forward, out hit, Mathf.Infinity))
+        {
+
+            bulletController.target = hit.point;
+            bulletController.hit = true;
+        }
+        else
+        {
+            bulletController.target = _mainCamera.transform.position + _mainCamera.transform.forward * bulletHitMissDistance;
+            bulletController.hit = false;
+        }
+
+    }
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
     {
         if (lfAngle < -360f) lfAngle += 360f;
         if (lfAngle > 360f) lfAngle -= 360f;
         return Mathf.Clamp(lfAngle, lfMin, lfMax);
     }
-    private void OnDrawGizmosSelected()
-    {
-        Color transparentGreen = new Color(0.0f, 1.0f, 0.0f, 0.35f);
-        Color transparentRed = new Color(1.0f, 0.0f, 0.0f, 0.35f);
 
-        if (isGrounded) Gizmos.color = transparentGreen;
-        else Gizmos.color = transparentRed;
 
-        // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
-        Gizmos.DrawSphere(
-            new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z),
-            GroundedRadius);
-    }
+    /*    private void OnDrawGizmosSelected()
+        {
+            Color transparentGreen = new Color(0.0f, 1.0f, 0.0f, 0.35f);
+            Color transparentRed = new Color(1.0f, 0.0f, 0.0f, 0.35f);
+
+            if (isGrounded) Gizmos.color = transparentGreen;
+            else Gizmos.color = transparentRed;
+
+            // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
+            Gizmos.DrawSphere(
+                new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z),
+                GroundedRadius);
+        }*/
 
 }
 
