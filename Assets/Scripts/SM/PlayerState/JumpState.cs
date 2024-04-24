@@ -1,49 +1,77 @@
 using System;
+using UnityEngine;
 
 public class JumpState : BaseState
 {
-    private MovementSM _sm;
+    bool isGrounded;
+    float gravity;
+    float jumpHeight;
+    float playerSpeed;
+    Vector3 airVelocity;
 
 
-    public JumpState(MovementSM stateMachine) : base("Jump", stateMachine)
+
+
+    public JumpState(PlayerController _playerController, StateMachine _stateMachine) : base(_playerController, _stateMachine)
     {
-        _sm = (MovementSM)this.stateMachine;
+        playerController = _playerController;
+        stateMachine = _stateMachine;
     }
 
     public override void Enter()
     {
-        base.Enter();
+        Debug.Log("JUMPSTATE");
+        isGrounded = false;
+        gravity = playerController.gravity;
+        jumpHeight = playerController.jumpHeight;
+        playerSpeed = playerController.MoveSpeed;
+        gravityVelocity.y = 0;
 
-        //Play Anim run
-        PlayerController.Instance._animator.CrossFade(PlayerController.PLAYER_JUMP, 0.1f);
-        Console.WriteLine("ENter Jump");
+        playerController.animator.SetFloat("MoveX", 0);
+        playerController.animator.SetFloat("MoveZ", 0);
 
-        PlayerController.Instance.Jump();
-
-
+        playerController.animator.SetTrigger("jump");
+        Jump();
     }
+
 
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        //Check Jumping
-        if (PlayerController.Instance.isGrounded && PlayerController.Instance._direction.y < 0.0f)
-            PlayerController.Instance.isJumping = false;
 
-        //JumpState -> IdleState
-        if (!PlayerController.Instance.isJumping)
-            stateMachine.ChangeState(_sm.idleState);
+        if(isGrounded)
+        {
+            stateMachine.ChangeState(playerController.standingState);
+        }    
     }
 
     public override void UpdatePhysics()
     {
         base.UpdatePhysics();
+        if (!isGrounded)
+        {
+            velocity = playerController.playerVelocity;
+            airVelocity = new Vector3(playerController.input.move.x,0, playerController.input.move.y);
 
+            velocity = velocity.x * playerController.cameraTransform.right.normalized + velocity.z * playerController.cameraTransform.forward.normalized;
+            velocity.y = 0;
+            airVelocity = airVelocity.x * playerController.cameraTransform.right.normalized + airVelocity.z * playerController.cameraTransform .forward.normalized;
+            airVelocity.y = 0;
+            playerController.controller.Move(gravityVelocity * Time.deltaTime + (airVelocity * playerController.airControl + velocity * (1 - playerController.airControl)) * playerSpeed * Time.deltaTime);
+
+        }
+        gravityVelocity.y += gravity * Time.deltaTime;
+        isGrounded = playerController.isGrounded();
     }
     public override void Exit()
     {
         base.Exit();
-        PlayerController.Instance._input.jump = false;
-
+        playerController.input.jump = false;
     }
+
+    private void Jump()
+    {
+        gravityVelocity.y += Mathf.Sqrt(jumpHeight * -2f * gravity);
+    }
+
 }

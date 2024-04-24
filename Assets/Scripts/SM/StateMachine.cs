@@ -1,33 +1,13 @@
-using System;
+
 using UnityEngine;
 
-public class StateMachine : MonoBehaviour
+public class StateMachine
 {
-    BaseState currentState;
-
-
-    void Start()
+    public BaseState currentState;
+    public void Initialize(BaseState startingState)
     {
-        currentState = GetInitialState();
-        if (currentState != null)
-            currentState.Enter();
-    }
-
-    void Update()
-    {
-        if (currentState != null)
-            currentState.UpdateLogic();
-    }
-
-    void LateUpdate()
-    {
-        if (currentState != null)
-            currentState.UpdatePhysics();
-    }
-
-    protected virtual BaseState GetInitialState()
-    {
-        return null;
+        currentState = startingState;
+        startingState.Enter();
     }
 
     public void ChangeState(BaseState newState)
@@ -38,11 +18,4 @@ public class StateMachine : MonoBehaviour
         newState.Enter();
     }
 
-    private void OnGUI()
-    {
-        GUILayout.BeginArea(new Rect(10f, 10f, 200f, 100f));
-        string content = currentState != null ? currentState.name : "(no current state)";
-        GUILayout.Label($"<color='black'><size=40>{content}</size></color>");
-        GUILayout.EndArea();
-    }
 }

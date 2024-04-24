@@ -1751,7 +1751,7 @@ GameObject:
   - component: {fileID: 2105307482}
   m_Layer: 0
   m_Name: Barrel
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2565,7 +2565,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2139354833578171847}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.8000002, y: 1.375, z: -4}
+  m_LocalPosition: {x: 24.93, y: 13.415, z: 8.27}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2139354832946441724}
@@ -2807,7 +2807,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 1.8
-  m_Radius: 0.2
+  m_Radius: 0.25
   m_SlopeLimit: 45
   m_StepOffset: 0.25
   m_SkinWidth: 0.02
@@ -2825,9 +2825,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e54e5a728a9234ab24fcf1460ed8a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dontDestroyOnLoad: 0
   MoveSpeed: 4.5
-  jumpForce: 0.6
+  jumpHeight: 3
   RotationSmoothTime: 0.12
   SpeedChangeRate: 10
   LandingAudioClip: {fileID: 8300000, guid: ff697d3070687ce4583faa0561a145a2, type: 3}
@@ -2845,7 +2844,10 @@ MonoBehaviour:
   gravity: -9.81
   _verticalVelocity: 0
   _direction: {x: 0, y: 0, z: 0}
-  isGrounded: 1
+  playerVelocity: {x: 0, y: 0, z: 0}
+  airControl: 0.5
+  MoveXAnimationParameterID: 0
+  MoveZAnimationParameterID: 0
   GroundedOffset: -0.1
   GroundedRadius: 0.18
   GroundLayers:
@@ -2856,10 +2858,10 @@ MonoBehaviour:
   BottomClamp: -30
   CameraAngleOverride: 0
   LockCameraPosition: 0
-  _animator: {fileID: 0}
-  _controller: {fileID: 2815470918922109906}
-  _input: {fileID: 0}
-  _mainCamera: {fileID: 0}
+  animator: {fileID: 0}
+  controller: {fileID: 0}
+  input: {fileID: 0}
+  cameraTransform: {fileID: 0}
   turnSmoothTime: 0.1
   isJumping: 0
   bulletPrefab: {fileID: 152568803450533048, guid: eccd5cc5d401bcd4eaaf92ed1614c91f, type: 3}
@@ -2958,7 +2960,6 @@ GameObject:
   - component: {fileID: 8843226449151656728}
   - component: {fileID: 1998701921981783972}
   - component: {fileID: 2815470918922109908}
-  - component: {fileID: 2815470918922109913}
   - component: {fileID: 2815470918922109914}
   m_Layer: 0
   m_Name: Player
@@ -2967,18 +2968,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2815470918922109913
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2815470918922109912}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca2f08a808bdff140a1b71276fb1a216, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2815470918922109914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3016,7 +3005,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2815470918922109912}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 24.13, y: 12.04, z: 12.27}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7630387323820997252}
@@ -3088,7 +3077,7 @@ GameObject:
   - component: {fileID: 3301487013784623214}
   m_Layer: 0
   m_Name: PistolPBR
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6846,7 +6835,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8946921409131764513}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.8000002, y: 1.375, z: -4}
+  m_LocalPosition: {x: 24.93, y: 13.415, z: 8.27}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -8107,14 +8096,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9020103878681145619}
-  m_LocalRotation: {x: -0.08808675, y: -0.015657831, z: 0.9888635, w: 0.11893094}
+  m_LocalRotation: {x: -0.08809787, y: -0.015592257, z: 0.9889542, w: 0.11817522}
   m_LocalPosition: {x: 0.011850503, y: -0.0066443053, z: 0.110424004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 9020103878681439603}
   m_Father: {fileID: 9020103878681439563}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.574, y: -10.25, z: 166.32}
 --- !u!4 &9020103878681439541
 Transform:
   m_ObjectHideFlags: 0

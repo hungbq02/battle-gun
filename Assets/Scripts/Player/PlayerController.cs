@@ -4,12 +4,12 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(PlayerInput))]
-public class PlayerController : Singleton<PlayerController>
+public class PlayerController : MonoBehaviour
 {
     [Header("Player")]
 
     public float MoveSpeed = 2.0f;
-    [SerializeField] float jumpForce;
+    public float jumpHeight;
 
     [Tooltip("How fast the character turns to face movement direction")]
     [Range(0.0f, 0.3f)]
@@ -25,15 +25,18 @@ public class PlayerController : Singleton<PlayerController>
     #region Variables: Gravity & direction
     public float gravity = -9.81f;
     [HideInInspector] public float _verticalVelocity;
-    //float gravityMultiplier = 1f;
+    float gravityMultiplier = 2f;
     public Vector3 _direction;
     Vector3 moveDir = Vector3.zero;
+    public Vector3 playerVelocity;
+    public float airControl = 0.5f;
 
+    public int MoveXAnimationParameterID;
+    public int MoveZAnimationParameterID;
     #endregion
 
     #region Variables: Ground
     [Header("Player isGrounded")]
-    public bool isGrounded = true;
 
     [Tooltip("Useful for rough ground")]
     public float GroundedOffset = -0.14f;
@@ -70,10 +73,12 @@ public class PlayerController : Singleton<PlayerController>
     #endregion
     // player
     private PlayerInput _playerInput;
-    [HideInInspector] public Animator _animator;
-    [HideInInspector] public CharacterController _controller;
-    [HideInInspector] public PlayerInputHandler _input;
-    [HideInInspector] public GameObject _mainCamera;
+    [HideInInspector] public Animator animator;
+    [HideInInspector] public CharacterController controller;
+    [HideInInspector] public PlayerInputHandler input;
+  //  [HideInInspector] public GameObject _mainCamera;
+    [HideInInspector] public Transform cameraTransform;
+
 
     #region STRING ANIMATION
     public const string PLAYER_IDLE = "IdleBattle01_HG01_Anim";
@@ -86,6 +91,18 @@ public class PlayerController : Singleton<PlayerController>
 
     #endregion
 
+    #region SM
+    public StateMachine movementSM;
+    public StandingState standingState;
+    public JumpState jumpingState;
+    public ShootState shotState;
+    public LandingState landingState;
+
+
+    // public JumpState jumpState;
+
+
+    #endregion
     public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
     public bool isJumping = false;
@@ -104,66 +121,79 @@ public class PlayerController : Singleton<PlayerController>
     }
 
 
-    protected override void Awake()
+    protected void Awake()
     {
         // get a reference to our main camera
-        if (_mainCamera == null)
-        {
-            _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-        }
-        base.Awake();
+        /*        if (_mainCamera == null)
+                {
+                    _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+                }*/
+        MoveXAnimationParameterID = Animator.StringToHash("MoveX");
+        MoveZAnimationParameterID = Animator.StringToHash("MoveZ");
+
     }
 
     private void Start()
     {
         _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
-        _animator = GetComponentInChildren<Animator>();
-        _controller = GetComponent<CharacterController>();
-        _input = GetComponent<PlayerInputHandler>();
+        controller = GetComponent<CharacterController>();
+        input = GetComponent<PlayerInputHandler>();
         _playerInput = GetComponent<PlayerInput>();
+        animator = GetComponentInChildren<Animator>();
+        cameraTransform = Camera.main.transform;
+
+
+        movementSM = new StateMachine();
+        standingState = new StandingState(this, movementSM);
+        jumpingState = new JumpState(this, movementSM);
+        shotState = new ShootState(this, movementSM);
+        landingState = new LandingState(this, movementSM);
+
+
+        gravity *= gravityMultiplier;
+        movementSM.Initialize(standingState);
+
 
     }
-
     private void Update()
+    { 
+        /*  GroundedCheck();
+         ApplyGravity();
+          RotateTowardsCamera();
+          controller.Move(_direction * MoveSpeed * Time.deltaTime);*/
+
+        movementSM.currentState.HandleInput();
+        movementSM.currentState.UpdateLogic();
+    }
+    private void FixedUpdate()
     {
-        if (_input.shoot)
-        {
-            _input.shoot = false;
-            _animator.Play(PLAYER_SHOT);
-            Shoot();
-        }
-        GroundedCheck();
-        ApplyGravity();
-        RotateTowardsCamera();
-        _controller.Move(_direction * MoveSpeed * Time.deltaTime);
+        movementSM.currentState.UpdatePhysics();
 
     }
-
     private void LateUpdate()
     {
         CameraRotation();
     }
 
-    public void GroundedCheck()
+    public bool isGrounded()
     {
         // set sphere position, with offset
         Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
             transform.position.z);
-        isGrounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
+        return Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
             QueryTriggerInteraction.Ignore);
-
     }
 
     private void CameraRotation()
     {
         // if there is an input and camera position is not fixed
-        if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
+        if (input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
         {
             //Don't multiply mouse input by Time.deltaTime;
             float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
 
-            _cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier;
-            _cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier;
+            _cinemachineTargetYaw += input.look.x * deltaTimeMultiplier;
+            _cinemachineTargetPitch += input.look.y * deltaTimeMultiplier;
         }
 
         // clamp our rotations so our values are limited 360 degrees
@@ -178,7 +208,7 @@ public class PlayerController : Singleton<PlayerController>
     private void ApplyGravity()
     {
 
-        if (isGrounded && _verticalVelocity < 0.0f)
+        if (isGrounded() && _verticalVelocity < 0.0f)
         {
             _verticalVelocity = -1.0f;
         }
@@ -186,7 +216,7 @@ public class PlayerController : Singleton<PlayerController>
         {
             _verticalVelocity += gravity * Time.deltaTime;
         }
-        //_controller.Move(new Vector3(0, _verticalVelocity, 0) * Time.deltaTime);
+        //controller.Move(new Vector3(0, _verticalVelocity, 0) * Time.deltaTime);
         _direction.y = _verticalVelocity;
 
 
@@ -194,7 +224,7 @@ public class PlayerController : Singleton<PlayerController>
     /*    public void Move()
         {
             // normalise input direction
-            _direction = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+            _direction = new Vector3(input.move.x, 0.0f, input.move.y).normalized;
 
             if (_direction.sqrMagnitude == 0f) return;
             float targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
@@ -209,21 +239,22 @@ public class PlayerController : Singleton<PlayerController>
     public void Move()
     {
         // normalise input direction
-        _direction = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+        _direction = new Vector3(input.move.x, 0.0f, input.move.y).normalized;
 
         if (_direction.sqrMagnitude == 0f) return;
 
-        float targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
+        float targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
 
 
         moveDir = (Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward).normalized;
         _direction = moveDir;
+        Debug.Log(_direction);
     }
 
     private void RotateTowardsCamera()
     {
         // Get the angle between the character's current forward direction and the camera's forward direction
-        float targetAngle = Mathf.Atan2(_mainCamera.transform.forward.x, _mainCamera.transform.forward.z) * Mathf.Rad2Deg;
+        float targetAngle = Mathf.Atan2(cameraTransform.forward.x, cameraTransform.forward.z) * Mathf.Rad2Deg;
 
         // Smoothly rotate the character towards the camera's forward direction
         float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
@@ -234,17 +265,17 @@ public class PlayerController : Singleton<PlayerController>
 
     public void Jump()
     {
-        _verticalVelocity = Mathf.Sqrt(jumpForce * -2f * gravity);
+        _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
         _direction.y = _verticalVelocity;
     }
 
     public void Shoot()
     {
         RaycastHit hit;
-        GameObject bullet = GameObject.Instantiate(bulletPrefab, barrelTransform.position, Quaternion.identity, parentBullet.transform);
+        GameObject bullet = Instantiate(bulletPrefab, barrelTransform.position, Quaternion.identity, parentBullet.transform);
         BulletController bulletController = bullet.GetComponent<BulletController>();
 
-        if (Physics.Raycast(_mainCamera.transform.position, _mainCamera.transform.forward, out hit, Mathf.Infinity))
+        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity))
         {
 
             bulletController.target = hit.point;
@@ -252,9 +283,10 @@ public class PlayerController : Singleton<PlayerController>
         }
         else
         {
-            bulletController.target = _mainCamera.transform.position + _mainCamera.transform.forward * bulletHitMissDistance;
+            bulletController.target = cameraTransform.position + cameraTransform.forward * bulletHitMissDistance;
             bulletController.hit = false;
         }
+        input.shoot = false;
 
     }
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
