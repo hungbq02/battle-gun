@@ -16,7 +16,7 @@ public class BaseState
     }
     public virtual void Enter(){ }
     public virtual void HandleInput() { }
-    public virtual void UpdateLogic() { Debug.Log("Current State: " + this.ToString()); }
+    public virtual void UpdateLogic() {}
     public virtual void UpdatePhysics() { }
     public virtual void Exit() { }
 }

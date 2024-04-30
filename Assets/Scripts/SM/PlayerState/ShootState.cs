@@ -1,7 +1,9 @@
+using System.Collections;
+using UnityEngine;
+
 public class ShootState : BaseState
 {
-    private StateMachine sm;
-
+    private bool canShoot = true;
     public ShootState(PlayerController _playerController, StateMachine _stateMachine) : base(_playerController, _stateMachine)
     {
         playerController = _playerController;
@@ -11,16 +13,18 @@ public class ShootState : BaseState
     public override void Enter()
     {
         base.Enter();
-      //  PlayerController.Instance.animator.CrossFade(PlayerController.PLAYER_SHOT, 0.1f);
-     //   PlayerController.Instance.Shoot();
+        playerController.animator.SetTrigger("shoot");
+        playerController.input.shoot = false;
+
 
     }
     public override void UpdateLogic()
     {
         base.UpdateLogic();
+        playerController.RotateTowardsCamera();
 
-     //   if (PlayerController.Instance.input.shoot)
-       //     PlayerController.Instance.Shoot();
+        if (playerController.input.shoot)
+            Shoot();
 
         /*        if(!PlayerController.Instance.input.shoot)
                 {
@@ -31,4 +35,35 @@ public class ShootState : BaseState
     {
         base.Exit();
     }
+
+    public void Shoot()
+    {
+        if (canShoot)
+        {
+            RaycastHit hit;
+            GameObject bullet = GameObject.Instantiate(playerController.bulletPrefab, playerController.barrelTransform.position, Quaternion.identity, playerController.parentBullet.transform);
+            BulletController bulletController = bullet.GetComponent<BulletController>();
+
+            if (Physics.Raycast(playerController.cameraTransform.position, playerController.cameraTransform.forward, out hit, Mathf.Infinity))
+            {
+                bulletController.target = hit.point;
+                bulletController.hit = true;
+            }
+            else
+            {
+                bulletController.target = playerController.cameraTransform.position + playerController.cameraTransform.forward * playerController.bulletHitMissDistance;
+                bulletController.hit = false;
+            }
+            canShoot = false;
+            playerController.StartCoroutine(CanShoot());
+        }
+    }
+
+    IEnumerator CanShoot()
+    {
+        canShoot = false;
+        yield return new WaitForSeconds(0.5f);
+        canShoot = true;
+    }
+
 }

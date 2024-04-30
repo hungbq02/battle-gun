@@ -75,10 +75,10 @@ public class StandingState : BaseState
         {
             stateMachine.ChangeState(playerController.jumpingState);
         }
-        /*        if (shoot)
-                {
-                    stateMachine.ChangeState(playerController.shotState);
-                }*/
+        if (shoot)
+        {
+            stateMachine.ChangeState(playerController.shootState);
+        }
 
         gravityVelocity.y += gravity * Time.deltaTime;
         isGrounded = playerController.isGrounded();
@@ -89,7 +89,7 @@ public class StandingState : BaseState
         }
         //add
         playerController.controller.Move(velocity * Time.deltaTime * playerSpeed + gravityVelocity * Time.deltaTime);
-        RotateTowardsCamera();
+        playerController.RotateTowardsCamera();
         Debug.Log("update logic standing State: ");
 
     }
@@ -107,7 +107,7 @@ public class StandingState : BaseState
         gravityVelocity.y = 0f;
 
     }
-    private void RotateTowardsCamera()
+/*    private void RotateTowardsCamera()
     {
         // Get the angle between the character's current forward direction and the camera's forward direction
         float targetAngle = Mathf.Atan2(playerController.cameraTransform.forward.x, playerController.cameraTransform.forward.z) * Mathf.Rad2Deg;
@@ -115,5 +115,5 @@ public class StandingState : BaseState
         // Smoothly rotate the character towards the camera's forward direction
         float angle = Mathf.SmoothDampAngle(playerController.transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
         playerController.transform.rotation = Quaternion.Euler(0f, angle, 0f);
-    }
+    }*/
 }

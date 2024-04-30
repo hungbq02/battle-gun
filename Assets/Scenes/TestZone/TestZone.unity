@@ -2868,6 +2868,7 @@ MonoBehaviour:
   parentBullet: {fileID: 168687058}
   barrelTransform: {fileID: 2105307482}
   bulletHitMissDistance: 25
+  bulletPool: {fileID: 0}
 --- !u!114 &2815470918922109908
 MonoBehaviour:
   m_ObjectHideFlags: 0

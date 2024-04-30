@@ -3,7 +3,7 @@ using UnityEngine;
 public class LandingState : BaseState
 {
     float timePassed;
-    float landingTime;
+    float landingTime; //Delay from jumpend -> move
     public LandingState(PlayerController _playerController, StateMachine _stateMachine) : base(_playerController, _stateMachine)
     {
         playerController = _playerController;
@@ -14,7 +14,8 @@ public class LandingState : BaseState
     {
         base.Enter();
         timePassed = 0f;
-        landingTime = 0f;
+        playerController.animator.SetTrigger("land");
+        landingTime = 0.15f;
     }
 
     public override void UpdateLogic()
@@ -22,6 +23,7 @@ public class LandingState : BaseState
         base.UpdateLogic();
         if (timePassed > landingTime)
         {
+            playerController.animator.SetTrigger("move");
             stateMachine.ChangeState(playerController.standingState);
         }
         timePassed += Time.deltaTime;

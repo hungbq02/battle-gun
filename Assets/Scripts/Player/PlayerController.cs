@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour
     public StateMachine movementSM;
     public StandingState standingState;
     public JumpState jumpingState;
-    public ShootState shotState;
+    public ShootState shootState;
     public LandingState landingState;
 
 
@@ -108,10 +108,11 @@ public class PlayerController : MonoBehaviour
     public bool isJumping = false;
     private const float _threshold = 0.01f;
 
-    [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private GameObject parentBullet;
-    [SerializeField] private Transform barrelTransform;
-    [SerializeField] private float bulletHitMissDistance = 25f;
+     public GameObject bulletPrefab;
+     public GameObject parentBullet;
+     public Transform barrelTransform;
+     public float bulletHitMissDistance = 25f;
+    [SerializeField] private Pooler bulletPool;
     private bool IsCurrentDeviceMouse
     {
         get
@@ -146,7 +147,7 @@ public class PlayerController : MonoBehaviour
         movementSM = new StateMachine();
         standingState = new StandingState(this, movementSM);
         jumpingState = new JumpState(this, movementSM);
-        shotState = new ShootState(this, movementSM);
+        shootState = new ShootState(this, movementSM);
         landingState = new LandingState(this, movementSM);
 
 
@@ -251,7 +252,7 @@ public class PlayerController : MonoBehaviour
         Debug.Log(_direction);
     }
 
-    private void RotateTowardsCamera()
+    public void RotateTowardsCamera()
     {
         // Get the angle between the character's current forward direction and the camera's forward direction
         float targetAngle = Mathf.Atan2(cameraTransform.forward.x, cameraTransform.forward.z) * Mathf.Rad2Deg;
@@ -310,6 +311,14 @@ public class PlayerController : MonoBehaviour
                 new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z),
                 GroundedRadius);
         }*/
+
+    private void OnGUI()
+    {
+        GUILayout.BeginArea(new Rect(10f, 10f, 400f, 100f));
+        string content = movementSM.currentState != null ? movementSM.currentState.ToString() : "(no current state)";
+        GUILayout.Label($"<color='black'><size=40>{content}</size></color>");
+        GUILayout.EndArea();
+    }
 
 }
 

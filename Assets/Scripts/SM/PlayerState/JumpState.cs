@@ -41,7 +41,7 @@ public class JumpState : BaseState
 
         if(isGrounded)
         {
-            stateMachine.ChangeState(playerController.standingState);
+            stateMachine.ChangeState(playerController.landingState);
         }    
     }
 
