@@ -7,32 +7,18 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Header("Player")]
-
-    public float MoveSpeed = 2.0f;
+    public float MoveSpeed;
     public float jumpHeight;
-
-    [Tooltip("How fast the character turns to face movement direction")]
-    [Range(0.0f, 0.3f)]
-    public float RotationSmoothTime = 0.12f;
-
-    [Tooltip("Acceleration and deceleration")]
-    public float SpeedChangeRate = 10.0f;
-
-    public AudioClip LandingAudioClip;
-    public AudioClip[] FootstepAudioClips;
 
 
     #region Variables: Gravity & direction
     public float gravity = -9.81f;
-    [HideInInspector] public float _verticalVelocity;
-    float gravityMultiplier = 2f;
-    public Vector3 _direction;
-    Vector3 moveDir = Vector3.zero;
-    public Vector3 playerVelocity;
+    [HideInInspector] public Vector3 playerVelocity;
+    [SerializeField] float gravityMultiplier = 2f;
     public float airControl = 0.5f;
 
-    public int MoveXAnimationParameterID;
-    public int MoveZAnimationParameterID;
+    [HideInInspector] public int MoveXAnimationParameterID;
+    [HideInInspector] public int MoveZAnimationParameterID;
     #endregion
 
     #region Variables: Ground
@@ -71,24 +57,13 @@ public class PlayerController : MonoBehaviour
     private float _cinemachineTargetPitch;
 
     #endregion
-    // player
+
+    #region Variables: Player Control
     private PlayerInput _playerInput;
     [HideInInspector] public Animator animator;
     [HideInInspector] public CharacterController controller;
     [HideInInspector] public PlayerInputHandler input;
-  //  [HideInInspector] public GameObject _mainCamera;
     [HideInInspector] public Transform cameraTransform;
-
-
-    #region STRING ANIMATION
-    public const string PLAYER_IDLE = "IdleBattle01_HG01_Anim";
-    public const string PLAYER_JUMP = "Jump_HG01_Anim";
-    public const string PLAYER_RUN_FWD = "RunFWD_HG01_Anim";
-    public const string PLAYER_RUN_BWD = "RunBWD_HG01_Anim";
-    public const string PLAYER_RUN_LEFT = "RunLeft_HG01_Anim";
-    public const string PLAYER_RUN_RIGHT = "RunRight_HG01_Anim";
-    public const string PLAYER_SHOT = "ShootSingleshot_HG01_Anim";
-
     #endregion
 
     #region SM
@@ -103,16 +78,21 @@ public class PlayerController : MonoBehaviour
 
 
     #endregion
-    public float turnSmoothTime = 0.1f;
+
+    [Header("Rotate Player Towards Camera")]
+    public float rotationSmoothTime;
     float turnSmoothVelocity;
-    public bool isJumping = false;
     private const float _threshold = 0.01f;
 
-     public GameObject bulletPrefab;
-     public GameObject parentBullet;
-     public Transform barrelTransform;
-     public float bulletHitMissDistance = 25f;
-    [SerializeField] private Pooler bulletPool;
+
+    [Header("Player Shoot")]
+    public GameObject bulletPrefab;
+    public GameObject parentBullet;
+    public Transform barrelTransform;
+    public float bulletHitMissDistance = 25f;
+
+
+
     private bool IsCurrentDeviceMouse
     {
         get
@@ -157,7 +137,7 @@ public class PlayerController : MonoBehaviour
 
     }
     private void Update()
-    { 
+    {
         /*  GroundedCheck();
          ApplyGravity();
           RotateTowardsCamera();
@@ -165,6 +145,8 @@ public class PlayerController : MonoBehaviour
 
         movementSM.currentState.HandleInput();
         movementSM.currentState.UpdateLogic();
+        RotateTowardsCamera();
+
     }
     private void FixedUpdate()
     {
@@ -205,52 +187,6 @@ public class PlayerController : MonoBehaviour
         CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
             _cinemachineTargetYaw, 0.0f);
     }
-    //Fake gravity
-    private void ApplyGravity()
-    {
-
-        if (isGrounded() && _verticalVelocity < 0.0f)
-        {
-            _verticalVelocity = -1.0f;
-        }
-        else
-        {
-            _verticalVelocity += gravity * Time.deltaTime;
-        }
-        //controller.Move(new Vector3(0, _verticalVelocity, 0) * Time.deltaTime);
-        _direction.y = _verticalVelocity;
-
-
-    }
-    /*    public void Move()
-        {
-            // normalise input direction
-            _direction = new Vector3(input.move.x, 0.0f, input.move.y).normalized;
-
-            if (_direction.sqrMagnitude == 0f) return;
-            float targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
-            moveDir = (Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward).normalized;
-            _direction = moveDir;
-
-        }*/
-    public void Move()
-    {
-        // normalise input direction
-        _direction = new Vector3(input.move.x, 0.0f, input.move.y).normalized;
-
-        if (_direction.sqrMagnitude == 0f) return;
-
-        float targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
-
-
-        moveDir = (Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward).normalized;
-        _direction = moveDir;
-        Debug.Log(_direction);
-    }
 
     public void RotateTowardsCamera()
     {
@@ -258,38 +194,10 @@ public class PlayerController : MonoBehaviour
         float targetAngle = Mathf.Atan2(cameraTransform.forward.x, cameraTransform.forward.z) * Mathf.Rad2Deg;
 
         // Smoothly rotate the character towards the camera's forward direction
-        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, rotationSmoothTime);
         transform.rotation = Quaternion.Euler(0f, angle, 0f);
     }
 
-
-
-    public void Jump()
-    {
-        _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
-        _direction.y = _verticalVelocity;
-    }
-
-    public void Shoot()
-    {
-        RaycastHit hit;
-        GameObject bullet = Instantiate(bulletPrefab, barrelTransform.position, Quaternion.identity, parentBullet.transform);
-        BulletController bulletController = bullet.GetComponent<BulletController>();
-
-        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity))
-        {
-
-            bulletController.target = hit.point;
-            bulletController.hit = true;
-        }
-        else
-        {
-            bulletController.target = cameraTransform.position + cameraTransform.forward * bulletHitMissDistance;
-            bulletController.hit = false;
-        }
-        input.shoot = false;
-
-    }
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
     {
         if (lfAngle < -360f) lfAngle += 360f;

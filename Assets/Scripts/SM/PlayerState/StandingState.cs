@@ -15,10 +15,12 @@ public class StandingState : BaseState
     Vector3 moveDir = Vector3.zero;
     public float verticalVelocity;
 
-    public float turnSmoothTime = 0.1f;
-    float turnSmoothVelocity;
+    private float smoothMoveX;
+    private float smoothMoveZ;
+    float velocityX;
+    float velocityZ;
 
-
+    private float smoothTime = 0.2f;
     public StandingState(PlayerController _playerController, StateMachine _stateMachine) : base( _playerController, _stateMachine)
     {
         playerController = _playerController;
@@ -49,14 +51,17 @@ public class StandingState : BaseState
         if(playerController.input.jump)
         {
             jump = true;
-        }         
-        if(playerController.input.shoot)
+        }
+ /*       if (playerController.input.shoot)
         {
             shoot = true;
-        }
+        }*/
 
-        playerController.animator.SetFloat(moveXParameter, playerController.input.move.x);
-        playerController.animator.SetFloat(moveZParameter, playerController.input.move.y);
+        //Anim
+        smoothMoveX = Mathf.SmoothDamp(smoothMoveX, playerController.input.move.x, ref velocityX, smoothTime);
+        smoothMoveZ = Mathf.SmoothDamp(smoothMoveZ, playerController.input.move.y, ref velocityZ, smoothTime);
+        playerController.animator.SetFloat(moveXParameter, smoothMoveX);
+        playerController.animator.SetFloat(moveZParameter, smoothMoveZ);
 
 
         velocity = new Vector3(playerController.input.move.x, 0.0f, playerController.input.move.y).normalized;
@@ -70,8 +75,9 @@ public class StandingState : BaseState
     public override void UpdateLogic()
     {
         base.UpdateLogic();
+       // Debug.Log("= " + gravityVelocity);
 
-        if(jump)
+        if (jump)
         {
             stateMachine.ChangeState(playerController.jumpingState);
         }
@@ -89,9 +95,6 @@ public class StandingState : BaseState
         }
         //add
         playerController.controller.Move(velocity * Time.deltaTime * playerSpeed + gravityVelocity * Time.deltaTime);
-        playerController.RotateTowardsCamera();
-        Debug.Log("update logic standing State: ");
-
     }
 
     public override void UpdatePhysics()
@@ -113,7 +116,7 @@ public class StandingState : BaseState
         float targetAngle = Mathf.Atan2(playerController.cameraTransform.forward.x, playerController.cameraTransform.forward.z) * Mathf.Rad2Deg;
 
         // Smoothly rotate the character towards the camera's forward direction
-        float angle = Mathf.SmoothDampAngle(playerController.transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+        float angle = Mathf.SmoothDampAngle(playerController.transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, rotationSmoothTime);
         playerController.transform.rotation = Quaternion.Euler(0f, angle, 0f);
     }*/
 }

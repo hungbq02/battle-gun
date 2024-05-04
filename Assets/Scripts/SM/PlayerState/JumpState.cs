@@ -20,7 +20,6 @@ public class JumpState : BaseState
 
     public override void Enter()
     {
-        Debug.Log("JUMPSTATE");
         isGrounded = false;
         gravity = playerController.gravity;
         jumpHeight = playerController.jumpHeight;
@@ -34,9 +33,15 @@ public class JumpState : BaseState
         Jump();
     }
 
+    public override void HandleInput()
+    {
+        base.HandleInput();
+        velocity = new Vector3(playerController.input.move.x, 0.0f, playerController.input.move.y).normalized;
 
+    }
     public override void UpdateLogic()
     {
+      //  Debug.Log("= "+gravityVelocity);
         base.UpdateLogic();
 
         if(isGrounded)

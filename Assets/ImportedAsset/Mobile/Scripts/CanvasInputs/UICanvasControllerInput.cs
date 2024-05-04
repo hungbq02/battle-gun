@@ -20,6 +20,10 @@ public class UICanvasControllerInput : MonoBehaviour
     {
         input.JumpInput(virtualJumpState);
     }
+    public void VirtualShootInput(bool virtualShootState)
+    {
+        input.ShootInput(virtualShootState);
+    }
 
 }
 

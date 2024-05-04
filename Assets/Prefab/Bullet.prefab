@@ -109,4 +109,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletHolePrefab: {fileID: 381933492039790800, guid: 70d35127f90e0ab46be0e8d6ef26b6c2, type: 3}
-  speed: 50
+  speed: 300
