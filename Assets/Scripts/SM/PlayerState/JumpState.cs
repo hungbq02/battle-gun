@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class JumpState : BaseState
@@ -32,42 +31,31 @@ public class JumpState : BaseState
         playerController.animator.SetTrigger("jump");
         Jump();
     }
-
-    public override void HandleInput()
-    {
-        base.HandleInput();
-        velocity = new Vector3(playerController.input.move.x, 0.0f, playerController.input.move.y).normalized;
-
-    }
     public override void UpdateLogic()
     {
-      //  Debug.Log("= "+gravityVelocity);
+        //  Debug.Log("= "+gravityVelocity);
         base.UpdateLogic();
 
-        if(isGrounded)
+        if (isGrounded)
         {
             stateMachine.ChangeState(playerController.landingState);
-        }    
-    }
-
-    public override void UpdatePhysics()
-    {
-        base.UpdatePhysics();
-        if (!isGrounded)
+        }
+        else
         {
             velocity = playerController.playerVelocity;
-            airVelocity = new Vector3(playerController.input.move.x,0, playerController.input.move.y);
+            airVelocity = new Vector3(playerController.input.move.x, 0, playerController.input.move.y);
 
             velocity = velocity.x * playerController.cameraTransform.right.normalized + velocity.z * playerController.cameraTransform.forward.normalized;
             velocity.y = 0;
-            airVelocity = airVelocity.x * playerController.cameraTransform.right.normalized + airVelocity.z * playerController.cameraTransform .forward.normalized;
+            airVelocity = airVelocity.x * playerController.cameraTransform.right.normalized + airVelocity.z * playerController.cameraTransform.forward.normalized;
             airVelocity.y = 0;
-            playerController.controller.Move(gravityVelocity * Time.deltaTime + (airVelocity * playerController.airControl + velocity * (1 - playerController.airControl)) * playerSpeed * Time.deltaTime);
-
+            playerController.controller.Move(gravityVelocity * Time.deltaTime + 
+                            (airVelocity * playerController.airControl + velocity * (1 - playerController.airControl)) * playerSpeed * Time.deltaTime);
         }
         gravityVelocity.y += gravity * Time.deltaTime;
         isGrounded = playerController.isGrounded();
     }
+
     public override void Exit()
     {
         base.Exit();

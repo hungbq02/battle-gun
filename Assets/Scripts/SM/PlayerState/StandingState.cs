@@ -52,10 +52,10 @@ public class StandingState : BaseState
         {
             jump = true;
         }
- /*       if (playerController.input.shoot)
+        if (playerController.input.shoot)
         {
             shoot = true;
-        }*/
+        }
 
         //Anim
         smoothMoveX = Mathf.SmoothDamp(smoothMoveX, playerController.input.move.x, ref velocityX, smoothTime);

@@ -293,6 +293,7 @@ GameObject:
   - component: {fileID: 183322090}
   - component: {fileID: 183322089}
   - component: {fileID: 183322088}
+  - component: {fileID: 183322092}
   m_Layer: 3
   m_Name: Sphere
   m_TagString: Untagged
@@ -376,6 +377,22 @@ Transform:
   m_Father: {fileID: 2025280915}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &183322092
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 183322087}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &278103793
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,6 +433,7 @@ GameObject:
   m_Component:
   - component: {fileID: 285177932}
   - component: {fileID: 285177934}
+  - component: {fileID: 285177933}
   m_Layer: 3
   m_Name: Rectangle
   m_TagString: Untagged
@@ -439,6 +457,22 @@ Transform:
   m_Father: {fileID: 2025280915}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &285177933
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285177931}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!65 &285177934
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -889,6 +923,7 @@ GameObject:
   - component: {fileID: 1280905603}
   - component: {fileID: 1280905602}
   - component: {fileID: 1280905601}
+  - component: {fileID: 1280905600}
   m_Layer: 3
   m_Name: Cube 1
   m_TagString: Untagged
@@ -896,6 +931,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!54 &1280905600
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1280905599}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!23 &1280905601
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1118,6 +1169,7 @@ GameObject:
   - component: {fileID: 1742424890}
   - component: {fileID: 1742424889}
   - component: {fileID: 1742424888}
+  - component: {fileID: 1742424887}
   m_Layer: 3
   m_Name: Capsule
   m_TagString: Untagged
@@ -1125,6 +1177,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!54 &1742424887
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742424886}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!23 &1742424888
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1468,6 +1536,7 @@ GameObject:
   - component: {fileID: 1953255292}
   - component: {fileID: 1953255291}
   - component: {fileID: 1953255290}
+  - component: {fileID: 1953255294}
   m_Layer: 3
   m_Name: Sphere 1
   m_TagString: Untagged
@@ -1551,6 +1620,22 @@ Transform:
   m_Father: {fileID: 2025280915}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &1953255294
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1953255289}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &2017340141
 GameObject:
   m_ObjectHideFlags: 0
@@ -1693,6 +1778,7 @@ GameObject:
   - component: {fileID: 2018236218}
   - component: {fileID: 2019202554}
   - component: {fileID: 2021232028}
+  - component: {fileID: 2021133115}
   m_Layer: 3
   m_Name: Staircase
   m_TagString: Untagged
@@ -1700,6 +1786,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!54 &2021133115
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2021133114}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!64 &2021232028
 MeshCollider:
   m_ObjectHideFlags: 0

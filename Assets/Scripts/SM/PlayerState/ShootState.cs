@@ -24,10 +24,6 @@ public class ShootState : BaseState
             playerController.animator.SetTrigger("shoot");
             Shoot();
         }
-        /*        if(!PlayerController.Instance.input.shoot)
-                {
-                    stateMachine.ChangeState(sm.idleState);
-                }*/
     }
     public override void Exit()
     {

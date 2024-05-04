@@ -37,7 +37,7 @@ public class BulletController : MonoBehaviour
         bulletHole.transform.rotation = Quaternion.LookRotation(contactPoint.normal);
         bulletHole.SetActive(true);
         StartCoroutine(DestroyBulletHoleAfterTime(bulletHole));*/
-        GameObject bulletHole = Instantiate(bulletHolePrefab, contactPoint.point + contactPoint.normal * 0.0001f,
+        GameObject bulletHole = Instantiate(bulletHolePrefab, contactPoint.point + contactPoint.normal * 0.01f,
                                 Quaternion.LookRotation(contactPoint.normal));
         Destroy(bulletHole, 5f);
         PoolManager.Instance.bulletPool.ReturnObject(gameObject);
