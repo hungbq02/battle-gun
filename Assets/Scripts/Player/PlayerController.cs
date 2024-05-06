@@ -86,10 +86,7 @@ public class PlayerController : MonoBehaviour
 
 
     [Header("Player Shoot")]
-    public GameObject bulletPrefab;
-    public GameObject parentBullet;
-    public Transform barrelTransform;
-    public float bulletHitMissDistance = 25f;
+    public RaycastWeapon weapon;
 
 
 
@@ -104,11 +101,6 @@ public class PlayerController : MonoBehaviour
 
     protected void Awake()
     {
-        // get a reference to our main camera
-        /*        if (_mainCamera == null)
-                {
-                    _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-                }*/
         MoveXAnimationParameterID = Animator.StringToHash("MoveX");
         MoveZAnimationParameterID = Animator.StringToHash("MoveZ");
 
@@ -121,6 +113,7 @@ public class PlayerController : MonoBehaviour
         input = GetComponent<PlayerInputHandler>();
         _playerInput = GetComponent<PlayerInput>();
         animator = GetComponentInChildren<Animator>();
+        weapon = GetComponentInChildren<RaycastWeapon>();
         cameraTransform = Camera.main.transform;
 
 
@@ -138,11 +131,6 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-        /*  GroundedCheck();
-         ApplyGravity();
-          RotateTowardsCamera();
-          controller.Move(_direction * MoveSpeed * Time.deltaTime);*/
-
         movementSM.currentState.HandleInput();
         movementSM.currentState.UpdateLogic();
         RotateTowardsCamera();
