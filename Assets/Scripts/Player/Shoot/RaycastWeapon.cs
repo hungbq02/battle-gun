@@ -22,7 +22,7 @@ public class RaycastWeapon : MonoBehaviour
     public void StartShooting()
     {
         isShooting = true;
-        //  muzzleFlash.Emit(1);
+        muzzleFlash.Emit(1);
         if (!canShoot) return;
 
 

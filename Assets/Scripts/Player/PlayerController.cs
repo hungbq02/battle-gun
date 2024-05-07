@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public float gravity = -9.81f;
     [HideInInspector] public Vector3 playerVelocity;
     [SerializeField] float gravityMultiplier = 2f;
-    public float airControl = 0.5f;
+    public float airControl;
 
     [HideInInspector] public int MoveXAnimationParameterID;
     [HideInInspector] public int MoveZAnimationParameterID;

@@ -12,7 +12,6 @@ public class LandingState : BaseState
 
     public override void Enter()
     {
-        base.Enter();
         timePassed = 0f;
         playerController.animator.SetTrigger("land");
         landingTime = 0.15f;
@@ -20,7 +19,6 @@ public class LandingState : BaseState
 
     public override void UpdateLogic()
     {
-        base.UpdateLogic();
         if (timePassed > landingTime)
         {
             playerController.animator.SetTrigger("move");

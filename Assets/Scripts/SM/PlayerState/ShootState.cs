@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class ShootState : BaseState
@@ -11,7 +10,12 @@ public class ShootState : BaseState
 
     public override void Enter()
     {
+        playerController.MoveSpeed = 3f;
         base.Enter();
+    }
+    public override void HandleInput()
+    {
+        base.HandleInput();
     }
     public override void UpdateLogic()
     {
@@ -20,9 +24,9 @@ public class ShootState : BaseState
         if (playerController.input.shoot)
         {
             playerController.animator.SetTrigger("shoot");
-            //     Shoot();
             playerController.weapon.StartShooting();
             playerController.input.shoot = false;
+            playerController.movementSM.ChangeState(playerController.standingState);
         }
     }
     public override void Exit()

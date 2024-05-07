@@ -33,9 +33,6 @@ public class JumpState : BaseState
     }
     public override void UpdateLogic()
     {
-        //  Debug.Log("= "+gravityVelocity);
-        base.UpdateLogic();
-
         if (isGrounded)
         {
             stateMachine.ChangeState(playerController.landingState);
