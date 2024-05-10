@@ -22,6 +22,13 @@ public class LandingState : BaseState
         if (timePassed > landingTime)
         {
             playerController.animator.SetTrigger("move");
+            //standing + jump -> standing
+            //ahooting + jump -> shooting
+            if (playerController.weapon.isShooting)
+            {
+                stateMachine.ChangeState(playerController.shootState);
+                return;
+            }
             stateMachine.ChangeState(playerController.standingState);
         }
         timePassed += Time.deltaTime;

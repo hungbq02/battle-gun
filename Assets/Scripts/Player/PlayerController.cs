@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Header("Player")]
-    public float MoveSpeed;
+    public float MoveSpeed = 4.5f;
     public float jumpHeight;
 
 
@@ -201,6 +201,10 @@ public class PlayerController : MonoBehaviour
             weapon.StartShooting();
         }
 
+    }
+    public void SetAnimLayer(string nameLayer, float weight)
+    {
+        animator.SetLayerWeight(animator.GetLayerIndex(nameLayer), weight);
     }
 
     /*    private void OnDrawGizmosSelected()

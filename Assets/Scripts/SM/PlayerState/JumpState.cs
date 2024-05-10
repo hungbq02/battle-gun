@@ -55,7 +55,6 @@ public class JumpState : BaseState
 
     public override void Exit()
     {
-        base.Exit();
         playerController.input.jump = false;
     }
 

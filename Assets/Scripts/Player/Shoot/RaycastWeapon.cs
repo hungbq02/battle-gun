@@ -6,6 +6,7 @@ public class RaycastWeapon : MonoBehaviour
     //tia lua khi ban
     public bool isShooting = false;
     public bool canShoot = true;
+    public float timeDelayPistol;
     public ParticleSystem muzzleFlash;
 
     public GameObject bulletPrefab;
@@ -16,10 +17,10 @@ public class RaycastWeapon : MonoBehaviour
     Ray ray;
     RaycastHit hit;
 
-    private void Update()
+/*    private void Update()
     {
         Debug.Log(isShooting);
-    }
+    }*/
     public void StartShooting()
     {
         isShooting = true;
@@ -61,7 +62,7 @@ public class RaycastWeapon : MonoBehaviour
     IEnumerator CanShoot()
     {
         canShoot = false;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(timeDelayPistol);
         canShoot = true;
     }
 }

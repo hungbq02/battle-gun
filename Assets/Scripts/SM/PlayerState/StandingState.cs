@@ -32,8 +32,6 @@ public class StandingState : BaseState
 
     }
 
-
-
     public override void HandleInput()
     {
         base.HandleInput();

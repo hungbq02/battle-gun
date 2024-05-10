@@ -382,6 +382,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isShooting: 0
   canShoot: 1
+  timeDelayPistol: 0.3
   muzzleFlash: {fileID: 198234347727307933}
   bulletPrefab: {fileID: 152568803450533048, guid: eccd5cc5d401bcd4eaaf92ed1614c91f, type: 3}
   barrelTransform: {fileID: 2105307482}
@@ -13012,11 +13013,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e54e5a728a9234ab24fcf1460ed8a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 4.5
-  jumpHeight: 3
+  MoveSpeed: 6
+  jumpHeight: 5
   gravity: -9.81
   playerVelocity: {x: 0, y: 0, z: 0}
-  gravityMultiplier: 2
+  gravityMultiplier: 3
   airControl: 0.5
   MoveXAnimationParameterID: 0
   MoveZAnimationParameterID: 0
