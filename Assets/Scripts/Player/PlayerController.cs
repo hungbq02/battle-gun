@@ -192,7 +192,16 @@ public class PlayerController : MonoBehaviour
         if (lfAngle > 360f) lfAngle -= 360f;
         return Mathf.Clamp(lfAngle, lfMin, lfMax);
     }
+    public void FireBullet()
+    {
+        //Called when the player's animation changes from idleState to shootState.
+        if (!weapon.isShooting)
+        {
+            animator.Play("ShootSingleshot", 1, 0f);
+            weapon.StartShooting();
+        }
 
+    }
 
     /*    private void OnDrawGizmosSelected()
         {

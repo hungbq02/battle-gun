@@ -5,7 +5,7 @@ public class RaycastWeapon : MonoBehaviour
 {
     //tia lua khi ban
     public bool isShooting = false;
-    private bool canShoot = true;
+    public bool canShoot = true;
     public ParticleSystem muzzleFlash;
 
     public GameObject bulletPrefab;
@@ -18,13 +18,13 @@ public class RaycastWeapon : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(isShooting);
     }
     public void StartShooting()
     {
         isShooting = true;
         muzzleFlash.Emit(1);
         if (!canShoot) return;
-
 
         ray.origin = barrelTransform.position;
         ray.direction = targetTransform.position - barrelTransform.position;

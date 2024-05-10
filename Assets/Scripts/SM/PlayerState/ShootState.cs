@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class ShootState : BaseState
 {
     public ShootState(PlayerController _playerController, StateMachine _stateMachine) : base(_playerController, _stateMachine)
@@ -23,8 +21,12 @@ public class ShootState : BaseState
 
         if (playerController.input.shoot)
         {
-            playerController.animator.SetTrigger("shoot");
-            playerController.weapon.StartShooting();
+            //  playerController.input.aim = true;
+            if (playerController.weapon.canShoot)
+            {
+                playerController.animator.Play("ShootSingleshot", 1, 0f);
+                playerController.weapon.StartShooting();
+            }
             playerController.input.shoot = false;
             playerController.movementSM.ChangeState(playerController.standingState);
         }

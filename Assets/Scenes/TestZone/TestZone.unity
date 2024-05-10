@@ -381,6 +381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isShooting: 0
+  canShoot: 1
   muzzleFlash: {fileID: 198234347727307933}
   bulletPrefab: {fileID: 152568803450533048, guid: eccd5cc5d401bcd4eaaf92ed1614c91f, type: 3}
   barrelTransform: {fileID: 2105307482}
