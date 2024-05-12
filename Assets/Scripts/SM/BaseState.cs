@@ -40,7 +40,6 @@ public class BaseState
         {
             gravityVelocity.y = -1.0f;
         }
-        Debug.Log(playerSpeed);
         playerController.controller.Move(velocity * Time.deltaTime * playerSpeed + gravityVelocity * Time.deltaTime);
     }
     public virtual void UpdatePhysics() { }

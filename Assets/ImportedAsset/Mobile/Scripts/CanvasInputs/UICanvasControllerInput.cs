@@ -24,6 +24,10 @@ public class UICanvasControllerInput : MonoBehaviour
     {
         input.ShootInput(virtualShootState);
     }
+    public void VirtualAimInput(bool virtualAimState)
+    {
+        input.AimInput(virtualAimState);
+    }
 
 }
 

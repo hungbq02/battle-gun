@@ -58,6 +58,10 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+
+    public float sensitivity = 1f;
+
+
     #region Variables: Player Control
     private PlayerInput _playerInput;
     [HideInInspector] public Animator animator;
@@ -163,8 +167,8 @@ public class PlayerController : MonoBehaviour
             //Don't multiply mouse input by Time.deltaTime;
             float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
 
-            _cinemachineTargetYaw += input.look.x * deltaTimeMultiplier;
-            _cinemachineTargetPitch += input.look.y * deltaTimeMultiplier;
+            _cinemachineTargetYaw += input.look.x * deltaTimeMultiplier * sensitivity;
+            _cinemachineTargetPitch += input.look.y * deltaTimeMultiplier * sensitivity ;
         }
 
         // clamp our rotations so our values are limited 360 degrees
@@ -202,6 +206,10 @@ public class PlayerController : MonoBehaviour
         }
 
     }
+    public void SetSensitivity(float newSensitivity)
+    {
+        sensitivity = newSensitivity;
+    }    
     public void SetAnimLayer(string nameLayer, float weight)
     {
         animator.SetLayerWeight(animator.GetLayerIndex(nameLayer), weight);

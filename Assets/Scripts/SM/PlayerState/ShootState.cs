@@ -47,7 +47,7 @@ public class ShootState : BaseState
                 playerController.animator.Play("ShootSingleshot", 1, 0f);
                 playerController.weapon.StartShooting();
             }
-            playerController.input.shoot = false;
+           // playerController.input.shoot = false;
            // playerController.movementSM.ChangeState(playerController.standingState);
         }
         if (playerController.input.jump)

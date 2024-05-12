@@ -7,23 +7,37 @@ public class SwitchVCam : MonoBehaviour
     public GameObject thirdPersonCamera;
     public GameObject aimCamera;
 
+    [SerializeField] private float normalSensitivity;
+    [SerializeField] private float aimSensitivity;
+    private PlayerController playerController;
+
+
+
     public bool isAiming = false;
     private void Start()
     {
         input = GetComponent<PlayerInputHandler>();
+        playerController = GetComponent<PlayerController>();
     }
     private void Update()
     {
         if (input.aim)
         {
-            isAiming = !isAiming;
+            /*isAiming = !isAiming;
             input.aim = false;
             aimCamera.SetActive(isAiming);
-            thirdPersonCamera.SetActive(!isAiming);
+            thirdPersonCamera.SetActive(!isAiming);*/
+            aimCamera.SetActive(true);
+            thirdPersonCamera.SetActive(false);
 
-            //Allow time for the camera to blend before enabling the UI
-            //  StartCoroutine(ShowReticle());
-            //   aimReticle.SetActive(false);
+            playerController.SetSensitivity(aimSensitivity);
         }
+        else
+        {
+            aimCamera.SetActive(false);
+            thirdPersonCamera.SetActive(true);
+
+            playerController.SetSensitivity(normalSensitivity);
+        }    
     }
 }
