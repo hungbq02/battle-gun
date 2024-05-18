@@ -5,12 +5,9 @@ public class ShootState : BaseState
     int moveXParameter;
     int moveZParameter;
 
-    private float smoothMoveX;
-    private float smoothMoveZ;
-    float velocityX;
-    float velocityZ;
 
-    private float smoothTime = 0.2f;
+    private float transitionLayerSpeed = 14f;
+
     public ShootState(PlayerController _playerController, StateMachine _stateMachine) : base(_playerController, _stateMachine)
     {
         playerController = _playerController;
@@ -24,15 +21,14 @@ public class ShootState : BaseState
         base.Enter();
         moveXParameter = playerController.MoveXAnimationParameterID;
         moveZParameter = playerController.MoveZAnimationParameterID;
+
     }
     public override void HandleInput()
     {
         base.HandleInput();
 
-        smoothMoveX = Mathf.SmoothDamp(smoothMoveX, playerController.input.move.x, ref velocityX, smoothTime);
-        smoothMoveZ = Mathf.SmoothDamp(smoothMoveZ, playerController.input.move.y, ref velocityZ, smoothTime);
-        playerController.animator.SetFloat(moveXParameter, smoothMoveX);
-        playerController.animator.SetFloat(moveZParameter, smoothMoveZ);
+        playerController.animator.SetFloat(moveXParameter, playerController.input.move.x);
+        playerController.animator.SetFloat(moveZParameter, playerController.input.move.y);
     }
     public override void UpdateLogic()
     {
@@ -40,20 +36,33 @@ public class ShootState : BaseState
 
         if (playerController.input.shoot)
         {
-            //  playerController.input.aim = true;
-            playerController.SetAnimLayer("aiming", 1f);
             if (playerController.weapon.canShoot)
             {
-                playerController.animator.Play("ShootSingleshot", 1, 0f);
+                playerController.SetAnimLayer("aiming", 1f);
+                playerController.animator.CrossFade("ShootSingleshot", 0.1f, 1, 0f);
                 playerController.weapon.StartShooting();
             }
-           // playerController.input.shoot = false;
-           // playerController.movementSM.ChangeState(playerController.standingState);
         }
-        if (playerController.input.jump)
+        else
         {
-            stateMachine.ChangeState(playerController.jumpingState);
+            playerController.weapon.StopShooting();
+            //Get layer shooting
+            float currentLayerWeight = playerController.animator.GetLayerWeight(1);
+
+            //Smooth change layer
+            playerController.SetAnimLayer("aiming", Mathf.Lerp(currentLayerWeight, 0f, Time.deltaTime * transitionLayerSpeed));
+
+            if (currentLayerWeight < 0.001f)
+            {
+                playerController.movementSM.ChangeState(playerController.standingState);
+            }
         }
+
+        /*        //Change state
+                if (playerController.input.jump)
+                {
+                    stateMachine.ChangeState(playerController.jumpingState);
+                }*/
     }
     public override void Exit()
     {

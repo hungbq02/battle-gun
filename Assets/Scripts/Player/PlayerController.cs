@@ -93,7 +93,6 @@ public class PlayerController : MonoBehaviour
     public RaycastWeapon weapon;
 
 
-
     private bool IsCurrentDeviceMouse
     {
         get
@@ -168,7 +167,7 @@ public class PlayerController : MonoBehaviour
             float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
 
             _cinemachineTargetYaw += input.look.x * deltaTimeMultiplier * sensitivity;
-            _cinemachineTargetPitch += input.look.y * deltaTimeMultiplier * sensitivity ;
+            _cinemachineTargetPitch += input.look.y * deltaTimeMultiplier * sensitivity;
         }
 
         // clamp our rotations so our values are limited 360 degrees
@@ -196,20 +195,16 @@ public class PlayerController : MonoBehaviour
         if (lfAngle > 360f) lfAngle -= 360f;
         return Mathf.Clamp(lfAngle, lfMin, lfMax);
     }
-    public void FireBullet()
+    public bool bulletOut = false;
+    /*public void FireBullet()
     {
-        //Called when the player's animation changes from idleState to shootState.
-        if (!weapon.isShooting)
-        {
-            animator.Play("ShootSingleshot", 1, 0f);
-            weapon.StartShooting();
-        }
+        //weapon.StartShooting();
+    }*/
 
-    }
     public void SetSensitivity(float newSensitivity)
     {
         sensitivity = newSensitivity;
-    }    
+    }
     public void SetAnimLayer(string nameLayer, float weight)
     {
         animator.SetLayerWeight(animator.GetLayerIndex(nameLayer), weight);

@@ -24,9 +24,9 @@ public class RaycastWeapon : MonoBehaviour
     public void StartShooting()
     {
         isShooting = true;
-        muzzleFlash.Emit(1);
         if (!canShoot) return;
 
+        muzzleFlash.Emit(1);
         ray.origin = barrelTransform.position;
         ray.direction = targetTransform.position - barrelTransform.position;
 

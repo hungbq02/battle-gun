@@ -23,10 +23,6 @@ public class SwitchVCam : MonoBehaviour
     {
         if (input.aim)
         {
-            /*isAiming = !isAiming;
-            input.aim = false;
-            aimCamera.SetActive(isAiming);
-            thirdPersonCamera.SetActive(!isAiming);*/
             aimCamera.SetActive(true);
             thirdPersonCamera.SetActive(false);
 

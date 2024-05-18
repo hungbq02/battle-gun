@@ -8,12 +8,6 @@ public class StandingState : BaseState
     int moveXParameter;
     int moveZParameter;
 
-    private float smoothMoveX;
-    private float smoothMoveZ;
-    float velocityX;
-    float velocityZ;
-
-    private float smoothTime = 0.2f;
     public StandingState(PlayerController _playerController, StateMachine _stateMachine) : base( _playerController, _stateMachine)
     {
         playerController = _playerController;
@@ -46,10 +40,8 @@ public class StandingState : BaseState
         }
 
         //Anim
-        smoothMoveX = Mathf.SmoothDamp(smoothMoveX, playerController.input.move.x, ref velocityX, smoothTime);
-        smoothMoveZ = Mathf.SmoothDamp(smoothMoveZ, playerController.input.move.y, ref velocityZ, smoothTime);
-        playerController.animator.SetFloat(moveXParameter, smoothMoveX);
-        playerController.animator.SetFloat(moveZParameter, smoothMoveZ);
+        playerController.animator.SetFloat(moveXParameter, playerController.input.move.x);
+        playerController.animator.SetFloat(moveZParameter, playerController.input.move.y);
 
     }
 
