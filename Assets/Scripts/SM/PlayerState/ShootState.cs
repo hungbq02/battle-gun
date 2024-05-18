@@ -58,11 +58,11 @@ public class ShootState : BaseState
             }
         }
 
-        /*        //Change state
-                if (playerController.input.jump)
-                {
-                    stateMachine.ChangeState(playerController.jumpingState);
-                }*/
+        //Change state
+        if (playerController.input.jump)
+        {
+            stateMachine.ChangeState(playerController.jumpingState);
+        }
     }
     public override void Exit()
     {

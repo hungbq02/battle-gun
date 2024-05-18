@@ -21,6 +21,9 @@ public class StandingState : BaseState
         jump = false;
         shoot = false;
 
+        playerController.MoveSpeed = 6f;
+        playerController.jumpHeight = 5f;
+
         moveXParameter = playerController.MoveXAnimationParameterID;
         moveZParameter = playerController.MoveZAnimationParameterID;
 
