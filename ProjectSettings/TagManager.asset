@@ -8,6 +8,7 @@ TagManager:
   - BulletPool
   - BulletHolePool
   - WayPoints
+  - Enermy
   layers:
   - Default
   - TransparentFX

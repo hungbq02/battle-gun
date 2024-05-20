@@ -24,11 +24,12 @@ public class BaseState
     }
     public virtual void HandleInput()
     {
-        velocity = new Vector3(playerController.input.move.x, 0.0f, playerController.input.move.y).normalized;
+        Vector3 input = new Vector3(playerController.input.move.x, 0.0f, playerController.input.move.y);
+        velocity = input.normalized;
         if (velocity.sqrMagnitude == 0f) return;
         float targetAngle = Mathf.Atan2(velocity.x, velocity.z) * Mathf.Rad2Deg + playerController.cameraTransform.eulerAngles.y;
 
-        moveDir = (Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward).normalized;
+        moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
         velocity = moveDir;
     }
     public virtual void UpdateLogic()

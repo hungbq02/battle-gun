@@ -40,7 +40,7 @@ public class RaycastWeapon : MonoBehaviour
         }
         else
         {
-           // bulletController.target = cameraTransform.position + cameraTransform.forward * bulletHitMissDistance;
+            bulletController.target = Camera.main.transform.position + Camera.main.transform.forward * bulletHitMissDistance;
             bulletController.hit = false;
         }
         canShoot = false;
