@@ -32,7 +32,6 @@ public class BulletController : MonoBehaviour
         ContactPoint contactPoint = collision.contacts[0];
         if (collision.gameObject.tag != "Enermy")
         {
-            Debug.Log("Hit obstacle");
             GameObject bulletHole = Instantiate(bulletHolePrefab, contactPoint.point + contactPoint.normal * 0.01f,
                                     Quaternion.LookRotation(contactPoint.normal));
             Destroy(bulletHole, 5f);
@@ -40,6 +39,10 @@ public class BulletController : MonoBehaviour
         else
         {
             collision.gameObject.GetComponent<Enermy>().TakeDame(20);
+            HealthSystemForDummies healthSystem = collision.gameObject.GetComponent<HealthSystemForDummies>();
+            // Damage enemy for -100 units
+            healthSystem.AddToCurrentHealth(-100);
+
         }
 
         PoolManager.Instance.bulletPool.ReturnObject(gameObject);

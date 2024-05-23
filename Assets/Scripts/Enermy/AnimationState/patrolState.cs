@@ -19,7 +19,6 @@ public class patrolState : StateMachineBehaviour
         GameObject obj= GameObject.FindGameObjectWithTag("WayPoints");
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
-
         foreach (Transform t in obj.transform)
         {
             wayPoints.Add(t);
@@ -31,11 +30,13 @@ public class patrolState : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        timer += Time.deltaTime;
+
         if(agent.remainingDistance <= agent.stoppingDistance)
         {
             agent.SetDestination(wayPoints[Random.Range(0, wayPoints.Count)].position);
         }
-        timer += Time.deltaTime;
+
         if(timer > 6)
         {
             animator.SetBool("isPatrolling", false);

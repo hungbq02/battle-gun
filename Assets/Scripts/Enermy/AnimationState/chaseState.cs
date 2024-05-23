@@ -6,6 +6,7 @@ public class chaseState : StateMachineBehaviour
 {
     Transform player;
     NavMeshAgent agent;
+    float timeChase;
 
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
@@ -14,15 +15,19 @@ public class chaseState : StateMachineBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         agent = animator.GetComponent<NavMeshAgent>();
         agent.speed = 5f;
+        timeChase = 0;
+        animator.transform.LookAt(player);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        timeChase += Time.deltaTime;
 
         agent.SetDestination(player.position);
+
         float distance = Vector3.Distance(player.position, animator.transform.position);
-        if (distance > 12)
+        if (distance > 12 && timeChase < 10f)
         {
             animator.SetBool("isChasing", true);
         }       
