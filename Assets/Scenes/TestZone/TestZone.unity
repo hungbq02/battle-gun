@@ -2306,19 +2306,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &1968346966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8459761256304387303}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50b1459e5e65bf2419e5dd67c82611b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 3195690202018077026}
 --- !u!1 &2017340141
 GameObject:
   m_ObjectHideFlags: 0
@@ -13519,7 +13506,7 @@ MonoBehaviour:
   aim: 0
   shoot: 0
   analogMovement: 0
-  cursorLocked: 0
+  cursorLocked: 1
   cursorInputForLook: 1
 --- !u!1 &2013382157940457419
 GameObject:
@@ -14798,20 +14785,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &4185705908389034288
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8459761256304387303}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac1fd0b714982a24ba784c3ba7a9ad5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isBillboarded: 1
-  shouldShowHealthNumbers: 1
 --- !u!1 &4222126598601734069
 GameObject:
   m_ObjectHideFlags: 0
@@ -15193,11 +15166,10 @@ GameObject:
   - component: {fileID: 7075645645955445509}
   - component: {fileID: 7281648264839769219}
   - component: {fileID: 5309710950665108620}
-  - component: {fileID: 5309710950665108619}
   - component: {fileID: 5309710950665108621}
-  - component: {fileID: 5309710950665108622}
+  - component: {fileID: 5309710950665108619}
   m_Layer: 0
-  m_Name: Rake_A
+  m_Name: Enermy_Rake_A
   m_TagString: Enermy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15212,10 +15184,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 5309710950665108618}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c52c9f672909714fa0efb893c09f92f, type: 3}
+  m_Script: {fileID: 11500000, guid: 580c4733a18388442b0feb5ce667120c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 100
+  maxHealth: 100
+  isAlive: 0
+  healthBar: {fileID: 3120546059533934447}
+  damagedHealthBar: {fileID: 3120546059533934447}
+  healthCounter: {fileID: 7124862089501662933}
+  damagedHealthBarSpeed: 0
   animator: {fileID: 7075645645955445509}
 --- !u!54 &5309710950665108620
 Rigidbody:
@@ -15247,46 +15224,6 @@ CapsuleCollider:
   m_Height: 2.1810193
   m_Direction: 1
   m_Center: {x: 0, y: 1.0806907, z: 0}
---- !u!114 &5309710950665108622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5309710950665108618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 838309562495a0244b14dc08b90778c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  IsAlive: 1
-  CurrentHealth: 1000
-  MaximumHealth: 1000
-  HasAnimationWhenHealthChanges: 1
-  AnimationDuration: 0.1
-  OnCurrentHealthChanged:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5309710950665108619}
-        m_TargetAssemblyTypeName: Enermy, Assembly-CSharp
-        m_MethodName: TakeDame
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnIsAliveChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  OnMaximumHealthChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  HealthBarPrefabToSpawn: {fileID: 8459761256327841958, guid: 8d33425d7a2a5394ba6dc22e7de6306c, type: 3}
 --- !u!4 &5310900901083365799
 Transform:
   m_ObjectHideFlags: 0
@@ -19184,8 +19121,7 @@ GameObject:
   - component: {fileID: 8459761256304387298}
   - component: {fileID: 8459761256304387297}
   - component: {fileID: 8459761256304387296}
-  - component: {fileID: 4185705908389034288}
-  - component: {fileID: 1968346966}
+  - component: {fileID: 8459761256304387304}
   m_Layer: 5
   m_Name: HealthBarCanvas
   m_TagString: Untagged
@@ -19193,6 +19129,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8459761256304387304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8459761256304387303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e99d94b9d52b22349851b767eabeb5ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 3195690202018077026}
 --- !u!4 &8594265992190523530
 Transform:
   m_ObjectHideFlags: 0

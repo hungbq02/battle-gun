@@ -38,10 +38,7 @@ public class BulletController : MonoBehaviour
         }
         else
         {
-            collision.gameObject.GetComponent<Enermy>().TakeDame(20);
-            HealthSystemForDummies healthSystem = collision.gameObject.GetComponent<HealthSystemForDummies>();
-            // Damage enemy for -100 units
-            healthSystem.AddToCurrentHealth(-100);
+            collision.gameObject.GetComponent<HealthSystem>().TakeDamage(20);
 
         }
 
