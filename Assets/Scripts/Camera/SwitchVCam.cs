@@ -27,6 +27,8 @@ public class SwitchVCam : MonoBehaviour
             thirdPersonCamera.SetActive(false);
 
             playerController.SetSensitivity(aimSensitivity);
+          //  playerController.SetAnimLayer("aiming", 1f);
+
         }
         else
         {
@@ -34,6 +36,7 @@ public class SwitchVCam : MonoBehaviour
             thirdPersonCamera.SetActive(true);
 
             playerController.SetSensitivity(normalSensitivity);
+
         }    
     }
 }
