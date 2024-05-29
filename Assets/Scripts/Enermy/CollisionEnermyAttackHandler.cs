@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,9 +11,10 @@ public class CollisionEnermyAttackHandler : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && other is BoxCollider)
+        if (other.CompareTag("Player"))
         {
-            Debug.Log("HIT PLAYER");
+            other.gameObject.GetComponent<HealthSystem>().TakeDamage(50);
+            
         }
     }
 

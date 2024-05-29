@@ -71,7 +71,17 @@ public class HealthSystem : MonoBehaviour
             isAlive = false;
             animator.SetTrigger("die");
             //Removed collision component when enermy die
-            GetComponent<CapsuleCollider>().enabled = false;
+            CapsuleCollider collider = GetComponent<CapsuleCollider>();
+            CharacterController cc = GetComponent<CharacterController>();
+
+            if (collider != null)
+            {
+                collider.enabled = false;
+            }
+            if (cc != null)
+            {
+                cc.enabled = false;
+            }
         }
         else
         {
