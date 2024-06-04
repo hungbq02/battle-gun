@@ -77,6 +77,7 @@ public class HealthSystem : MonoBehaviour
             if (collider != null)
             {
                 collider.enabled = false;
+                Invoke("DestroyEnermy", 3f);
             }
             if (cc != null)
             {
@@ -107,4 +108,8 @@ public class HealthSystem : MonoBehaviour
         }
         UpdateHealthBar();
     }
+    void DestroyEnermy()
+    {
+        gameObject.SetActive(false);
+    }    
 }

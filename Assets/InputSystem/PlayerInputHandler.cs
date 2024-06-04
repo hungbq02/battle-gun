@@ -11,6 +11,8 @@ public class PlayerInputHandler : MonoBehaviour
     public bool jump;
     public bool aim;
     public bool shoot;
+    public bool reload;
+
 
     [Header("Movement Settings")]
     public bool analogMovement;
@@ -44,6 +46,10 @@ public class PlayerInputHandler : MonoBehaviour
     {
         ShootInput(value.isPressed);
     }
+    public void OnReload(InputValue value)
+    {
+        ReloadInput(value.isPressed);
+    }
 
     public void MoveInput(Vector2 newMoveDirection)
     {
@@ -66,6 +72,10 @@ public class PlayerInputHandler : MonoBehaviour
     public void ShootInput(bool newShootInput)
     {
         shoot = newShootInput;
+    }    
+    public void ReloadInput(bool newReloadInput)
+    {
+        reload = newReloadInput;
     }
 
 

@@ -9,7 +9,7 @@ public class RaycastWeapon : MonoBehaviour
     public float timeDelayPistol;
     public ParticleSystem muzzleFlash;
 
-    public GameObject bulletPrefab;
+  //  public GameObject bulletPrefab;
     public Transform barrelTransform;
     public Transform targetTransform;
     public float bulletHitMissDistance = 25f;

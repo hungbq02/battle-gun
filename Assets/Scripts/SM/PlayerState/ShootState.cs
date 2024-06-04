@@ -38,7 +38,7 @@ public class ShootState : BaseState
         {
             if (playerController.weapon.canShoot)
             {
-                playerController.SetAnimLayer("aiming", 1f);
+                playerController.SetAnimLayer("UpperBodyLayer", 1f);
                 playerController.animator.CrossFade("ShootSingleshot", 0.1f, 1, 0f);
                 playerController.weapon.StartShooting();
             }
@@ -50,7 +50,7 @@ public class ShootState : BaseState
             float currentLayerWeight = playerController.animator.GetLayerWeight(1);
 
             //Smooth change layer
-            playerController.SetAnimLayer("aiming", Mathf.Lerp(currentLayerWeight, 0f, Time.deltaTime * transitionLayerSpeed));
+            playerController.SetAnimLayer("UpperBodyLayer", Mathf.Lerp(currentLayerWeight, 0f, Time.deltaTime * transitionLayerSpeed));
 
             if (currentLayerWeight < 0.001f)
             {
