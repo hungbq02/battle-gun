@@ -6,14 +6,15 @@ public class BulletController : MonoBehaviour
     [SerializeField] private GameObject bulletHolePrefab;
     [SerializeField] private float speed = 50f;
     private float timeToDestroy = 3f;
+    [SerializeField] private int damage;
 
     public Vector3 target { get; set; }
     public bool hit { get; set; }
 
-    private void OnEnable()
+/*    private void OnEnable()
     {
         StartCoroutine(DestroyBulletAfterTime());
-    }
+    }*/
 
     private void Update()
     {
@@ -38,7 +39,7 @@ public class BulletController : MonoBehaviour
         }
         else
         {
-            collision.gameObject.GetComponent<HealthSystem>().TakeDamage(20);
+            collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage);
 
         }
 
