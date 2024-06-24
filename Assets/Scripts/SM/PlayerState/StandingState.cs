@@ -4,6 +4,8 @@ public class StandingState : BaseState
 {
     bool jump;
     bool shoot;
+    bool reload;
+
 
     int moveXParameter;
     int moveZParameter;
@@ -17,11 +19,11 @@ public class StandingState : BaseState
     public override void Enter()
     {
         base.Enter();
-
         jump = false;
         shoot = false;
 
-        playerController.MoveSpeed = 6f;
+
+        playerController.moveSpeed = 6f;
         playerController.jumpHeight = 5f;
 
         moveXParameter = playerController.MoveXAnimationParameterID;
@@ -41,7 +43,10 @@ public class StandingState : BaseState
         {
             shoot = true;
         }
-
+        if (playerController.input.reload)
+        {
+            reload = true;
+        }
         //Anim
         playerController.animator.SetFloat(moveXParameter, playerController.input.move.x);
         playerController.animator.SetFloat(moveZParameter, playerController.input.move.y);
@@ -59,6 +64,10 @@ public class StandingState : BaseState
         if (shoot)
         {
             stateMachine.ChangeState(playerController.shootState);
+        }
+        if(reload )
+        {
+
         }
     }
 

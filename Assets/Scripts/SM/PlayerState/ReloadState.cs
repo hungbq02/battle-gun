@@ -14,13 +14,12 @@ public class ReloadState : BaseState
     }
     public override void Enter()
     {
-        playerController.MoveSpeed = 3f;
+        playerController.moveSpeed = 3f;
         playerController.jumpHeight = 3f;
         base.Enter();
         moveXParameter = playerController.MoveXAnimationParameterID;
         moveZParameter = playerController.MoveZAnimationParameterID;
 
-        playerController.animator.CrossFade("Reloading", 0.1f, 1, 0f);
     }
     public override void HandleInput()
     {
@@ -32,6 +31,13 @@ public class ReloadState : BaseState
     public override void UpdateLogic()
     {
         base.UpdateLogic();
+        if(!playerController.weapon.isReloading)
+        {
+       //     playerController.SetAnimLayer("UpperBodyLayer", 0f);
+            stateMachine.ChangeState(playerController.standingState);
+
+        }
+
     }
     public override void Exit()
     {

@@ -7,7 +7,9 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Header("Player")]
-    public float MoveSpeed = 4.5f;
+    public float moveSpeed = 4.5f;
+    public float sprintSpeed = 6.5f;
+
     public float jumpHeight;
 
 
@@ -76,6 +78,8 @@ public class PlayerController : MonoBehaviour
     public JumpState jumpingState;
     public ShootState shootState;
     public LandingState landingState;
+    public ReloadState reloadState;
+
 
 
     // public JumpState jumpState;
@@ -125,6 +129,8 @@ public class PlayerController : MonoBehaviour
         jumpingState = new JumpState(this, movementSM);
         shootState = new ShootState(this, movementSM);
         landingState = new LandingState(this, movementSM);
+        reloadState = new ReloadState(this, movementSM);
+
 
 
         gravity *= gravityMultiplier;

@@ -1,8 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class WeaponSwiching : MonoBehaviour
 {
     public int selectedWeapon = 0;
+    public PlayerController playerController;
     private void Start()
     {
         SelectWeapon();
@@ -29,6 +30,8 @@ public class WeaponSwiching : MonoBehaviour
         if(previousSelectedWeapon != selectedWeapon)
         {
             SelectWeapon();
+            //Update component weapon
+            playerController.weapon = transform.GetChild(selectedWeapon).GetComponent<RaycastWeapon>();
         }    
     }
     private void SelectWeapon()
@@ -42,5 +45,6 @@ public class WeaponSwiching : MonoBehaviour
                 weapon.gameObject.SetActive(false);
             i++;
         }
+
     }
 }

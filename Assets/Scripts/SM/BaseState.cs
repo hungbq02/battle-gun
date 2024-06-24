@@ -10,7 +10,9 @@ public class BaseState
 
     float gravity;
     Vector3 moveDir = Vector3.zero;
-    float playerSpeed;
+    float moveSpeed;
+    float sprintSpeed;
+
     bool isGrounded;
     public BaseState(PlayerController playerController, StateMachine stateMachine)
     {
@@ -18,12 +20,15 @@ public class BaseState
         this.stateMachine = stateMachine;
     }
     public virtual void Enter(){
-        playerSpeed = playerController.MoveSpeed;
+        moveSpeed = playerController.moveSpeed;
+        sprintSpeed = playerController.sprintSpeed;
+
         isGrounded = playerController.isGrounded();
         gravity = playerController.gravity;
     }
     public virtual void HandleInput()
     {
+
         Vector3 input = new Vector3(playerController.input.move.x, 0.0f, playerController.input.move.y);
         velocity = input.normalized;
         if (velocity.sqrMagnitude == 0f) return;
@@ -34,6 +39,8 @@ public class BaseState
     }
     public virtual void UpdateLogic()
     {
+        float targetSpeed = playerController.input.sprint ? playerController.sprintSpeed : playerController.moveSpeed;
+
         gravityVelocity.y += gravity * Time.deltaTime;
         isGrounded = playerController.isGrounded();
 
@@ -41,7 +48,7 @@ public class BaseState
         {
             gravityVelocity.y = -1.0f;
         }
-        playerController.controller.Move(velocity * Time.deltaTime * playerSpeed + gravityVelocity * Time.deltaTime);
+        playerController.controller.Move(velocity * Time.deltaTime * targetSpeed + gravityVelocity * Time.deltaTime);
     }
     public virtual void UpdatePhysics() { }
     public virtual void Exit() { }

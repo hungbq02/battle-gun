@@ -22,7 +22,7 @@ public class JumpState : BaseState
         isGrounded = false;
         gravity = playerController.gravity;
         jumpHeight = playerController.jumpHeight;
-        playerSpeed = playerController.MoveSpeed;
+        playerSpeed = playerController.moveSpeed;
         gravityVelocity.y = 0;
 
         playerController.animator.SetFloat("MoveX", 0);

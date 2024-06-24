@@ -24,8 +24,14 @@ public class Pooler : MonoBehaviour
     public GameObject GetObject()
     {
         int totalFree = freeList.Count;
-        if (freeList.Count == 0 && !expandable) return null;
-        else if (freeList.Count == 0) GenerateNewObject();
+        /*if (freeList.Count == 0 && !expandable) return null;
+        else if (freeList.Count == 0) GenerateNewObject();*/
+
+        if (freeList.Count == 0)
+        {
+            if (!expandable) return null;
+            GenerateNewObject();
+        }
 
         GameObject g = freeList[totalFree - 1];
         freeList.RemoveAt(totalFree - 1);
@@ -35,7 +41,11 @@ public class Pooler : MonoBehaviour
 
     public void ReturnObject(GameObject obj)
     {
-        Debug.Assert(usedList.Contains(obj));
+        if (!usedList.Contains(obj))
+        {
+            Debug.LogWarning("Attempting to return an object that is not in the used list.");
+        }
+    //    Debug.Assert(usedList.Contains(obj));
         obj.SetActive(false);
         usedList.Remove(obj);
         freeList.Add(obj);

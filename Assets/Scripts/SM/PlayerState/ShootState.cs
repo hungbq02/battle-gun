@@ -16,8 +16,6 @@ public class ShootState : BaseState
 
     public override void Enter()
     {
-        playerController.MoveSpeed = 3f;
-        playerController.jumpHeight = 3f;
         base.Enter();
         moveXParameter = playerController.MoveXAnimationParameterID;
         moveZParameter = playerController.MoveZAnimationParameterID;
@@ -34,28 +32,37 @@ public class ShootState : BaseState
     {
         base.UpdateLogic();
 
-        if (playerController.input.shoot)
+        if (playerController.weapon.canShoot && !playerController.weapon.isReloading)
         {
-            if (playerController.weapon.canShoot)
+            if (playerController.input.shoot)
             {
+
                 playerController.SetAnimLayer("UpperBodyLayer", 1f);
                 playerController.animator.CrossFade("ShootSingleshot", 0.1f, 1, 0f);
                 playerController.weapon.StartShooting();
+
+            }
+            else
+            {
+                playerController.weapon.StopShooting();
+
+                //Get layer shooting
+                float currentLayerWeight = playerController.animator.GetLayerWeight(1);
+
+                //Smooth change layer
+                playerController.SetAnimLayer("UpperBodyLayer", Mathf.Lerp(currentLayerWeight, 0f, Time.deltaTime * transitionLayerSpeed));
+
+                if (currentLayerWeight < 0.001f)
+                {
+                    playerController.movementSM.ChangeState(playerController.standingState);
+                }
             }
         }
-        else
+
+        if (playerController.weapon.isReloading)
         {
-            playerController.weapon.StopShooting();
-            //Get layer shooting
-            float currentLayerWeight = playerController.animator.GetLayerWeight(1);
-
-            //Smooth change layer
-            playerController.SetAnimLayer("UpperBodyLayer", Mathf.Lerp(currentLayerWeight, 0f, Time.deltaTime * transitionLayerSpeed));
-
-            if (currentLayerWeight < 0.001f)
-            {
-                playerController.movementSM.ChangeState(playerController.standingState);
-            }
+            Debug.Log("RELOD");
+            stateMachine.ChangeState(playerController.reloadState);
         }
 
         //Change state
@@ -67,6 +74,7 @@ public class ShootState : BaseState
     public override void Exit()
     {
         base.Exit();
+        playerController.animator.Play("ShootSingleshot", -1, 0f);
     }
 
 }

@@ -12,6 +12,8 @@ public class PlayerInputHandler : MonoBehaviour
     public bool aim;
     public bool shoot;
     public bool reload;
+    public bool sprint;
+
 
 
     [Header("Movement Settings")]
@@ -50,6 +52,10 @@ public class PlayerInputHandler : MonoBehaviour
     {
         ReloadInput(value.isPressed);
     }
+    public void OnSprint(InputValue value)
+    {
+        SprintInput(value.isPressed);
+    }
 
     public void MoveInput(Vector2 newMoveDirection)
     {
@@ -76,6 +82,10 @@ public class PlayerInputHandler : MonoBehaviour
     public void ReloadInput(bool newReloadInput)
     {
         reload = newReloadInput;
+    }
+    public void SprintInput(bool newSprintState)
+    {
+        sprint = newSprintState;
     }
 
 

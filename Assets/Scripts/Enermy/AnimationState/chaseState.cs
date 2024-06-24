@@ -22,18 +22,22 @@ public class chaseState : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        timeChase += Time.deltaTime;
-
         agent.SetDestination(player.position);
 
         float distance = Vector3.Distance(player.position, animator.transform.position);
-        if (distance > 12 && timeChase < 10f)
+        Debug.Log("distance = " + distance);
+
+        //distance between player and enermy is
+        if (distance > 12 && timeChase > 10f)
         {
-            animator.SetBool("isChasing", true);
-        }     
+            animator.SetBool("isChasing", false);
+            Debug.Log("False ");
+        }
         else
         {
-            animator.SetBool("isPatrolling", true);
+            animator.SetBool("isChasing", true);
+            timeChase += Time.deltaTime;
+            Debug.Log("time = " + timeChase);
         }
 
         if (distance < 2.5)
