@@ -5,8 +5,10 @@ public class BulletController : MonoBehaviour
 {
     [SerializeField] private GameObject bulletHolePrefab;
     [SerializeField] private float speed = 50f;
-    private float timeToDestroy = 2f;
+    private float timeToDestroy = 0.5f;
     [SerializeField] private int damage;
+
+    public string bulletType;
 
     public Vector3 target { get; set; }
     public bool hit { get; set; }
@@ -33,8 +35,10 @@ public class BulletController : MonoBehaviour
         ContactPoint contactPoint = collision.contacts[0];
         if (collision.gameObject.tag != "Enermy")
         {
-            GameObject bulletHole = Instantiate(bulletHolePrefab, contactPoint.point + contactPoint.normal * 0.01f,
-                                    Quaternion.LookRotation(contactPoint.normal));
+            Debug.Log("Bullet collided with: " + collision.gameObject.name);
+            Quaternion bulletHoleRotation = Quaternion.LookRotation(contactPoint.normal);
+            GameObject bulletHole = Instantiate(bulletHolePrefab, contactPoint.point + contactPoint.normal * 0.01f, bulletHoleRotation) ;
+                                    
             Destroy(bulletHole, 5f);
         }
         else
@@ -56,12 +60,7 @@ public class BulletController : MonoBehaviour
     IEnumerator DestroyBulletAfterTime()
     {
         yield return new WaitForSeconds(timeToDestroy);
-        PoolManager.Instance.bulletPool.ReturnObject(gameObject);
+         PoolManager.Instance.bulletPool.ReturnObject(gameObject);
+
     }
-    /*    IEnumerator DestroyBulletHoleAfterTime(GameObject obj)
-        {
-            Debug.Log("COROUTINE");
-            yield return new WaitForSeconds(timeToDestroy);
-            PoolManager.Instance.bulletHolePool.ReturnObject(obj);
-        }  */
 }

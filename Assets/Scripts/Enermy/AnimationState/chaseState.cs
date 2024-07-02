@@ -37,7 +37,7 @@ public class chaseState : StateMachineBehaviour
         {
             animator.SetBool("isChasing", true);
             timeChase += Time.deltaTime;
-            Debug.Log("time = " + timeChase);
+        //    Debug.Log("time = " + timeChase);
         }
 
         if (distance < 2.5)

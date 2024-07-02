@@ -17,8 +17,8 @@ public class ReloadState : BaseState
         playerController.moveSpeed = 3f;
         playerController.jumpHeight = 3f;
         base.Enter();
-        moveXParameter = playerController.MoveXAnimationParameterID;
-        moveZParameter = playerController.MoveZAnimationParameterID;
+        moveXParameter = playerController.moveXAnimationParameterID;
+        moveZParameter = playerController.moveZAnimationParameterID;
 
     }
     public override void HandleInput()

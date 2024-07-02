@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoolManager: Singleton<PoolManager>
+public class PoolManager : Singleton<PoolManager>
 {
     public Pooler bulletPool;
 

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 using UnityEngine.InputSystem;
@@ -13,6 +14,7 @@ public class PlayerInputHandler : MonoBehaviour
     public bool shoot;
     public bool reload;
     public bool sprint;
+    public bool roll;
 
 
 
@@ -57,6 +59,13 @@ public class PlayerInputHandler : MonoBehaviour
         SprintInput(value.isPressed);
     }
 
+    public void OnRoll(InputValue value)
+    {
+        RollInput(value.isPressed);
+    }
+
+
+    ///
     public void MoveInput(Vector2 newMoveDirection)
     {
         move = newMoveDirection;
@@ -87,6 +96,10 @@ public class PlayerInputHandler : MonoBehaviour
     {
         sprint = newSprintState;
     }
+    public void RollInput(bool newRollState)
+    {
+        roll = newRollState;
+    }
 
 
 
@@ -99,5 +112,6 @@ public class PlayerInputHandler : MonoBehaviour
     {
         Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
     }
+
 }
 

@@ -3,12 +3,9 @@ using UnityEngine;
 public class JumpState : BaseState
 {
     bool isGrounded;
-    float gravity;
     float jumpHeight;
     float playerSpeed;
     Vector3 airVelocity;
-
-
 
 
     public JumpState(PlayerController _playerController, StateMachine _stateMachine) : base(_playerController, _stateMachine)
@@ -19,8 +16,9 @@ public class JumpState : BaseState
 
     public override void Enter()
     {
-        isGrounded = false;
+        //base.Enter();
         gravity = playerController.gravity;
+        isGrounded = false;
         jumpHeight = playerController.jumpHeight;
         playerSpeed = playerController.moveSpeed;
         gravityVelocity.y = 0;
@@ -47,10 +45,10 @@ public class JumpState : BaseState
             airVelocity = airVelocity.x * playerController.cameraTransform.right.normalized + airVelocity.z * playerController.cameraTransform.forward.normalized;
             airVelocity.y = 0;
             playerController.controller.Move(gravityVelocity * Time.deltaTime + 
-                            (airVelocity * playerController.airControl + velocity * (1 - playerController.airControl)) * playerSpeed * Time.deltaTime);
+                            playerSpeed * Time.deltaTime * (airVelocity * playerController.airControl + velocity * (1 - playerController.airControl)));
         }
         gravityVelocity.y += gravity * Time.deltaTime;
-        isGrounded = playerController.isGrounded();
+        isGrounded = playerController.IsGrounded();
     }
 
     public override void Exit()

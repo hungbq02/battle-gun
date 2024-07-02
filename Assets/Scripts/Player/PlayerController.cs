@@ -19,8 +19,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float gravityMultiplier = 2f;
     public float airControl;
 
-    [HideInInspector] public int MoveXAnimationParameterID;
-    [HideInInspector] public int MoveZAnimationParameterID;
+    [HideInInspector] public int moveXAnimationParameterID;
+    [HideInInspector] public int moveZAnimationParameterID;
     #endregion
 
     #region Variables: Ground
@@ -79,6 +79,8 @@ public class PlayerController : MonoBehaviour
     public ShootState shootState;
     public LandingState landingState;
     public ReloadState reloadState;
+    public RollingState rollingState;
+
 
 
 
@@ -108,9 +110,8 @@ public class PlayerController : MonoBehaviour
 
     protected void Awake()
     {
-        MoveXAnimationParameterID = Animator.StringToHash("MoveX");
-        MoveZAnimationParameterID = Animator.StringToHash("MoveZ");
-
+        moveXAnimationParameterID = Animator.StringToHash("MoveX");
+        moveZAnimationParameterID = Animator.StringToHash("MoveZ");
     }
 
     private void Start()
@@ -124,13 +125,14 @@ public class PlayerController : MonoBehaviour
         cameraTransform = Camera.main.transform;
 
 
+        //SM
         movementSM = new StateMachine();
         standingState = new StandingState(this, movementSM);
         jumpingState = new JumpState(this, movementSM);
         shootState = new ShootState(this, movementSM);
         landingState = new LandingState(this, movementSM);
         reloadState = new ReloadState(this, movementSM);
-
+        rollingState = new RollingState(this, movementSM);
 
 
         gravity *= gravityMultiplier;
@@ -155,7 +157,7 @@ public class PlayerController : MonoBehaviour
         CameraRotation();
     }
 
-    public bool isGrounded()
+    public bool IsGrounded()
     {
         // set sphere position, with offset
         Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
@@ -216,19 +218,19 @@ public class PlayerController : MonoBehaviour
         animator.SetLayerWeight(animator.GetLayerIndex(nameLayer), weight);
     }
 
-    /*    private void OnDrawGizmosSelected()
-        {
-            Color transparentGreen = new Color(0.0f, 1.0f, 0.0f, 0.35f);
-            Color transparentRed = new Color(1.0f, 0.0f, 0.0f, 0.35f);
+    private void OnDrawGizmosSelected()
+    {
+        Color transparentGreen = new Color(0.0f, 1.0f, 0.0f, 0.35f);
+        Color transparentRed = new Color(1.0f, 0.0f, 0.0f, 0.35f);
 
-            if (isGrounded) Gizmos.color = transparentGreen;
-            else Gizmos.color = transparentRed;
+        if (IsGrounded()) Gizmos.color = transparentGreen;
+        else Gizmos.color = transparentRed;
 
-            // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
-            Gizmos.DrawSphere(
-                new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z),
-                GroundedRadius);
-        }*/
+        // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
+        Gizmos.DrawSphere(
+            new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z),
+            GroundedRadius);
+    }
 
     private void OnGUI()
     {

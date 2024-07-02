@@ -1,16 +1,18 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class StandingState : BaseState
 {
     bool jump;
     bool shoot;
     bool reload;
+    bool roll;
+
 
 
     int moveXParameter;
     int moveZParameter;
 
-    public StandingState(PlayerController _playerController, StateMachine _stateMachine) : base( _playerController, _stateMachine)
+    public StandingState(PlayerController _playerController, StateMachine _stateMachine) : base(_playerController, _stateMachine)
     {
         playerController = _playerController;
         stateMachine = _stateMachine;
@@ -21,21 +23,20 @@ public class StandingState : BaseState
         base.Enter();
         jump = false;
         shoot = false;
-
+        roll = false;
 
         playerController.moveSpeed = 6f;
         playerController.jumpHeight = 5f;
 
-        moveXParameter = playerController.MoveXAnimationParameterID;
-        moveZParameter = playerController.MoveZAnimationParameterID;
-
+        moveXParameter = playerController.moveXAnimationParameterID;
+        moveZParameter = playerController.moveZAnimationParameterID;
     }
 
     public override void HandleInput()
     {
         base.HandleInput();
 
-        if(playerController.input.jump)
+        if (playerController.input.jump)
         {
             jump = true;
         }
@@ -47,6 +48,10 @@ public class StandingState : BaseState
         {
             reload = true;
         }
+        if (playerController.input.roll)
+        {
+            roll = true;
+        }
         //Anim
         playerController.animator.SetFloat(moveXParameter, playerController.input.move.x);
         playerController.animator.SetFloat(moveZParameter, playerController.input.move.y);
@@ -55,6 +60,7 @@ public class StandingState : BaseState
 
     public override void UpdateLogic()
     {
+
         base.UpdateLogic();
 
         if (jump)
@@ -65,9 +71,13 @@ public class StandingState : BaseState
         {
             stateMachine.ChangeState(playerController.shootState);
         }
-        if(reload )
+        if (reload)
         {
 
+        }
+        if (roll)
+        {
+            stateMachine.ChangeState(playerController.rollingState);
         }
     }
 
@@ -79,7 +89,8 @@ public class StandingState : BaseState
     {
         base.Exit();
 
-      //  gravityVelocity.y = 0f;
+        //  gravityVelocity.y = 0f;
 
     }
+
 }

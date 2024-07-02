@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class RaycastWeapon : MonoBehaviour
@@ -9,7 +9,7 @@ public class RaycastWeapon : MonoBehaviour
     public float timeDelayShoot;
     public ParticleSystem muzzleFlash;
 
-  //  public GameObject bulletPrefab;
+    //  public GameObject bulletPrefab;
     public Transform barrelTransform;
     public Transform targetTransform;
     public float bulletHitMissDistance = 25f;
@@ -40,7 +40,7 @@ public class RaycastWeapon : MonoBehaviour
     }
     private void Update()
     {
-       // Debug.Log("timedelay " + timeDelayShoot);
+        // Debug.Log("timedelay " + timeDelayShoot);
         if (currentAmmo == 0 && magazineAmmo == 0)
         {
             return;
@@ -56,13 +56,14 @@ public class RaycastWeapon : MonoBehaviour
     }
     public void StartShooting()
     {
-        Debug.Log(playerController.weapon.name);
+        // Debug.Log(playerController.weapon.name);
         isShooting = true;
         if (!canShoot || currentAmmo <= 0) return;
 
         muzzleFlash.Emit(1);
+        AudioManager.Instance.PlaySFX("shooting");
         currentAmmo--;
-        Debug.Log("Ammo" + currentAmmo);
+        // Debug.Log("Ammo" + currentAmmo);
 
 
         ray.origin = barrelTransform.position;
@@ -70,6 +71,8 @@ public class RaycastWeapon : MonoBehaviour
 
         GameObject bullet = CreateBullet();
         BulletController bulletController = bullet.GetComponent<BulletController>();
+
+        bullet.transform.forward = ray.direction.normalized;
 
         if (Physics.Raycast(ray, out hit))
         {
@@ -92,8 +95,7 @@ public class RaycastWeapon : MonoBehaviour
     GameObject CreateBullet()
     {
         GameObject bullet = PoolManager.Instance.bulletPool.GetObject();
-        bullet.transform.position = barrelTransform.position;
-        bullet.transform.rotation = Quaternion.identity;
+        bullet.transform.SetPositionAndRotation(barrelTransform.position, Quaternion.identity);
         bullet.SetActive(true);
         return bullet;
     }
@@ -106,6 +108,7 @@ public class RaycastWeapon : MonoBehaviour
     IEnumerator Reload()
     {
         isReloading = true;
+        AudioManager.Instance.PlaySFX("reload");
         //AudioManager.instance.Play("Reload");
         playerController.SetAnimLayer("UpperBodyLayer", 1f);
         animator.SetBool("isReloading", true);
@@ -124,5 +127,6 @@ public class RaycastWeapon : MonoBehaviour
         isReloading = false;
     }
 
-    
+
 }
+

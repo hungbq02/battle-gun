@@ -6,7 +6,7 @@ public class ShootState : BaseState
     int moveZParameter;
 
 
-    private float transitionLayerSpeed = 14f;
+    public float transitionLayerSpeed = 14f;
 
     public ShootState(PlayerController _playerController, StateMachine _stateMachine) : base(_playerController, _stateMachine)
     {
@@ -17,8 +17,8 @@ public class ShootState : BaseState
     public override void Enter()
     {
         base.Enter();
-        moveXParameter = playerController.MoveXAnimationParameterID;
-        moveZParameter = playerController.MoveZAnimationParameterID;
+        moveXParameter = playerController.moveXAnimationParameterID;
+        moveZParameter = playerController.moveZAnimationParameterID;
 
     }
     public override void HandleInput()
