@@ -94,7 +94,12 @@ public class RaycastWeapon : MonoBehaviour
 
     GameObject CreateBullet()
     {
-        GameObject bullet = PoolManager.Instance.bulletPool.GetObject();
+        //Get current weapon ID 
+        int typeWeapon = WeaponSwiching.selectedWeapon; 
+        //Get the correct bullet pool based on the current weapon type
+        Pooler bulletPool = PoolManager.Instance.GetBulletPool(typeWeapon); 
+
+        GameObject bullet = bulletPool.GetObject();
         bullet.transform.SetPositionAndRotation(barrelTransform.position, Quaternion.identity);
         bullet.SetActive(true);
         return bullet;

@@ -5,10 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - CinemachineTarget
-  - BulletPool
-  - BulletHolePool
   - WayPoints
   - Enermy
+  - BulletPoolPistol
+  - BulletPoolRiffle
+  - BulletPoolShotgun
   layers:
   - Default
   - TransparentFX

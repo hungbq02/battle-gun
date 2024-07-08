@@ -2,7 +2,7 @@
 
 public class WeaponSwiching : MonoBehaviour
 {
-    public int selectedWeapon = 0;
+    public static int selectedWeapon = 0; // <=> The number of the parent's child object
     public PlayerController playerController;
     public Animator animPlayer; 
 

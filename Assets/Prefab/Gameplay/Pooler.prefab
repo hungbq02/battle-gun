@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &340004470037788023
+--- !u!1 &3730718934741553802
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,45 +8,45 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 340004470037788022}
-  - component: {fileID: 340004470037788017}
+  - component: {fileID: 3730718934741553803}
+  - component: {fileID: 3730718934741553804}
   m_Layer: 0
-  m_Name: PoolerBulletHole
-  m_TagString: BulletHolePool
+  m_Name: PoolerBulletPistol
+  m_TagString: BulletPoolPistol
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &340004470037788022
+--- !u!4 &3730718934741553803
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 340004470037788023}
+  m_GameObject: {fileID: 3730718934741553802}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 340004470809389804}
-  m_RootOrder: 1
+  m_Father: {fileID: 3730718934867255985}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &340004470037788017
+--- !u!114 &3730718934741553804
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 340004470037788023}
+  m_GameObject: {fileID: 3730718934741553802}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b9b7393ad1dcf245b02c36a76c6088b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 381933492039790800, guid: 70d35127f90e0ab46be0e8d6ef26b6c2, type: 3}
+  prefab: {fileID: 4702877426357213096, guid: f368cb74e81331f499e0f540fa2850ea, type: 3}
   poolSize: 30
   expandable: 1
---- !u!1 &340004470809389805
+--- !u!1 &3730718934867255984
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -54,8 +54,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 340004470809389804}
-  - component: {fileID: 340004470809389807}
+  - component: {fileID: 3730718934867255985}
+  - component: {fileID: 3730718934867255986}
   m_Layer: 0
   m_Name: Pooler
   m_TagString: Untagged
@@ -63,37 +63,40 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &340004470809389804
+--- !u!4 &3730718934867255985
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 340004470809389805}
+  m_GameObject: {fileID: 3730718934867255984}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 340004471523072726}
-  - {fileID: 340004470037788022}
+  - {fileID: 3730718934741553803}
+  - {fileID: 3995217720088896967}
+  - {fileID: 3995217719352228394}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &340004470809389807
+--- !u!114 &3730718934867255986
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 340004470809389805}
+  m_GameObject: {fileID: 3730718934867255984}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b8b3799efab0e74ea429c4d59176af7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _dontDestroyOnLoad: 0
-  bulletPool: {fileID: 340004471523072721}
---- !u!1 &340004471523072727
+  bulletPoolPistol: {fileID: 0}
+  bulletPoolRiffle: {fileID: 0}
+  bulletPoolShotgun: {fileID: 0}
+--- !u!1 &3995217719352228393
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,41 +104,87 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 340004471523072726}
-  - component: {fileID: 340004471523072721}
+  - component: {fileID: 3995217719352228394}
+  - component: {fileID: 3995217719352228395}
   m_Layer: 0
-  m_Name: PoolerBullet
-  m_TagString: BulletPool
+  m_Name: PoolerBulletShotgun
+  m_TagString: BulletPoolShotgun
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &340004471523072726
+--- !u!4 &3995217719352228394
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 340004471523072727}
+  m_GameObject: {fileID: 3995217719352228393}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 340004470809389804}
-  m_RootOrder: 0
+  m_Father: {fileID: 3730718934867255985}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &340004471523072721
+--- !u!114 &3995217719352228395
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 340004471523072727}
+  m_GameObject: {fileID: 3995217719352228393}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b9b7393ad1dcf245b02c36a76c6088b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 4702877426357213096, guid: f368cb74e81331f499e0f540fa2850ea, type: 3}
+  prefab: {fileID: 4702877426357213096, guid: 35e612a0a3e877645a466e290b48ab34, type: 3}
+  poolSize: 30
+  expandable: 1
+--- !u!1 &3995217720088896966
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3995217720088896967}
+  - component: {fileID: 3995217720088896968}
+  m_Layer: 0
+  m_Name: PoolerBulletRiffle
+  m_TagString: BulletPoolRiffle
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3995217720088896967
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3995217720088896966}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3730718934867255985}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3995217720088896968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3995217720088896966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9b7393ad1dcf245b02c36a76c6088b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 4702877426357213096, guid: ea177ccf3bcc26f4c989d8d7190cd334, type: 3}
   poolSize: 30
   expandable: 1

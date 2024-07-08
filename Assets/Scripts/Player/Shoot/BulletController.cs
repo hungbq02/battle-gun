@@ -3,12 +3,11 @@ using UnityEngine;
 
 public class BulletController : MonoBehaviour
 {
+    [SerializeField] int type; //ID type weapon
     [SerializeField] private GameObject bulletHolePrefab;
     [SerializeField] private float speed = 50f;
     private float timeToDestroy = 0.5f;
     [SerializeField] private int damage;
-
-    public string bulletType;
 
     public Vector3 target { get; set; }
     public bool hit { get; set; }
@@ -25,7 +24,7 @@ public class BulletController : MonoBehaviour
         //miss
         if (!hit && Vector3.Distance(transform.position, target) < 0.01f)
         {
-            PoolManager.Instance.bulletPool.ReturnObject(gameObject);
+            PoolManager.Instance.GetBulletPool(type).ReturnObject(gameObject);
         }
 
     }
@@ -51,7 +50,8 @@ public class BulletController : MonoBehaviour
 
         }
 
-        PoolManager.Instance.bulletPool.ReturnObject(gameObject);
+        PoolManager.Instance.GetBulletPool(type).ReturnObject(gameObject);
+
 
     }
 
@@ -60,7 +60,7 @@ public class BulletController : MonoBehaviour
     IEnumerator DestroyBulletAfterTime()
     {
         yield return new WaitForSeconds(timeToDestroy);
-         PoolManager.Instance.bulletPool.ReturnObject(gameObject);
+        PoolManager.Instance.GetBulletPool(type).ReturnObject(gameObject);
 
     }
 }
