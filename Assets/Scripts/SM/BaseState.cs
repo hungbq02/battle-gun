@@ -19,7 +19,8 @@ public class BaseState
         this.playerController = playerController;
         this.stateMachine = stateMachine;
     }
-    public virtual void Enter(){
+    public virtual void Enter()
+    {
         moveSpeed = playerController.moveSpeed;
         sprintSpeed = playerController.sprintSpeed;
 

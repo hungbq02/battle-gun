@@ -37,8 +37,6 @@ public class WeaponSwiching : MonoBehaviour
         if(previousSelectedWeapon != selectedWeapon)
         {
             SelectWeapon();
-            //Update component weapon
-            playerController.weapon = transform.GetChild(selectedWeapon).GetComponent<RaycastWeapon>();
         }    
     }
     private void SelectWeapon()
@@ -61,12 +59,15 @@ public class WeaponSwiching : MonoBehaviour
             case 1: // Rifle
                 animPlayer.runtimeAnimatorController = rifleAnimatorOverride;
                 break;
-/*            case 2: // Shotgun
-                animator.runtimeAnimatorController = shotgunAnimatorOverride;
-                break;*/
+            case 2: // Shotgun
+                animPlayer.runtimeAnimatorController = shotgunAnimatorOverride;
+                break;
             default:
                 animPlayer.runtimeAnimatorController = pistolAnimatorOverride; // Mặc định là Pistol
                 break;
         }
+
+        //Update component weapon
+        playerController.weapon = transform.GetChild(selectedWeapon).GetComponent<RaycastWeapon>();
     }
 }

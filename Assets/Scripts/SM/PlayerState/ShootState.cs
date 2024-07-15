@@ -31,7 +31,14 @@ public class ShootState : BaseState
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-
+        if(!playerController.weapon.canShoot)
+        {
+            Debug.Log("CANSHOT");
+        }
+        if (playerController.weapon.isReloading)
+        {
+            Debug.Log("reloading");
+        }
         if (playerController.weapon.canShoot && !playerController.weapon.isReloading)
         {
             if (playerController.input.shoot)

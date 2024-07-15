@@ -44,7 +44,7 @@ public class JumpState : BaseState
             velocity.y = 0;
             airVelocity = airVelocity.x * playerController.cameraTransform.right.normalized + airVelocity.z * playerController.cameraTransform.forward.normalized;
             airVelocity.y = 0;
-            playerController.controller.Move(gravityVelocity * Time.deltaTime + 
+            playerController.controller.Move(gravityVelocity * Time.deltaTime +
                             playerSpeed * Time.deltaTime * (airVelocity * playerController.airControl + velocity * (1 - playerController.airControl)));
         }
         gravityVelocity.y += gravity * Time.deltaTime;

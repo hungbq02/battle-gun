@@ -23,15 +23,16 @@ public class chaseState : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         agent.SetDestination(player.position);
+        animator.transform.LookAt(player);
 
         float distance = Vector3.Distance(player.position, animator.transform.position);
-        Debug.Log("distance = " + distance);
+    //    Debug.Log("distance = " + distance);
 
         //distance between player and enermy is
         if (distance > 12 && timeChase > 10f)
         {
             animator.SetBool("isChasing", false);
-            Debug.Log("False ");
+   //         Debug.Log("False ");
         }
         else
         {

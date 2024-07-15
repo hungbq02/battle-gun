@@ -93,9 +93,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dontDestroyOnLoad: 0
-  bulletPoolPistol: {fileID: 0}
-  bulletPoolRiffle: {fileID: 0}
-  bulletPoolShotgun: {fileID: 0}
+  bulletPoolPistol: {fileID: 3730718934741553804}
+  bulletPoolRiffle: {fileID: 3995217720088896968}
+  bulletPoolShotgun: {fileID: 3995217719352228395}
 --- !u!1 &3995217719352228393
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 
 [RequireComponent(typeof(CharacterController))]
@@ -203,7 +204,6 @@ public class PlayerController : MonoBehaviour
         if (lfAngle > 360f) lfAngle -= 360f;
         return Mathf.Clamp(lfAngle, lfMin, lfMax);
     }
-    public bool bulletOut = false;
     /*public void FireBullet()
     {
         //weapon.StartShooting();
