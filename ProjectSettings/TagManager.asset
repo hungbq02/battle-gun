@@ -10,15 +10,16 @@ TagManager:
   - BulletPoolPistol
   - BulletPoolRiffle
   - BulletPoolShotgun
+  - Ground
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Ground
+  - 
   - Water
   - UI
   - Bullet
-  - 
+  - Ground
   - 
   - 
   - 
