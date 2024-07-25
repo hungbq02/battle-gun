@@ -1,53 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
-public class HealthSystemPlayer : MonoBehaviour
+public class HealthSystemPlayer : HealthSystem
 {
-    public float maxHealth;
-    private float currentHealth;
+    public static bool isAlive;
 
-    public bool isAlive;
-    [SerializeField] private Image healthBar;
-    [SerializeField] private Image damagedHealthBar;
-    [SerializeField] private Text countHealth;
-    [SerializeField] private float damagedHealthBarSpeed = 2.0f;
-
-    public Animator animator;
-    private void Start()
+    protected override void Start()
     {
-        currentHealth = maxHealth;
-        UpdateHealthBar();
+        base.Start();
         isAlive = true;
     }
-    private void Update()
-    {
-        UpdateDamagedHealthBar();
-    }
-    private void UpdateHealthBar()
-    {
-        healthBar.fillAmount = currentHealth / maxHealth;
-        countHealth.text = currentHealth + " / " + maxHealth;
-        SetColor();
-    }
-    private void UpdateDamagedHealthBar()
-    {
-        if (healthBar.fillAmount < damagedHealthBar.fillAmount)
-        {
-            damagedHealthBar.fillAmount -= damagedHealthBarSpeed * Time.deltaTime / maxHealth;
-            if (damagedHealthBar.fillAmount < healthBar.fillAmount)
-            {
-                damagedHealthBar.fillAmount = healthBar.fillAmount;
-            }
-        }
-        else if (healthBar.fillAmount > damagedHealthBar.fillAmount)
-        {
-            damagedHealthBar.fillAmount = healthBar.fillAmount;
-        }
-    }
 
-    private void SetColor()
+    protected override void SetColor()
     {
         if ((currentHealth / maxHealth) * 100 >= 80)
         {
@@ -63,53 +26,9 @@ public class HealthSystemPlayer : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage)
+    protected override void HandleDeath()
     {
-        if (damage >= currentHealth)
-        {
-            currentHealth = 0;
-            isAlive = false;
-            animator.SetTrigger("die");
-            //Removed collision component when enermy die
-            CapsuleCollider collider = GetComponent<CapsuleCollider>();
-            CharacterController cc = GetComponent<CharacterController>();
-
-            if (collider != null)
-            {
-                collider.enabled = false;
-                Invoke(nameof(DestroyEnermy), 3f);
-            }
-            if (cc != null)
-            {
-                cc.enabled = false;
-            }
-        }
-        else
-        {
-            currentHealth -= damage;
-            animator.SetTrigger("damage");
-        }
-        UpdateHealthBar();
+        isAlive = false;
+        // Player-specific death handling logic
     }
-
-    public void Heal(int heal)
-    {
-        if (heal + currentHealth > maxHealth)
-        {
-            currentHealth = maxHealth;
-        }
-        else
-        {
-            currentHealth += heal;
-            if (isAlive == false && currentHealth > 0)
-            {
-                isAlive = true;
-            }
-        }
-        UpdateHealthBar();
-    }
-    void DestroyEnermy()
-    {
-        gameObject.SetActive(false);
-    }    
 }

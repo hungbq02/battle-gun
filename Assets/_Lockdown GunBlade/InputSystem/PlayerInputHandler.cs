@@ -1,6 +1,6 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 
@@ -45,7 +45,7 @@ public class PlayerInputHandler : MonoBehaviour
     public void OnAim(InputValue value)
     {
         AimInput(value.isPressed);
-    }    
+    }
     public void OnShoot(InputValue value)
     {
         ShootInput(value.isPressed);
@@ -87,7 +87,7 @@ public class PlayerInputHandler : MonoBehaviour
     public void ShootInput(bool newShootInput)
     {
         shoot = newShootInput;
-    }    
+    }
     public void ReloadInput(bool newReloadInput)
     {
         reload = newReloadInput;
@@ -107,10 +107,27 @@ public class PlayerInputHandler : MonoBehaviour
     {
         SetCursorState(cursorLocked);
     }
-
+    void CursorIsActive()
+    {
+        Debug.Log("CursorIsActive");
+        Cursor.lockState = CursorLockMode.None;
+    }
+    //Fix Cursor can’t click in Locked mouse state
+    //Cursor.lockState = CursorLockMode.None -> Cursor.lockState = CursorLockMode.Confined 
     private void SetCursorState(bool newState)
     {
-        Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
+        Cursor.lockState = newState ? CursorLockMode.Locked : Cursor.lockState = CursorLockMode.Confined; 
+    }
+
+    private bool IsPointerOverUIObject()
+    {
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current)
+        {
+            position = new Vector2(Input.mousePosition.x, Input.mousePosition.y)
+        };
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+        return results.Count > 0;
     }
 
 }

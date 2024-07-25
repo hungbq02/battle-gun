@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 2641759025767203594}
   - component: {fileID: -6648509395109769890}
   - component: {fileID: 4431221621822318400}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Bullet_Riffle
-  m_TagString: Untagged
+  m_TagString: BulletPoolRiffle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -98,7 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   bulletHolePrefab: {fileID: 381933492039790800, guid: 70d35127f90e0ab46be0e8d6ef26b6c2, type: 3}
-  speed: 250
+  speed: 350
   damage: 25
 --- !u!54 &-6648509395109769890
 Rigidbody:

@@ -31,7 +31,7 @@ public class BulletController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        //Debug.Log("Bullet collided with: " + collision.gameObject.name);
+        Debug.Log("Bullet collided with: " + collision.gameObject.name);
 
         ContactPoint contactPoint = collision.contacts[0];
         if (collision.gameObject.tag != "Enermy")
@@ -44,9 +44,17 @@ public class BulletController : MonoBehaviour
         else
         {
             HealthSystemEnemy healthEnemy = collision.gameObject.GetComponent<HealthSystemEnemy>();
+            HealthSystemBoss healthBoss = collision.gameObject.GetComponent<HealthSystemBoss>();
+
             if (healthEnemy != null)
             {
+              //  Debug.Log("Take dame Enemy");
                 healthEnemy.TakeDamage(damage);
+            }
+            if (healthBoss != null)
+            {
+               // Debug.Log("Take dame Boss");
+                healthBoss.TakeDamage(damage);
             }
 
         }

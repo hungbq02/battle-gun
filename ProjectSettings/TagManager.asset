@@ -11,6 +11,7 @@ TagManager:
   - BulletPoolRiffle
   - BulletPoolShotgun
   - Ground
+  - Item
   layers:
   - Default
   - TransparentFX
@@ -18,8 +19,8 @@ TagManager:
   - 
   - Water
   - UI
-  - Bullet
   - Ground
+  - Bullet
   - 
   - 
   - 

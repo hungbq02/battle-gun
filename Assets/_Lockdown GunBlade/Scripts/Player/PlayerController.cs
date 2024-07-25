@@ -143,6 +143,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
+        if(!HealthSystemPlayer.isAlive) return;
         movementSM.currentState.HandleInput();
         movementSM.currentState.UpdateLogic();
         RotateTowardsCamera();
@@ -155,6 +156,8 @@ public class PlayerController : MonoBehaviour
     }
     private void LateUpdate()
     {
+        if (!HealthSystemPlayer.isAlive) return;
+
         CameraRotation();
     }
 
@@ -169,6 +172,8 @@ public class PlayerController : MonoBehaviour
 
     private void CameraRotation()
     {
+        if(GUIManager.isPauseGame){ return; }
+
         // if there is an input and camera position is not fixed
         if (input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
         {
@@ -232,13 +237,13 @@ public class PlayerController : MonoBehaviour
             GroundedRadius);
     }
 
-    private void OnGUI()
+/*    private void OnGUI()
     {
         GUILayout.BeginArea(new Rect(10f, 10f, 400f, 100f));
         string content = movementSM.currentState != null ? movementSM.currentState.ToString() : "(no current state)";
         GUILayout.Label($"<color='black'><size=40>{content}</size></color>");
         GUILayout.EndArea();
-    }
+    }*/
 
 }
 

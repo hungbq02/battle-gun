@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: -8075469861829808815}
   - component: {fileID: -6983268510463323271}
   - component: {fileID: 7799196265214448894}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bullet_ShotGun
-  m_TagString: Untagged
+  m_TagString: BulletPoolShotgun
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -98,7 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 2
   bulletHolePrefab: {fileID: 381933492039790800, guid: 70d35127f90e0ab46be0e8d6ef26b6c2, type: 3}
-  speed: 400
+  speed: 500
   damage: 85
 --- !u!54 &-6983268510463323271
 Rigidbody:

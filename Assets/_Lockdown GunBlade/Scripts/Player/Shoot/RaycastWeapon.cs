@@ -73,7 +73,7 @@ public class RaycastWeapon : MonoBehaviour
             return;
         if (currentAmmo == 0 && magazineAmmo > 0 || playerController.input.reload && !isReloading)
         {
-            Debug.Log("reload");
+            //Debug.Log("reload");
             playerController.SetAnimLayer("UpperBodyLayer", 1f);
             StartCoroutine(Reload());
         }
