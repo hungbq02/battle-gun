@@ -2,13 +2,18 @@
 
 public class HealthSystemEnemy : HealthSystem
 {
-    protected override void SetColor()
-    {
-        // Enemies might not need to change color
-    }
+    ItemDropScript itemDropScript;
 
+    protected override void Start()
+    {
+        base.Start();
+        itemDropScript = GetComponent<ItemDropScript>();
+
+    }
     protected override void HandleDeath()
     {
+        itemDropScript.DropItem(transform.position);
+
         CapsuleCollider collider = GetComponent<CapsuleCollider>();
         CharacterController cc = GetComponent<CharacterController>();
 

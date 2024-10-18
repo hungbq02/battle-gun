@@ -7,11 +7,10 @@ public class JumpState : BaseState
     float playerSpeed;
     Vector3 airVelocity;
 
-
-    public JumpState(PlayerController _playerController, StateMachine _stateMachine) : base(_playerController, _stateMachine)
+    private MovementSM sm;
+    public JumpState(PlayerController playerController, MovementSM stateMachine) : base(playerController, stateMachine)
     {
-        playerController = _playerController;
-        stateMachine = _stateMachine;
+        sm = (MovementSM)this.stateMachine;
     }
 
     public override void Enter()
@@ -35,7 +34,7 @@ public class JumpState : BaseState
         playerController.airControl = playerController.input.sprint ? 1.5f : 0.5f;
         if (isGrounded)
         {
-            stateMachine.ChangeState(playerController.landingState);
+            stateMachine.ChangeState(sm.landingState);
         }
         else
         {

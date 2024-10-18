@@ -17,6 +17,6 @@ public class GameController : MonoBehaviour
     public void PlayLevel()
     {
         int idScene = PlayerPrefs.GetInt("ID_LEVEL");
-        SceneManager.LoadScene(idScene+1);
+        SceneManager.LoadSceneAsync(idScene+1);
     }
 }

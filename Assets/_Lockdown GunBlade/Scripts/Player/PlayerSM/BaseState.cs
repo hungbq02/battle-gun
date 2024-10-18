@@ -1,17 +1,15 @@
 using UnityEngine;
 
-public class BaseState
+public abstract class BaseState
 {
     public PlayerController playerController;
 
-    protected StateMachine stateMachine;
     protected Vector3 velocity;
     protected Vector3 gravityVelocity;
 
     protected float gravity;
-    protected Vector3 moveDir = Vector3.zero;
-    protected float moveSpeed;
-    protected float sprintSpeed;
+
+    protected StateMachine stateMachine;
 
     bool isGrounded;
     public BaseState(PlayerController playerController, StateMachine stateMachine)
@@ -19,40 +17,9 @@ public class BaseState
         this.playerController = playerController;
         this.stateMachine = stateMachine;
     }
-    public virtual void Enter()
-    {
-        moveSpeed = playerController.moveSpeed;
-        sprintSpeed = playerController.sprintSpeed;
-
-        isGrounded = playerController.IsGrounded();
-        gravity = playerController.gravity;
-    }
-    public virtual void HandleInput()
-    {
-
-        Vector3 input = new Vector3(playerController.input.move.x, 0.0f, playerController.input.move.y);
-        velocity = input.normalized;
-        if (velocity.sqrMagnitude == 0f) return;
-        float targetAngle = Mathf.Atan2(velocity.x, velocity.z) * Mathf.Rad2Deg + playerController.cameraTransform.eulerAngles.y;
-
-        moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-        velocity = moveDir;
-    }
-    public virtual void UpdateLogic()
-    {
-        float targetSpeed = playerController.input.sprint ? playerController.sprintSpeed : playerController.moveSpeed;
-        float animationSpeed = playerController.input.sprint ? 2.0f : 1.0f; // x2 speed animation move
-        playerController.animator.SetFloat("AnimationSpeed", animationSpeed);
-
-        gravityVelocity.y += gravity * Time.deltaTime;
-        isGrounded = playerController.IsGrounded();
-
-        if (isGrounded && gravityVelocity.y < 0.0f)
-        {
-            gravityVelocity.y = -1.0f;
-        }
-        playerController.controller.Move(targetSpeed * Time.deltaTime * velocity + gravityVelocity * Time.deltaTime);
-    }
+    public virtual void Enter() { }
+    public virtual void HandleInput() { }
+    public virtual void UpdateLogic() { }
     public virtual void UpdatePhysics() { }
     public virtual void Exit() { }
 }

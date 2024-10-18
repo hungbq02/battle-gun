@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Player")]
     public float moveSpeed = 4.5f;
+    public float shootMoveSpeed = 3.5f;
     public float sprintSpeed = 6.5f;
 
     public float jumpHeight;
@@ -25,28 +26,19 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Variables: Ground
-    [Header("Player isGrounded")]
 
-    [Tooltip("Useful for rough ground")]
     public float GroundedOffset = -0.14f;
-
-    [Tooltip("The radius of the grounded check. Should match the radius of the CharacterController")]
     public float GroundedRadius = 0.28f;
 
-    [Tooltip("What layers the character uses as ground")]
     public LayerMask GroundLayers;
     #endregion
 
     #region Variables: Cinemachine
 
     [Header("Cinemachine")]
-    [Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
     public GameObject CinemachineCameraTarget;
 
-    [Tooltip("How far in degrees can you move the camera up")]
     public float TopClamp = 70.0f;
-
-    [Tooltip("How far in degrees can you move the camera down")]
     public float BottomClamp = -30.0f;
 
     [Tooltip("Additional degress to override the camera. Useful for fine tuning camera position when locked")]
@@ -74,13 +66,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region SM
-    public StateMachine movementSM;
-    public StandingState standingState;
-    public JumpState jumpingState;
-    public ShootState shootState;
-    public LandingState landingState;
-    public ReloadState reloadState;
-    public RollingState rollingState;
+
 
 
 
@@ -126,38 +112,21 @@ public class PlayerController : MonoBehaviour
         cameraTransform = Camera.main.transform;
 
 
-        //SM
-        movementSM = new StateMachine();
-        standingState = new StandingState(this, movementSM);
-        jumpingState = new JumpState(this, movementSM);
-        shootState = new ShootState(this, movementSM);
-        landingState = new LandingState(this, movementSM);
-        reloadState = new ReloadState(this, movementSM);
-        rollingState = new RollingState(this, movementSM);
-
-
         gravity *= gravityMultiplier;
-        movementSM.Initialize(standingState);
-
 
     }
     private void Update()
     {
         if(!HealthSystemPlayer.isAlive) return;
-        movementSM.currentState.HandleInput();
-        movementSM.currentState.UpdateLogic();
-        RotateTowardsCamera();
 
-    }
-    private void FixedUpdate()
-    {
-        movementSM.currentState.UpdatePhysics();
+        if (input.move.sqrMagnitude >= _threshold)
+        {
+            RotateTowardsCamera();
+        }
 
     }
     private void LateUpdate()
     {
-        if (!HealthSystemPlayer.isAlive) return;
-
         CameraRotation();
     }
 
@@ -172,12 +141,12 @@ public class PlayerController : MonoBehaviour
 
     private void CameraRotation()
     {
-        if(GUIManager.isPauseGame){ return; }
+       // if(GUIManager.isPauseGame){ return; }
 
-        // if there is an input and camera position is not fixed
+        // if there is an inputDir and camera position is not fixed
         if (input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
         {
-            //Don't multiply mouse input by Time.deltaTime;
+            //Don't multiply mouse inputDir by Time.deltaTime;
             float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
 
             _cinemachineTargetYaw += input.look.x * deltaTimeMultiplier * sensitivity;
@@ -202,17 +171,20 @@ public class PlayerController : MonoBehaviour
         float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, rotationSmoothTime);
         transform.rotation = Quaternion.Euler(0f, angle, 0f);
     }
+    public void UpdatePlayerRotationToMatchCamera()
+    {
+        // Get the angle the camera
+        float targetAngle = Mathf.Atan2(cameraTransform.forward.x, cameraTransform.forward.z) * Mathf.Rad2Deg;
 
+        // rotate the character towards the camera's direction
+        transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
+    }
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
     {
         if (lfAngle < -360f) lfAngle += 360f;
         if (lfAngle > 360f) lfAngle -= 360f;
         return Mathf.Clamp(lfAngle, lfMin, lfMax);
     }
-    /*public void FireBullet()
-    {
-        //weapon.StartShooting();
-    }*/
 
     public void SetSensitivity(float newSensitivity)
     {
@@ -237,13 +209,7 @@ public class PlayerController : MonoBehaviour
             GroundedRadius);
     }
 
-/*    private void OnGUI()
-    {
-        GUILayout.BeginArea(new Rect(10f, 10f, 400f, 100f));
-        string content = movementSM.currentState != null ? movementSM.currentState.ToString() : "(no current state)";
-        GUILayout.Label($"<color='black'><size=40>{content}</size></color>");
-        GUILayout.EndArea();
-    }*/
+
 
 }
 

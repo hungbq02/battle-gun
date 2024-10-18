@@ -5,18 +5,23 @@ using UnityEngine;
 public class ItemDrop : MonoBehaviour
 {
     private Rigidbody rb;
-    public float dropForce;
+    public float dropForce = 6;
 
     private void OnEnable()
     {
         rb = GetComponent<Rigidbody>();
         rb.AddForce(Vector2.up * dropForce, ForceMode.Impulse);
+        Invoke(nameof(KinematicItem),1f);
     }
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if(collision.gameObject.tag == "Ground")
+        if (other.gameObject.CompareTag("Player"))
         {
-            rb.isKinematic = true;
+            gameObject.SetActive(false);
         }
+    }
+    void KinematicItem()
+    {
+        rb.isKinematic = true;
     }
 }

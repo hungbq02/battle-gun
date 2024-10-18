@@ -30,7 +30,7 @@ public class AudioManager : Singleton<AudioManager>
         Sound s = Array.Find(sfxSound, x => x.name == name);
         if (s == null)
         {
-            Debug.Log("Sound not found");
+           // Debug.Log("Sound not found");
         }
         else
         {

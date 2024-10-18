@@ -10,19 +10,19 @@ public class HealthSystemPlayer : HealthSystem
         isAlive = true;
     }
 
-    protected override void SetColor()
+    protected override void SetColor(float healthPercentage)
     {
-        if ((currentHealth / maxHealth) * 100 >= 80)
+        if (healthPercentage >= 80)
         {
-            healthBar.color = Color.green;
+            healthDisplay.SetColor(Color.green);
         }
-        else if ((currentHealth / maxHealth) * 100 >= 50)
+        else if (healthPercentage >= 50)
         {
-            healthBar.color = Color.yellow;
+            healthDisplay.SetColor(Color.yellow);
         }
         else
         {
-            healthBar.color = Color.red;
+            healthDisplay.SetColor(Color.red);
         }
     }
 

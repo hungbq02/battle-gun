@@ -52,10 +52,10 @@ public class Pooler : MonoBehaviour
     }
     private void GenerateNewObject()
     {
-        GameObject g = Instantiate(prefab);
-        g.transform.parent = transform;
-        g.SetActive(false);
-        freeList.Add(g);
+        GameObject newObj = Instantiate(prefab);
+        newObj.transform.parent = transform;
+        newObj.SetActive(false);
+        freeList.Add(newObj);
     }
 
 }

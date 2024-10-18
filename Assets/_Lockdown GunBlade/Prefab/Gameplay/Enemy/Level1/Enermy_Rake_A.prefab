@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 8001324710876898195}
   - component: {fileID: 8001324710876898205}
   - component: {fileID: 957416819648997208}
+  - component: {fileID: -4205351702779953177}
+  - component: {fileID: 2843266088431244875}
   m_Layer: 0
   m_Name: Enermy_Rake_A
   m_TagString: Enermy
@@ -91,10 +93,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.4921001
+  m_Radius: 0.5053518
   m_Height: 2.1810193
   m_Direction: 1
-  m_Center: {x: -0.0113007855, y: 1.0806907, z: 0.030788653}
+  m_Center: {x: -0.011300792, y: 1.0806907, z: -0.07674833}
 --- !u!54 &8001324710876898195
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -137,11 +139,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 200
+  healthDisplay: {fileID: 0}
+  damagedHealthBarSpeed: 2
+  animator: {fileID: 8001324710876898193}
+  damageAnimationDelay: 1
+--- !u!114 &-4205351702779953177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8001324710876898204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acc0a838981845b4fbf9ac18395c6045, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  listItemDrop:
+  - {fileID: 4526962598725577582, guid: 08d6092f742128a459cc2442df6903ef, type: 3}
+  - {fileID: 1233401250150475314, guid: fbde5f95e0a893747be7663f3e58b72a, type: 3}
+--- !u!114 &2843266088431244875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8001324710876898204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca00f0411ffcbdc41be59dd02526af95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   healthBar: {fileID: 8001324712139381579}
   damagedHealthBar: {fileID: 8001324712139381579}
   countHealth: {fileID: 8001324710976093109}
-  damagedHealthBarSpeed: 2
-  animator: {fileID: 8001324710876898193}
 --- !u!1 &8001324710892484491
 GameObject:
   m_ObjectHideFlags: 0
@@ -1784,6 +1815,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 13b3d8c93a949f341a9345f857e36d19, type: 3}
+--- !u!224 &8001324711793762941 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4640858860011768500, guid: 13b3d8c93a949f341a9345f857e36d19, type: 3}
+  m_PrefabInstance: {fileID: 3417615178420480201}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &8001324712139381579 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4640858858189960066, guid: 13b3d8c93a949f341a9345f857e36d19, type: 3}
@@ -1806,8 +1842,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &8001324711793762941 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4640858860011768500, guid: 13b3d8c93a949f341a9345f857e36d19, type: 3}
-  m_PrefabInstance: {fileID: 3417615178420480201}
-  m_PrefabAsset: {fileID: 0}

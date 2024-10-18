@@ -20283,23 +20283,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2823e421b40924648bb544baeddaaa92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isShooting: 0
-  canShoot: 1
+  readyToShoot: 1
   isReloading: 0
   timeDelayShoot: 0.3
   muzzleFlash: {fileID: 830998850940891271}
-  barrelTransform: {fileID: 668793460697580864}
-  targetTransform: {fileID: 0}
+  camTransform: {fileID: 0}
   bulletHitMissDistance: 25
+  range: 0
   reloadCircle: {fileID: 0}
-  animator: {fileID: 8354594580741601026}
-  playerController: {fileID: 3340131580055926729}
-  weaponUI: {fileID: 0}
+  whatIsEnemy:
+    serializedVersion: 2
+    m_Bits: 0
+  spread: 0
+  damage: 0
   currentAmmo: 0
   maxAmmo: 10
   magazineAmmo: 30
   reloadTime: 2
   cooldownText: {fileID: 0}
+  animator: {fileID: 8354594580741601026}
+  playerController: {fileID: 3340131580055926729}
+  weaponUI: {fileID: 0}
 --- !u!1 &2761985701575439354
 GameObject:
   m_ObjectHideFlags: 0
@@ -20346,8 +20350,11 @@ GameObject:
   - component: {fileID: 1365954998052776894}
   - component: {fileID: 3340131580055926734}
   - component: {fileID: 3340131580055926720}
-  - component: {fileID: 3340131580055926721}
   - component: {fileID: 3340131580055926726}
+  - component: {fileID: 1146252108211503820}
+  - component: {fileID: 3102112082962344824}
+  - component: {fileID: 3340131580055926721}
+  - component: {fileID: 6413935946457507967}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -20403,6 +20410,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 4.5
+  shootMoveSpeed: 3.5
   sprintSpeed: 9
   jumpHeight: 4
   airControl: 0.5
@@ -20614,6 +20622,44 @@ MonoBehaviour:
   normalSensitivity: 1
   aimSensitivity: 0.5
   isAiming: 0
+--- !u!114 &3340131580055926726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3340131580055926722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 304ca04b5fbfc9d48aa763ac7ff7a6a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1146252108211503820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3340131580055926722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a46244e8e3fd5f4fab9aabad3928035, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3102112082962344824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3340131580055926722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d47752a7362d743438727ba413f9f26d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSM: {fileID: 0}
+  playerController: {fileID: 3340131580055926729}
 --- !u!114 &3340131580055926721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20627,12 +20673,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 1000
-  healthBar: {fileID: 4881018050314494891}
-  damagedHealthBar: {fileID: 4881018050314494891}
-  countHealth: {fileID: 725691177690784273}
-  damagedHealthBarSpeed: 0
+  healthDisplay: {fileID: 6413935946457507967}
+  damagedHealthBarSpeed: 2
   animator: {fileID: 8354594580741601026}
---- !u!114 &3340131580055926726
+  damageAnimationDelay: 2
+--- !u!114 &6413935946457507967
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20641,9 +20686,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3340131580055926722}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 304ca04b5fbfc9d48aa763ac7ff7a6a7, type: 3}
+  m_Script: {fileID: 11500000, guid: ca00f0411ffcbdc41be59dd02526af95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthBar: {fileID: 4881018050314494891}
+  damagedHealthBar: {fileID: 4881018050314494891}
+  countHealth: {fileID: 725691177690784273}
 --- !u!1 &3474780911310035167
 GameObject:
   m_ObjectHideFlags: 0
@@ -30641,23 +30689,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2823e421b40924648bb544baeddaaa92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isShooting: 0
-  canShoot: 1
+  readyToShoot: 1
   isReloading: 0
   timeDelayShoot: 1
   muzzleFlash: {fileID: 3820052476100149683}
-  barrelTransform: {fileID: 3820052475427283266}
-  targetTransform: {fileID: 0}
+  camTransform: {fileID: 0}
   bulletHitMissDistance: 10
+  range: 0
   reloadCircle: {fileID: 0}
-  animator: {fileID: 8354594580741601026}
-  playerController: {fileID: 3340131580055926729}
-  weaponUI: {fileID: 0}
+  whatIsEnemy:
+    serializedVersion: 2
+    m_Bits: 0
+  spread: 0
+  damage: 0
   currentAmmo: 0
   maxAmmo: 5
   magazineAmmo: 15
   reloadTime: 4
   cooldownText: {fileID: 0}
+  animator: {fileID: 8354594580741601026}
+  playerController: {fileID: 3340131580055926729}
+  weaponUI: {fileID: 0}
 --- !u!1 &5058759044727954102
 GameObject:
   m_ObjectHideFlags: 0
@@ -33152,20 +33204,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2823e421b40924648bb544baeddaaa92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isShooting: 0
-  canShoot: 1
+  readyToShoot: 1
   isReloading: 0
   timeDelayShoot: 0.1
   muzzleFlash: {fileID: 668793459162947926}
-  barrelTransform: {fileID: 668793460354668320}
-  targetTransform: {fileID: 0}
+  camTransform: {fileID: 0}
   bulletHitMissDistance: 25
+  range: 0
   reloadCircle: {fileID: 0}
-  animator: {fileID: 8354594580741601026}
-  playerController: {fileID: 3340131580055926729}
-  weaponUI: {fileID: 0}
+  whatIsEnemy:
+    serializedVersion: 2
+    m_Bits: 0
+  spread: 0
+  damage: 0
   currentAmmo: 0
   maxAmmo: 30
   magazineAmmo: 120
   reloadTime: 5
   cooldownText: {fileID: 0}
+  animator: {fileID: 8354594580741601026}
+  playerController: {fileID: 3340131580055926729}
+  weaponUI: {fileID: 0}

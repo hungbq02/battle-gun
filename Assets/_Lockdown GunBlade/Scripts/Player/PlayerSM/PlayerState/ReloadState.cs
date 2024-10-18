@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using UnityEditorInternal;
 using UnityEngine;
 
-public class ReloadState : BaseState
+public class ReloadState : Grounded
 {
-    int moveXParameter;
-    int moveZParameter;
-    public ReloadState(PlayerController _playerController, StateMachine _stateMachine) : base(_playerController, _stateMachine)
+    public ReloadState(PlayerController _playerController, MovementSM _stateMachine) : base(_playerController, _stateMachine)
     {
         playerController = _playerController;
         stateMachine = _stateMachine;
@@ -17,15 +15,12 @@ public class ReloadState : BaseState
         playerController.moveSpeed = 3f;
         playerController.jumpHeight = 3f;
         base.Enter();
-        moveXParameter = playerController.moveXAnimationParameterID;
-        moveZParameter = playerController.moveZAnimationParameterID;
     }
     public override void HandleInput()
     {
         base.HandleInput();
+        HandleMovement();
 
-        playerController.animator.SetFloat(moveXParameter, playerController.input.move.x);
-        playerController.animator.SetFloat(moveZParameter, playerController.input.move.y);
     }
     public override void UpdateLogic()
     {
@@ -33,10 +28,14 @@ public class ReloadState : BaseState
         if(!playerController.weapon.isReloading)
         {
        //     playerController.SetAnimLayer("UpperBodyLayer", 0f);
-            stateMachine.ChangeState(playerController.standingState);
+            stateMachine.ChangeState(sm.idleState);
 
         }
 
+    }
+    public override void UpdatePhysics()
+    {
+        base.UpdatePhysics();
     }
     public override void Exit()
     {

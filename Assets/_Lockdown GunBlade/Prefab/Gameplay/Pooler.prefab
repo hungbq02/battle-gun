@@ -29,8 +29,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1770095367062664905}
-  - {fileID: 2028682620089598341}
-  - {fileID: 2028682620687638120}
+  - {fileID: 8142815286468361638}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -47,9 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dontDestroyOnLoad: 0
-  bulletPoolPistol: {fileID: 1770095367062664910}
-  bulletPoolRiffle: {fileID: 2028682620089598346}
-  bulletPoolShotgun: {fileID: 2028682620687638121}
+  bulletPool: {fileID: 0}
+  bulletHolePool: {fileID: 0}
 --- !u!1 &1770095367062664904
 GameObject:
   m_ObjectHideFlags: 0
@@ -61,7 +59,7 @@ GameObject:
   - component: {fileID: 1770095367062664905}
   - component: {fileID: 1770095367062664910}
   m_Layer: 0
-  m_Name: PoolerBulletPistol
+  m_Name: PoolerBullet
   m_TagString: BulletPoolPistol
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -96,7 +94,7 @@ MonoBehaviour:
   prefab: {fileID: 4702877426357213096, guid: f368cb74e81331f499e0f540fa2850ea, type: 3}
   poolSize: 20
   expandable: 1
---- !u!1 &2028682620089598340
+--- !u!1 &5325226923327632186
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -104,22 +102,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2028682620089598341}
-  - component: {fileID: 2028682620089598346}
+  - component: {fileID: 8142815286468361638}
+  - component: {fileID: 4362510131081091217}
   m_Layer: 0
-  m_Name: PoolerBulletRiffle
-  m_TagString: BulletPoolRiffle
+  m_Name: PoolerBulletHole
+  m_TagString: BulletPoolPistol
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2028682620089598341
+--- !u!4 &8142815286468361638
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2028682620089598340}
+  m_GameObject: {fileID: 5325226923327632186}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -127,64 +125,18 @@ Transform:
   m_Father: {fileID: 1770095366987548403}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2028682620089598346
+--- !u!114 &4362510131081091217
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2028682620089598340}
+  m_GameObject: {fileID: 5325226923327632186}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b9b7393ad1dcf245b02c36a76c6088b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 4702877426357213096, guid: ea177ccf3bcc26f4c989d8d7190cd334, type: 3}
-  poolSize: 30
-  expandable: 1
---- !u!1 &2028682620687638123
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2028682620687638120}
-  - component: {fileID: 2028682620687638121}
-  m_Layer: 0
-  m_Name: PoolerBulletShotgun
-  m_TagString: BulletPoolShotgun
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2028682620687638120
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2028682620687638123}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1770095366987548403}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2028682620687638121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2028682620687638123}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b9b7393ad1dcf245b02c36a76c6088b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 4702877426357213096, guid: 35e612a0a3e877645a466e290b48ab34, type: 3}
-  poolSize: 10
+  prefab: {fileID: 4702877426357213096, guid: f368cb74e81331f499e0f540fa2850ea, type: 3}
+  poolSize: 20
   expandable: 1

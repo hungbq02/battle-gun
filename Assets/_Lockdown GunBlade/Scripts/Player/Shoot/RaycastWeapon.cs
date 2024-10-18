@@ -1,152 +1,177 @@
 ﻿using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
+
 public class RaycastWeapon : MonoBehaviour
 {
-    //Weapon ID :   Pistol     0
-    //              Rifle      1
-    //              Shotgun    2
-    ///
-    //tia lua khi ban
-    public bool isShooting = false;
-    public bool canShoot = true;
+    [Header("Check")]
+    public bool readyToShoot = true;
     public bool isReloading;
 
-    public float timeDelayShoot;
+    [Header("Settings")]
     public ParticleSystem muzzleFlash;
-
-    //  public GameObject bulletPrefab;
     public Transform barrelTransform;
-    public Transform targetTransform;
-    public float bulletHitMissDistance = 25f;
+    public Transform camTransform;
     public Image reloadCircle;
-
-
+    public LayerMask whatIsEnemy;
+    public Text cooldownText;
     public Animator animator;
     public PlayerController playerController;
     public WeaponUI weaponUI;
+    [SerializeField]
+    private LineRenderer bulletTrail;
 
+    [Header("Stats")]
+    public int damage;
+    public float spread; //Dispersion of bullets
+    public float timeDelayShoot;
+    public float range;
     public int currentAmmo;
     public int maxAmmo = 10;
     public int magazineAmmo = 30;
-
+    public int bulletPerTap = 1;
     public float reloadTime = 1f;
-    private float remainingTime;
-    public Text cooldownText;
+    public float timeToDestroyBulletHole = 3f;
 
     Ray ray;
     RaycastHit hit;
+
+   private float remainingTime;
 
     private void Start()
     {
         currentAmmo = maxAmmo;
         weaponUI.UpdateInfo(currentAmmo, magazineAmmo);
-
     }
+
     private void OnEnable()
     {
         isReloading = false;
-        isShooting = false;
-        canShoot = true;
+        readyToShoot = true;
 
         animator.SetBool("isReloading", false);
         weaponUI.UpdateInfo(currentAmmo, magazineAmmo);
         UpdateReloadUI();
     }
+
     private void Update()
     {
-        if (currentAmmo == 0 && magazineAmmo == 0)
-        {
-            return;
-        }
+        if (currentAmmo == 0 && magazineAmmo == 0 || isReloading) return;
 
         if (currentAmmo == maxAmmo)
         {
             playerController.input.reload = false;
             return;
         }
-
-        if (isReloading)
-            return;
-        if (currentAmmo == 0 && magazineAmmo > 0 || playerController.input.reload && !isReloading)
+        if (CanReload())
         {
-            //Debug.Log("reload");
-            playerController.SetAnimLayer("UpperBodyLayer", 1f);
             StartCoroutine(Reload());
         }
     }
-    //Fire
+    //Check if the player can reload
+    private bool CanReload()
+    {
+        return !isReloading && (currentAmmo == 0 && magazineAmmo > 0 || playerController.input.reload || currentAmmo < bulletPerTap);
+    }
     public void StartShooting()
     {
-        // Debug.Log(playerController.weapon.name);
+        if (!readyToShoot || currentAmmo <= 0) return;
 
-        isShooting = true;
-        if (!canShoot || currentAmmo <= 0) return;
+        PlayShootAnimation();
 
-        muzzleFlash.Emit(1);
-        AudioManager.Instance.PlaySFX("shooting");
-        currentAmmo--;
-        weaponUI.UpdateInfo(currentAmmo, magazineAmmo);
+        //Update player rotation to match camera
+        playerController.UpdatePlayerRotationToMatchCamera();
 
-
-        ray.origin = barrelTransform.position;
-        ray.direction = targetTransform.position - barrelTransform.position;
-
-        GameObject bullet = CreateBullet();
-        BulletController bulletController = bullet.GetComponent<BulletController>();
-
-        bullet.transform.forward = ray.direction.normalized;
-
-        float distanceCheck = Vector3.Distance(barrelTransform.position, targetTransform.position);
-        if (Physics.Raycast(ray, out hit))
+        for (int i = 0; i < bulletPerTap; i++)
         {
-            bulletController.target = hit.point;
-            bulletController.hit = true;
+            muzzleFlash.Emit(1);
+            AudioManager.Instance.PlaySFX("shooting");
+
+            Vector3 direction = GetSpreadDirection();
+            ray.origin = camTransform.position;
+            ray.direction = direction;
+
+            //Distance miss
+            Vector3 hitPointMiss = camTransform.position + direction * range;
+
+            if (Physics.Raycast(ray, out hit, range, whatIsEnemy))
+            {
+                SpawnBulletTrail(hit.point);
+                HandleHit(hit);
+            }
+            else
+            {
+                SpawnBulletTrail(hitPointMiss);
+            }
+        }
+        currentAmmo-=bulletPerTap;
+        weaponUI.UpdateInfo(currentAmmo, magazineAmmo);
+        readyToShoot = false;
+        StartCoroutine(ReadyToShoot());
+    }
+    //Calculate the direction of the bullet with a certain spread
+    private Vector3 GetSpreadDirection()
+    {
+        float x = Random.Range(-spread, spread);
+        float y = Random.Range(-spread, spread);
+        return (camTransform.forward + new Vector3(x, y, 0f)).normalized;
+    }
+    private void HandleHit(RaycastHit hit)
+    {
+        GameObject hitObject = hit.collider.gameObject;
+        IDamageable damageable = hitObject.GetComponent<IDamageable>();
+
+        if (damageable != null)
+        {
+            damageable.TakeDamage(damage);
         }
         else
         {
-            bulletController.target = Camera.main.transform.position + Camera.main.transform.forward * bulletHitMissDistance;
-            bulletController.hit = false;
+            CreateBulletHole(hit.point, hit.normal);
         }
-        // If weapon is shotgun, check distance
-        if (this.gameObject.name == "ShotGun")
-        {
-            if (distanceCheck > 15f)
-            {
-                bulletController.hit = false;
-            }
-        }
-        canShoot = false;
-        StartCoroutine(CanShoot());
     }
-    public void StopShooting()
+    void CreateBulletHole(Vector3 position, Vector3 normal)
     {
-        isShooting = false;
+        // Create bullet hole
+        GameObject bulletHolePool = PoolManager.Instance.bulletHolePool.GetObject();
+        if (bulletHolePool.activeSelf) return;
+
+        bulletHolePool.transform.position = position + normal * 0.01f;
+        bulletHolePool.transform.rotation = Quaternion.LookRotation(normal);
+        bulletHolePool.SetActive(true);
+        // Deactivate bullet hole after time
+        StartCoroutine(DeactivateAfterTime(bulletHolePool, timeToDestroyBulletHole, PoolManager.Instance.bulletHolePool));
+
+    }
+    void SpawnBulletTrail(Vector3 hitPoint)
+    {
+        GameObject bulletTrailEffect = PoolManager.Instance.bulletTrailPool.GetObject();  
+        LineRenderer lineRenderer = bulletTrailEffect.GetComponent<LineRenderer>();
+
+        /*//Fix no display bullet trail when reused, Reset the color of the LineRenderer to the default (white) 
+        lineRenderer.startColor = new Color32(255, 212, 148, 255);
+        lineRenderer.endColor = new Color32(255, 212, 148, 255);*/
+
+
+        lineRenderer.SetPosition(0, barrelTransform.position);
+        lineRenderer.SetPosition(1, hitPoint);
+        bulletTrailEffect.SetActive(true);
+
+        // Deactivate bullet trail after time
+        StartCoroutine(DeactivateAfterTime(bulletTrailEffect, 4f, PoolManager.Instance.bulletTrailPool));
     }
 
-    GameObject CreateBullet()
-    {
-        //Get current weapon ID 
-        int typeWeapon = WeaponSwiching.selectedWeapon;
-        //Get the correct bullet pool based on the current weapon type
-        Pooler bulletPool = PoolManager.Instance.GetBulletPool(typeWeapon);
 
-        GameObject bullet = bulletPool.GetObject();
-        bullet.transform.SetPositionAndRotation(barrelTransform.position, Quaternion.identity);
-        bullet.SetActive(true);
-        return bullet;
-    }
-    IEnumerator CanShoot()
+    IEnumerator ReadyToShoot()
     {
-        canShoot = false;
+        readyToShoot = false;
         yield return new WaitForSeconds(timeDelayShoot);
-        isShooting = false;
-        canShoot = true;
+        readyToShoot = true;
     }
 
+    //Reload
     IEnumerator Reload()
     {
         isReloading = true;
@@ -155,7 +180,7 @@ public class RaycastWeapon : MonoBehaviour
         playerController.SetAnimLayer("UpperBodyLayer", 1f);
         animator.SetBool("isReloading", true);
 
-        //Cooldown reload UI
+        // Cooldown reload UI
         reloadCircle.gameObject.SetActive(true);
         remainingTime = reloadTime;
         reloadCircle.fillAmount = 1;
@@ -165,10 +190,16 @@ public class RaycastWeapon : MonoBehaviour
         DOTween.To(() => remainingTime, x => remainingTime = x, 0f, reloadTime)
             .SetEase(Ease.Linear)
             .OnUpdate(() => cooldownText.text = Mathf.Ceil(remainingTime).ToString("F2"))
-            .OnComplete(() => reloadCircle.gameObject.SetActive(false)); //Deactive cooldown UI
+            .OnComplete(() => reloadCircle.gameObject.SetActive(false));
 
-        //wait reload
         yield return new WaitForSeconds(reloadTime);
+        ReloadFinished();
+
+
+    }
+    //Reload finished
+    private void ReloadFinished()
+    {
         animator.SetBool("isReloading", false);
 
         if (magazineAmmo >= maxAmmo)
@@ -183,10 +214,17 @@ public class RaycastWeapon : MonoBehaviour
         }
         weaponUI.UpdateInfo(currentAmmo, magazineAmmo);
 
-
         isReloading = false;
         playerController.input.reload = false;
     }
+    //Play shoot animation
+    private void PlayShootAnimation()
+    {
+        playerController.SetAnimLayer("UpperBodyLayer", 1f); // Cài đặt layer animation
+        playerController.animator.SetFloat("ShootAnimSpeed", 2f); // Tốc độ animation bắn
+        playerController.animator.CrossFade("Shoot", 0.1f, 1, 0f); // Chuyển đổi animation
+    }
+    //Update UI reload
     private void UpdateReloadUI()
     {
         if (isReloading)
@@ -199,6 +237,11 @@ public class RaycastWeapon : MonoBehaviour
         {
             reloadCircle.gameObject.SetActive(false);
         }
+    }
+    private IEnumerator DeactivateAfterTime(GameObject obj, float delay, Pooler pool)
+    {
+        yield return new WaitForSeconds(delay);
+        pool.ReturnObject(obj);
     }
 
 

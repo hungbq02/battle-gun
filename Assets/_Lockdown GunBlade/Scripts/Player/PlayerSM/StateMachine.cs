@@ -1,13 +1,30 @@
 
 using UnityEngine;
 
-public class StateMachine
+public class StateMachine : MonoBehaviour
 {
     public BaseState currentState;
-    public void Initialize(BaseState startingState)
+
+
+    void Start()
     {
-        currentState = startingState;
-        startingState.Enter();
+        currentState = GetInitialState();
+        currentState?.Enter();
+    }
+    void Update()
+    {
+        currentState?.HandleInput();
+        currentState?.UpdateLogic();
+    }
+
+    void LateUpdate()
+    {
+        currentState?.UpdatePhysics();
+    }
+
+    protected virtual BaseState GetInitialState()
+    {
+        return null;
     }
 
     public void ChangeState(BaseState newState)
@@ -16,6 +33,13 @@ public class StateMachine
 
         currentState = newState;
         newState.Enter();
+    }
+    private void OnGUI()
+    {
+        GUILayout.BeginArea(new Rect(10f, 10f, 200f, 100f));
+        string content = currentState != null ? currentState.ToString() : "(no current state)";
+        GUILayout.Label($"<color='black'><size=40>{content}</size></color>");
+        GUILayout.EndArea();
     }
 
 }

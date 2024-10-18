@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class LandingState : BaseState
+public class LandingState : Grounded
 {
     float timePassed;
     float landingTime; //Delay from jumpend -> move
-    public LandingState(PlayerController _playerController, StateMachine _stateMachine) : base(_playerController, _stateMachine)
+    public LandingState(PlayerController _playerController, MovementSM _stateMachine) : base(_playerController, _stateMachine)
     {
         playerController = _playerController;
         stateMachine = _stateMachine;
@@ -24,12 +24,12 @@ public class LandingState : BaseState
             playerController.animator.SetTrigger("move");
             //standing + jump -> standing
             //ahooting + jump -> shooting
-            if (playerController.weapon.isShooting)
+            if (isShooting)
             {
-                stateMachine.ChangeState(playerController.shootState);
+                stateMachine.ChangeState(sm.shootState);
                 return;
             }
-            stateMachine.ChangeState(playerController.standingState);
+            stateMachine.ChangeState(sm.idleState);
         }
         timePassed += Time.deltaTime;
     }

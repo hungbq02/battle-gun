@@ -4,7 +4,6 @@ using UnityEngine.AI;
 public class powerUpStateBoss : StateMachineBehaviour
 {
     float immuneTime;
-    int dameBoss;
     Collider collider;
     NavMeshAgent agent;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
@@ -14,27 +13,24 @@ public class powerUpStateBoss : StateMachineBehaviour
         immuneTime = 5f;
         collider = animator.GetComponent<Collider>();
         agent = animator.GetComponent<NavMeshAgent>();
-        dameBoss = animator.GetComponent<CollisionEnermyAttackHandler>().damage;
-
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+
+        // Debug.Log(" time IMMUNE = "+ immuneTime);
         immuneTime -= Time.deltaTime;
-        if (immuneTime > 0)
+        if (immuneTime < 0.1)
         {
-           // Debug.Log("IMMUNE");
-            collider.enabled = false;
+            collider.enabled = true;
+            agent.speed = 10;
+            animator.GetComponent<CollisionEnermyAttackHandler>().damage = 200;
+            animator.SetBool("isImmune", false);
         }
         else
         {
-            //Debug.Log("Complete Power");
-
-            collider.enabled = true;
-            agent.speed = 10;
-            dameBoss = 2 * dameBoss;
-            animator.SetBool("isImmune", false);
+            collider.enabled = false;
         }
     }
 

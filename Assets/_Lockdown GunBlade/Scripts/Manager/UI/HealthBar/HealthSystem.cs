@@ -1,19 +1,18 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public abstract class HealthSystem : MonoBehaviour
+[RequireComponent(typeof(HealthDisplay))]
+public abstract class HealthSystem : MonoBehaviour, IDamageable
 {
     public float maxHealth;
     protected float currentHealth;
 
-    [SerializeField] protected Image healthBar;
-    [SerializeField] protected Image damagedHealthBar;
-    [SerializeField] protected Text countHealth;
+    [SerializeField] protected HealthDisplay healthDisplay;
     [SerializeField] protected float damagedHealthBarSpeed = 2.0f;
 
     public Animator animator;
+    [SerializeField] private float damageAnimationDelay = 2; // Delay time between
+    private bool isDamageAnimating = false;
 
     protected virtual void Start()
     {
@@ -28,33 +27,21 @@ public abstract class HealthSystem : MonoBehaviour
 
     protected void UpdateHealthBar()
     {
-        healthBar.fillAmount = currentHealth / maxHealth;
-        countHealth.text = $"{currentHealth} / {maxHealth}";
-        SetColor();
+        float healthRatio = GetHealthRatio();
+        healthDisplay.UpdateHealthBar(healthRatio, currentHealth, maxHealth);
+        SetColor(healthRatio * 100);
     }
 
     protected void UpdateDamagedHealthBar()
     {
-        if (healthBar.fillAmount < damagedHealthBar.fillAmount)
-        {
-            damagedHealthBar.fillAmount -= damagedHealthBarSpeed * Time.deltaTime / maxHealth;
-            if (damagedHealthBar.fillAmount < healthBar.fillAmount)
-            {
-                damagedHealthBar.fillAmount = healthBar.fillAmount;
-            }
-        }
-        else if (healthBar.fillAmount > damagedHealthBar.fillAmount)
-        {
-            damagedHealthBar.fillAmount = healthBar.fillAmount;
-        }
+        float healthRatio = GetHealthRatio();
+        healthDisplay.UpdateDamagedHealthBar(healthRatio, damagedHealthBarSpeed);
     }
-
-    protected virtual void SetColor()
+    protected float GetHealthRatio()
     {
-        // Default implementation for setting color, can be overridden in subclasses
+        return currentHealth / maxHealth;
     }
-
-    public void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage)
     {
         if (damage >= currentHealth)
         {
@@ -65,9 +52,10 @@ public abstract class HealthSystem : MonoBehaviour
         else
         {
             currentHealth -= damage;
-            ActivatePowerUp();
-            animator.SetTrigger("damage");
-            //Check 
+            if (!isDamageAnimating)
+            {
+                StartCoroutine(DelayAnimDamage());
+            }
         }
         UpdateHealthBar();
     }
@@ -84,8 +72,18 @@ public abstract class HealthSystem : MonoBehaviour
         }
         UpdateHealthBar();
     }
+    //Coroutine Delay (ðang ????)
+    private IEnumerator DelayAnimDamage()
+    {
+        isDamageAnimating = true;
+        animator.SetTrigger("damage");
 
+        // Wait for the duration of the animation delay
+        yield return new WaitForSeconds(damageAnimationDelay);
+
+        isDamageAnimating = false;
+    }
     protected abstract void HandleDeath();
-    protected virtual void ActivatePowerUp(){}
-
+    protected virtual void SetColor(float healthPercentage) { }
+    protected virtual void ActivatePowerUp() { }
 }
