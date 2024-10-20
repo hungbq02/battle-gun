@@ -10740,6 +10740,10 @@ PrefabInstance:
       propertyPath: prefab
       value: 
       objectReference: {fileID: 1930985349805526, guid: d2ec70c814159504cb3e12e99b00b151, type: 3}
+    - target: {fileID: 1770095367062664910, guid: 70dfae6920664c345af036beebc708a4, type: 3}
+      propertyPath: poolSize
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 2028682620089598340, guid: 70dfae6920664c345af036beebc708a4, type: 3}
       propertyPath: m_TagString
       value: Untagged
@@ -10752,6 +10756,10 @@ PrefabInstance:
       propertyPath: prefab
       value: 
       objectReference: {fileID: 381933492039790800, guid: 70d35127f90e0ab46be0e8d6ef26b6c2, type: 3}
+    - target: {fileID: 4362510131081091217, guid: 70dfae6920664c345af036beebc708a4, type: 3}
+      propertyPath: poolSize
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 5325226923327632186, guid: 70dfae6920664c345af036beebc708a4, type: 3}
       propertyPath: m_TagString
       value: BulletHolePool
@@ -10932,10 +10940,30 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1878249409}
+    - target: {fileID: 4245589933994780120, guid: cfa7775a43643c3418d71c3a4f89f9b8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4245589934239251401, guid: cfa7775a43643c3418d71c3a4f89f9b8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4245589935001824198, guid: cfa7775a43643c3418d71c3a4f89f9b8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4245589935224446699, guid: cfa7775a43643c3418d71c3a4f89f9b8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4245589935293931609, guid: cfa7775a43643c3418d71c3a4f89f9b8, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 1878249409}
+    - target: {fileID: 4245589935574066437, guid: cfa7775a43643c3418d71c3a4f89f9b8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfa7775a43643c3418d71c3a4f89f9b8, type: 3}
 --- !u!1001 &2424423574052019938
@@ -11167,11 +11195,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2637197236405514933, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
       propertyPath: damage
-      value: 100
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2637197236405514933, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
       propertyPath: spread
-      value: 0.01
+      value: 0.005
       objectReference: {fileID: 0}
     - target: {fileID: 2637197236405514933, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
       propertyPath: weaponUI
@@ -11302,6 +11330,10 @@ PrefabInstance:
       value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 4288044430730807453, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
+      propertyPath: maxAmmo
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4288044430730807453, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
       propertyPath: weaponUI
       value: 
       objectReference: {fileID: 1183285501}
@@ -11326,6 +11358,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 470860190}
     - target: {fileID: 4288044430730807453, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
+      propertyPath: magazineAmmo
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 4288044430730807453, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
       propertyPath: reloadCircle
       value: 
       objectReference: {fileID: 549699951}
@@ -11335,7 +11371,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4288044430730807453, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
       propertyPath: timeDelayShoot
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4288044430730807453, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
       propertyPath: barrelTransform
@@ -11363,7 +11399,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8649678770402804744, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
       propertyPath: spread
-      value: 0.03
+      value: 0.02
       objectReference: {fileID: 0}
     - target: {fileID: 8649678770402804744, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
       propertyPath: weaponUI
@@ -11404,6 +11440,10 @@ PrefabInstance:
     - target: {fileID: 8649678770402804744, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
       propertyPath: whatIsEnemy.m_Bits
       value: 320
+      objectReference: {fileID: 0}
+    - target: {fileID: 8649678770402804744, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
+      propertyPath: timeToDestroyBulletHole
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}

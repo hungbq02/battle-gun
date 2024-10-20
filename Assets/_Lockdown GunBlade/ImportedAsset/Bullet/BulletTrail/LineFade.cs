@@ -7,10 +7,15 @@ public class LineFade : MonoBehaviour
     [SerializeField] private float speed = 10f;
 
     LineRenderer lr;
-
-    void Start()
+    private void Awake()
     {
         lr = GetComponent<LineRenderer>();
+    }
+    private void OnEnable()
+    {
+        color.a = 1;
+        lr.startColor = color;
+        lr.endColor = color;
     }
 
     void Update()

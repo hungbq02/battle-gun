@@ -33,7 +33,9 @@ public class RaycastWeapon : MonoBehaviour
     public int magazineAmmo = 30;
     public int bulletPerTap = 1;
     public float reloadTime = 1f;
-    public float timeToDestroyBulletHole = 3f;
+    private float timeToDestroyBulletHole = 1f;
+    private float timeToDestroyBulletTrail = 0.5f;
+
 
     Ray ray;
     RaycastHit hit;
@@ -150,17 +152,12 @@ public class RaycastWeapon : MonoBehaviour
         GameObject bulletTrailEffect = PoolManager.Instance.bulletTrailPool.GetObject();  
         LineRenderer lineRenderer = bulletTrailEffect.GetComponent<LineRenderer>();
 
-        /*//Fix no display bullet trail when reused, Reset the color of the LineRenderer to the default (white) 
-        lineRenderer.startColor = new Color32(255, 212, 148, 255);
-        lineRenderer.endColor = new Color32(255, 212, 148, 255);*/
-
-
         lineRenderer.SetPosition(0, barrelTransform.position);
         lineRenderer.SetPosition(1, hitPoint);
         bulletTrailEffect.SetActive(true);
 
         // Deactivate bullet trail after time
-        StartCoroutine(DeactivateAfterTime(bulletTrailEffect, 4f, PoolManager.Instance.bulletTrailPool));
+        StartCoroutine(DeactivateAfterTime(bulletTrailEffect, timeToDestroyBulletTrail, PoolManager.Instance.bulletTrailPool));
     }
 
 
