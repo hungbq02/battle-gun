@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class WeaponSwiching : MonoBehaviour
 {
-    public static int selectedWeapon = 0; // <=> The number of the parent's child object
+    public int selectedWeapon = 0; // <=> The number of the parent's child object
     public PlayerController playerController;
     public Animator animPlayer; 
     public Image weaponIcon;
@@ -12,9 +12,8 @@ public class WeaponSwiching : MonoBehaviour
     public AnimatorOverrideController pistolAnimatorOverride;
     public AnimatorOverrideController rifleAnimatorOverride;
     public AnimatorOverrideController shotgunAnimatorOverride;
-    private AnimatorOverrideController currentOverrideController;
 
-    private void Start()
+    private void Awake()
     {
         SelectWeapon();
     }
@@ -53,6 +52,7 @@ public class WeaponSwiching : MonoBehaviour
                 weapon.gameObject.SetActive(false);
             i++;
         }
+
         //Update anim
         switch (selectedWeapon)
         {

@@ -4,8 +4,6 @@ public class IdleState : Grounded
 {
     public IdleState(PlayerController _playerController, MovementSM _stateMachine) : base(_playerController, _stateMachine)
     {
-        playerController = _playerController;
-        stateMachine = _stateMachine;
     }
 
     public override void Enter()
@@ -18,14 +16,14 @@ public class IdleState : Grounded
     public override void HandleInput()
     {
         base.HandleInput();
-        UpdateMovementAnimation();
     }
 
     public override void UpdateLogic()
     {
-
         base.UpdateLogic();
-        if (inputDir.sqrMagnitude != 0f)
+        UpdateMovementAnimation();
+         
+        if (inputDir.sqrMagnitude > Mathf.Epsilon)
         {
             stateMachine.ChangeState(sm.moveState);
             return;

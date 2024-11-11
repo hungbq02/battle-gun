@@ -37,6 +37,10 @@ public class PlayerInputHandler : MonoBehaviour
             LookInput(value.Get<Vector2>());
         }
     }
+    public void OnTouchZoneLookInput(Vector2 lookInput)
+    {
+        look = lookInput;
+    }
 
     public void OnJump(InputValue value)
     {
@@ -107,27 +111,11 @@ public class PlayerInputHandler : MonoBehaviour
     {
         SetCursorState(cursorLocked);
     }
-    void CursorIsActive()
-    {
-        Debug.Log("CursorIsActive");
-        Cursor.lockState = CursorLockMode.None;
-    }
     //Fix Cursor can’t click in Locked mouse state
     //Cursor.lockState = CursorLockMode.None -> Cursor.lockState = CursorLockMode.Confined 
-    private void SetCursorState(bool newState)
+    public void SetCursorState(bool newState)
     {
         Cursor.lockState = newState ? CursorLockMode.Locked : Cursor.lockState = CursorLockMode.Confined; 
-    }
-
-    private bool IsPointerOverUIObject()
-    {
-        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current)
-        {
-            position = new Vector2(Input.mousePosition.x, Input.mousePosition.y)
-        };
-        List<RaycastResult> results = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
-        return results.Count > 0;
     }
 
 }

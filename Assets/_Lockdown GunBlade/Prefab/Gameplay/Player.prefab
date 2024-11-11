@@ -4996,6 +4996,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc1c42583b5efcc4193a58bce3a5ce01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedWeapon: 0
   playerController: {fileID: 3340131580055926729}
   animPlayer: {fileID: 8354594580741601026}
   weaponIcon: {fileID: 0}
@@ -20285,25 +20286,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   readyToShoot: 1
   isReloading: 0
-  timeDelayShoot: 0.3
   muzzleFlash: {fileID: 830998850940891271}
+  barrelTransform: {fileID: 0}
   camTransform: {fileID: 0}
-  bulletHitMissDistance: 25
-  range: 0
   reloadCircle: {fileID: 0}
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 0
-  spread: 0
-  damage: 0
-  currentAmmo: 0
-  maxAmmo: 10
-  magazineAmmo: 30
-  reloadTime: 2
   cooldownText: {fileID: 0}
   animator: {fileID: 8354594580741601026}
   playerController: {fileID: 3340131580055926729}
   weaponUI: {fileID: 0}
+  bulletTrail: {fileID: 0}
+  damage: 0
+  spread: 0
+  timeDelayShoot: 0.3
+  range: 0
+  currentAmmo: 0
+  maxAmmo: 10
+  magazineAmmo: 30
+  bulletPerTap: 1
+  reloadTime: 2
 --- !u!1 &2761985701575439354
 GameObject:
   m_ObjectHideFlags: 0
@@ -20658,7 +20661,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d47752a7362d743438727ba413f9f26d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSM: {fileID: 0}
   playerController: {fileID: 3340131580055926729}
 --- !u!114 &3340131580055926721
 MonoBehaviour:
@@ -30691,25 +30693,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   readyToShoot: 1
   isReloading: 0
-  timeDelayShoot: 1
   muzzleFlash: {fileID: 3820052476100149683}
+  barrelTransform: {fileID: 0}
   camTransform: {fileID: 0}
-  bulletHitMissDistance: 10
-  range: 0
   reloadCircle: {fileID: 0}
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 0
-  spread: 0
-  damage: 0
-  currentAmmo: 0
-  maxAmmo: 5
-  magazineAmmo: 15
-  reloadTime: 4
   cooldownText: {fileID: 0}
   animator: {fileID: 8354594580741601026}
   playerController: {fileID: 3340131580055926729}
   weaponUI: {fileID: 0}
+  bulletTrail: {fileID: 0}
+  damage: 0
+  spread: 0
+  timeDelayShoot: 1
+  range: 0
+  currentAmmo: 0
+  maxAmmo: 5
+  magazineAmmo: 15
+  bulletPerTap: 1
+  reloadTime: 4
 --- !u!1 &5058759044727954102
 GameObject:
   m_ObjectHideFlags: 0
@@ -33206,22 +33210,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   readyToShoot: 1
   isReloading: 0
-  timeDelayShoot: 0.1
   muzzleFlash: {fileID: 668793459162947926}
+  barrelTransform: {fileID: 0}
   camTransform: {fileID: 0}
-  bulletHitMissDistance: 25
-  range: 0
   reloadCircle: {fileID: 0}
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 0
-  spread: 0
-  damage: 0
-  currentAmmo: 0
-  maxAmmo: 30
-  magazineAmmo: 120
-  reloadTime: 5
   cooldownText: {fileID: 0}
   animator: {fileID: 8354594580741601026}
   playerController: {fileID: 3340131580055926729}
   weaponUI: {fileID: 0}
+  bulletTrail: {fileID: 0}
+  damage: 0
+  spread: 0
+  timeDelayShoot: 0.1
+  range: 0
+  currentAmmo: 0
+  maxAmmo: 30
+  magazineAmmo: 120
+  bulletPerTap: 1
+  reloadTime: 5

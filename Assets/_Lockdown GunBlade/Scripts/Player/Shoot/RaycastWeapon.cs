@@ -1,7 +1,6 @@
 ﻿using DG.Tweening;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class RaycastWeapon : MonoBehaviour
@@ -40,7 +39,7 @@ public class RaycastWeapon : MonoBehaviour
     Ray ray;
     RaycastHit hit;
 
-   private float remainingTime;
+    private float remainingTime;
 
     private void Start()
     {
@@ -79,6 +78,7 @@ public class RaycastWeapon : MonoBehaviour
     }
     public void StartShooting()
     {
+
         if (!readyToShoot || currentAmmo <= 0) return;
 
         PlayShootAnimation();
@@ -108,9 +108,12 @@ public class RaycastWeapon : MonoBehaviour
                 SpawnBulletTrail(hitPointMiss);
             }
         }
-        currentAmmo-=bulletPerTap;
+        CinemachineShake.Instance.ShakeCamera(4, 0.1f);
+        currentAmmo -= bulletPerTap;
         weaponUI.UpdateInfo(currentAmmo, magazineAmmo);
         readyToShoot = false;
+
+
         StartCoroutine(ReadyToShoot());
     }
     //Calculate the direction of the bullet with a certain spread
@@ -123,9 +126,9 @@ public class RaycastWeapon : MonoBehaviour
     private void HandleHit(RaycastHit hit)
     {
         GameObject hitObject = hit.collider.gameObject;
-        IDamageable damageable = hitObject.GetComponent<IDamageable>();
 
-        if (damageable != null)
+        //Check if the object is damageable
+        if (hitObject.TryGetComponent<IDamageable>(out var damageable))
         {
             damageable.TakeDamage(damage);
         }
@@ -140,16 +143,14 @@ public class RaycastWeapon : MonoBehaviour
         GameObject bulletHolePool = PoolManager.Instance.bulletHolePool.GetObject();
         if (bulletHolePool.activeSelf) return;
 
-        bulletHolePool.transform.position = position + normal * 0.01f;
-        bulletHolePool.transform.rotation = Quaternion.LookRotation(normal);
+        bulletHolePool.transform.SetPositionAndRotation(position + normal * 0.01f, Quaternion.LookRotation(normal));
         bulletHolePool.SetActive(true);
         // Deactivate bullet hole after time
         StartCoroutine(DeactivateAfterTime(bulletHolePool, timeToDestroyBulletHole, PoolManager.Instance.bulletHolePool));
-
     }
     void SpawnBulletTrail(Vector3 hitPoint)
     {
-        GameObject bulletTrailEffect = PoolManager.Instance.bulletTrailPool.GetObject();  
+        GameObject bulletTrailEffect = PoolManager.Instance.bulletTrailPool.GetObject();
         LineRenderer lineRenderer = bulletTrailEffect.GetComponent<LineRenderer>();
 
         lineRenderer.SetPosition(0, barrelTransform.position);
@@ -217,9 +218,9 @@ public class RaycastWeapon : MonoBehaviour
     //Play shoot animation
     private void PlayShootAnimation()
     {
-        playerController.SetAnimLayer("UpperBodyLayer", 1f); // Cài đặt layer animation
-        playerController.animator.SetFloat("ShootAnimSpeed", 2f); // Tốc độ animation bắn
-        playerController.animator.CrossFade("Shoot", 0.1f, 1, 0f); // Chuyển đổi animation
+        playerController.SetAnimLayer("UpperBodyLayer", 1f);
+        playerController.animator.SetFloat("ShootAnimSpeed", 2f);
+        playerController.animator.CrossFade("Shoot", 0.1f, 1, 0f);
     }
     //Update UI reload
     private void UpdateReloadUI()

@@ -36,6 +36,7 @@ public class Grounded : BaseState
     public override void HandleInput()
     {
         base.HandleInput();
+
         inputDir = new Vector3(playerController.input.move.x, 0.0f, playerController.input.move.y);
         normInput = inputDir.normalized;
     }
@@ -43,13 +44,13 @@ public class Grounded : BaseState
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        
+
         isGrounded = playerController.IsGrounded();
         //Jump
-        if (isShooting) return;
+        if (isShooting || isRolling) return;
         if (playerController.input.jump)
             stateMachine.ChangeState(sm.jumpingState);
-        if (playerController.input.shoot && !isRolling)
+        if (playerController.input.shoot)
             stateMachine.ChangeState(sm.shootState);
     }
     public override void UpdatePhysics()
@@ -76,6 +77,7 @@ public class Grounded : BaseState
         playerController.animator.SetFloat(moveXParameter, normInput.x);
         playerController.animator.SetFloat(moveZParameter, normInput.z);
     }
+
     protected void ApplyGravity()
     {
         gravityVelocity.y += gravity * Time.deltaTime;

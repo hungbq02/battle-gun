@@ -9,8 +9,8 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Player")]
     public float moveSpeed = 4.5f;
-    public float shootMoveSpeed = 3.5f;
     public float sprintSpeed = 6.5f;
+    public float shootMoveSpeed = 3.5f;
 
     public float jumpHeight;
     public float airControl;
@@ -62,18 +62,9 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public Animator animator;
     [HideInInspector] public CharacterController controller;
     [HideInInspector] public PlayerInputHandler input;
+    [HideInInspector] public UIVirtualTouchZone touchField;
+
     [HideInInspector] public Transform cameraTransform;
-    #endregion
-
-    #region SM
-
-
-
-
-
-    // public JumpState jumpState;
-
-
     #endregion
 
     [Header("Rotate Player Towards Camera")]
@@ -110,15 +101,15 @@ public class PlayerController : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         weapon = GetComponentInChildren<RaycastWeapon>();
         cameraTransform = Camera.main.transform;
-
+        touchField = FindObjectOfType<UIVirtualTouchZone>();
+       // input.SetCursorState(true);
 
         gravity *= gravityMultiplier;
-
     }
     private void Update()
     {
         if(!HealthSystemPlayer.isAlive) return;
-
+        input.look = touchField.TouchDist;
         if (input.move.sqrMagnitude >= _threshold)
         {
             RotateTowardsCamera();
@@ -171,6 +162,7 @@ public class PlayerController : MonoBehaviour
         float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, rotationSmoothTime);
         transform.rotation = Quaternion.Euler(0f, angle, 0f);
     }
+    // Update the player rotation to match the camera's rotation when shooting
     public void UpdatePlayerRotationToMatchCamera()
     {
         // Get the angle the camera

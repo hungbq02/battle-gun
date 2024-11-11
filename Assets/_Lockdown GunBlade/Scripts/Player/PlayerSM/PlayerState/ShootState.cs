@@ -4,9 +4,7 @@ using UnityEngine.EventSystems;
 
 public class ShootState : Grounded
 {
-
-
-    public float transitionLayerSpeed = 14f;
+    public float transitionLayerSpeed = 15f;
 
     public ShootState(PlayerController _playerController, MovementSM _stateMachine) : base(_playerController, _stateMachine)
     {
@@ -30,28 +28,28 @@ public class ShootState : Grounded
     {
         base.UpdateLogic();
 
-        if (playerController.weapon.isReloading)
-        {
-            return;
-        }
+        if (playerController.weapon.isReloading) return;
+
         if (playerController.weapon.readyToShoot)
         {
             if (playerController.input.shoot)
             {
                 //If the mouse pointer is pointing at the UI, do not shoot
-                if (IsPointerOverUIObject())
+               /* if (IsPointerOverUIObject())
                 {
                     return;
                 }
+*/
                 playerController.weapon.StartShooting();
 
             }
             else
             {
                 playerController.animator.SetFloat("ShootAnimSpeed", 1.0f); // reset speed animation shoot
-              //  playerController.weapon.StopShooting();
+                                                                            //  playerController.weapon.StopShooting();
+                SmoothTransitionToLayer("UpperBodyLayer", 0f);
 
-                //Get layer shooting
+                /*//Get layer shooting
                 float currentLayerWeight = playerController.animator.GetLayerWeight(1);
 
                 //Smooth change layer
@@ -60,15 +58,9 @@ public class ShootState : Grounded
                 if (currentLayerWeight < 0.001f)
                 {
                     stateMachine.ChangeState(sm.idleState);
-                }
+                }*/
             }
         }
-
-        if (playerController.weapon.isReloading)
-        {
-            stateMachine.ChangeState(sm.idleState);
-        }
-
         //Change state
         if (playerController.input.jump)
         {
@@ -86,6 +78,15 @@ public class ShootState : Grounded
         isShooting = false;
     }
 
+    private void SmoothTransitionToLayer(string layerName, float targetWeight)
+    {
+        float currentLayerWeight = playerController.animator.GetLayerWeight(1);
+        playerController.SetAnimLayer(layerName, Mathf.Lerp(currentLayerWeight, targetWeight, Time.deltaTime * transitionLayerSpeed));
+        if (currentLayerWeight < 0.001f)
+        {
+            stateMachine.ChangeState(sm.idleState);
+        }
+    }
 
     private bool IsPointerOverUIObject()
     {

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MovementSM : StateMachine
 {
-    [HideInInspector] public StateMachine movementSM;
     [HideInInspector] public IdleState idleState;
     [HideInInspector] public MoveState moveState;
     [HideInInspector] public JumpState jumpingState;
@@ -19,8 +18,6 @@ public class MovementSM : StateMachine
         moveState = new MoveState(playerController, this);
         jumpingState = new JumpState(playerController, this);
         shootState = new ShootState(playerController, this);
-
-
         landingState = new LandingState(playerController, this);
         rollingState = new RollingState(playerController, this);
     }
