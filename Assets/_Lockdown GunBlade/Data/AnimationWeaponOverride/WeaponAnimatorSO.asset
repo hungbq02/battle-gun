@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 496491e0e20c07d4d831206ffc5b4859, type: 3}
+  m_Name: WeaponAnimatorSO
+  m_EditorClassIdentifier: 
+  pistolAnimator: {fileID: 22100000, guid: 05b3f16b0676329489540c213738c8b2, type: 2}
+  rifleAnimator: {fileID: 22100000, guid: e60d1f78d45e2134aa56f7d0fe1431a5, type: 2}
+  shotgunAnimator: {fileID: 22100000, guid: 54b780d426c3b114899fcbe110baf03e, type: 2}

@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using Unity.Collections;
+using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
 
 [RequireComponent(typeof(CharacterController))]
@@ -63,6 +63,8 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public CharacterController controller;
     [HideInInspector] public PlayerInputHandler input;
     [HideInInspector] public UIVirtualTouchZone touchField;
+    [HideInInspector] public UIVirtualJoystick moveJoystick;
+
 
     [HideInInspector] public Transform cameraTransform;
     #endregion
@@ -75,16 +77,6 @@ public class PlayerController : MonoBehaviour
 
     [Header("Player Shoot")]
     public RaycastWeapon weapon;
-
-
-    private bool IsCurrentDeviceMouse
-    {
-        get
-        {
-            return _playerInput.currentControlScheme == "KeyboardMouse";
-        }
-    }
-
 
     protected void Awake()
     {
@@ -102,25 +94,25 @@ public class PlayerController : MonoBehaviour
         weapon = GetComponentInChildren<RaycastWeapon>();
         cameraTransform = Camera.main.transform;
         touchField = FindObjectOfType<UIVirtualTouchZone>();
-       // input.SetCursorState(true);
+        moveJoystick = FindObjectOfType<UIVirtualJoystick>();
+        // input.SetCursorState(true);
 
         gravity *= gravityMultiplier;
     }
     private void Update()
     {
-        if(!HealthSystemPlayer.isAlive) return;
+        if (!HealthSystemPlayer.isAlive) return;
         input.look = touchField.TouchDist;
-        if (input.move.sqrMagnitude >= _threshold)
-        {
-            RotateTowardsCamera();
-        }
+        input.move = moveJoystick.Coordinate();
+        RotateTowardsCamera();
+/*        Debug.Log("Joystick Direction: " + input.move);
+        Debug.Log("TouchZone Distance: " + touchField.TouchDist);*/
 
     }
     private void LateUpdate()
     {
         CameraRotation();
     }
-
     public bool IsGrounded()
     {
         // set sphere position, with offset
@@ -132,16 +124,14 @@ public class PlayerController : MonoBehaviour
 
     private void CameraRotation()
     {
-       // if(GUIManager.isPauseGame){ return; }
 
         // if there is an inputDir and camera position is not fixed
         if (input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
         {
             //Don't multiply mouse inputDir by Time.deltaTime;
-            float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
 
-            _cinemachineTargetYaw += input.look.x * deltaTimeMultiplier * sensitivity;
-            _cinemachineTargetPitch += input.look.y * deltaTimeMultiplier * sensitivity;
+            _cinemachineTargetYaw += input.look.x * sensitivity;
+            _cinemachineTargetPitch += input.look.y * sensitivity;
         }
 
         // clamp our rotations so our values are limited 360 degrees
@@ -159,10 +149,9 @@ public class PlayerController : MonoBehaviour
         float targetAngle = Mathf.Atan2(cameraTransform.forward.x, cameraTransform.forward.z) * Mathf.Rad2Deg;
 
         // Smoothly rotate the character towards the camera's forward direction
-        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, rotationSmoothTime);
+        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, rotationSmoothTime * Time.deltaTime);
         transform.rotation = Quaternion.Euler(0f, angle, 0f);
     }
-    // Update the player rotation to match the camera's rotation when shooting
     public void UpdatePlayerRotationToMatchCamera()
     {
         // Get the angle the camera

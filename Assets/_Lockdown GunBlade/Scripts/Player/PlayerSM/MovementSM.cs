@@ -11,9 +11,10 @@ public class MovementSM : StateMachine
     [HideInInspector] public LandingState landingState;
     [HideInInspector] public RollingState rollingState;
 
-    public PlayerController playerController;
+    [HideInInspector] protected PlayerController playerController;
     private void Awake()
     {
+        playerController = GetComponent<PlayerController>();
         idleState = new IdleState(playerController ,this);
         moveState = new MoveState(playerController, this);
         jumpingState = new JumpState(playerController, this);

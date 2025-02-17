@@ -1,9 +1,9 @@
-﻿using DG.Tweening;
+﻿/*using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RaycastWeapon : MonoBehaviour
+public class RaycastWeapon : BaseMonoBehaviour
 {
     [Header("Check")]
     public bool readyToShoot = true;
@@ -17,10 +17,9 @@ public class RaycastWeapon : MonoBehaviour
     public LayerMask whatIsEnemy;
     public Text cooldownText;
     public Animator animator;
-    public PlayerController playerController;
-    public WeaponUI weaponUI;
-    [SerializeField]
-    private LineRenderer bulletTrail;
+    [SerializeField] private PlayerController playerController;
+    [SerializeField] private WeaponUI weaponUI;
+    [SerializeField] private LineRenderer bulletTrail;
 
     [Header("Stats")]
     public int damage;
@@ -40,11 +39,16 @@ public class RaycastWeapon : MonoBehaviour
     RaycastHit hit;
 
     private float remainingTime;
-
+    protected override void LoadComponents()
+    {
+        base.LoadComponents();
+        LoadPlayerController();
+        LoadWeaponUI();
+    }
     private void Start()
     {
         currentAmmo = maxAmmo;
-        weaponUI.UpdateInfo(currentAmmo, magazineAmmo);
+        weaponUI.UpdateAmmoDisplay(currentAmmo, magazineAmmo);
     }
 
     private void OnEnable()
@@ -53,7 +57,7 @@ public class RaycastWeapon : MonoBehaviour
         readyToShoot = true;
 
         animator.SetBool("isReloading", false);
-        weaponUI.UpdateInfo(currentAmmo, magazineAmmo);
+        weaponUI.UpdateAmmoDisplay(currentAmmo, magazineAmmo);
         UpdateReloadUI();
     }
 
@@ -84,7 +88,7 @@ public class RaycastWeapon : MonoBehaviour
         PlayShootAnimation();
 
         //Update player rotation to match camera
-        playerController.UpdatePlayerRotationToMatchCamera();
+     //   playerController.UpdatePlayerRotationToMatchCamera();
 
         for (int i = 0; i < bulletPerTap; i++)
         {
@@ -110,7 +114,7 @@ public class RaycastWeapon : MonoBehaviour
         }
         CinemachineShake.Instance.ShakeCamera(4, 0.1f);
         currentAmmo -= bulletPerTap;
-        weaponUI.UpdateInfo(currentAmmo, magazineAmmo);
+        weaponUI.UpdateAmmoDisplay(currentAmmo, magazineAmmo);
         readyToShoot = false;
 
 
@@ -210,7 +214,7 @@ public class RaycastWeapon : MonoBehaviour
             currentAmmo = magazineAmmo;
             magazineAmmo = 0;
         }
-        weaponUI.UpdateInfo(currentAmmo, magazineAmmo);
+        weaponUI.UpdateAmmoDisplay(currentAmmo, magazineAmmo);
 
         isReloading = false;
         playerController.input.reload = false;
@@ -241,8 +245,111 @@ public class RaycastWeapon : MonoBehaviour
         yield return new WaitForSeconds(delay);
         pool.ReturnObject(obj);
     }
-
+    protected virtual void LoadPlayerController()
+    {
+        if (playerController != null) return;
+        playerController = transform.GetComponentInParent<PlayerController>();
+    }
+    protected virtual void LoadWeaponUI()
+    {
+        if (weaponUI != null) return;
+        weaponUI = FindObjectOfType<WeaponUI>();
+    }
 
 
 }
 
+*/
+
+using UnityEngine;
+
+[RequireComponent(typeof(WeaponShooting))]
+[RequireComponent(typeof(WeaponReload))]
+public class RaycastWeapon : BaseMonoBehaviour
+{
+    private WeaponShooting weaponShooting;
+    private WeaponReload weaponReload;
+
+    [Header("Scriptable Object Settings")]
+    public GunStatsSO gunStats;
+    public bool IsReloading => weaponReload.IsReloading;
+    public bool ReadyToShoot => weaponShooting.CanShoot();
+    protected override void LoadComponents()
+    {
+        base.LoadComponents();
+        weaponShooting = GetComponent<WeaponShooting>();
+        weaponReload = GetComponent<WeaponReload>();
+    }
+
+    private void Start()
+    {
+        // Initialize ammo
+        weaponShooting.InitializeAmmo();
+
+    }
+    private void OnEnable()
+    {
+        // Load gun stats
+        LoadGunStats();
+        weaponReload.ResetReloadState();
+        weaponShooting.UpdateAmmoUI();
+    }
+
+    private void Update()
+    {
+        if (weaponShooting.IsOutOfAmmo() || weaponReload.IsReloading)
+            return;
+
+        //if full ammo, disable reload input
+        if (weaponShooting.IsFullAmmo())
+        {
+            weaponReload.DisableReloadInput();
+            return;
+        }
+        //check reload
+        if (weaponReload.CanReload(weaponShooting.currentAmmo, weaponShooting.magazineAmmo, weaponShooting.bulletPerTap))
+        {
+            StartCoroutine(weaponReload.ReloadCoroutine(weaponShooting));
+        }
+    }
+
+    // Shoot method
+    public void StartShooting()
+    {
+        if (!weaponShooting.CanShoot())
+            return;
+
+        weaponShooting.PerformShooting();
+    }
+    public void UpdateAmmo()
+    {
+        Debug.Log("Update Ammo");
+       weaponShooting.UpdateAmmoUI();
+    }
+    //Load gun stats from GunStats ScriptableObject
+    private void LoadGunStats()
+    {
+        if (gunStats != null)
+        {
+            // Pass shooting parameters to WeaponShooting
+            weaponShooting.InitializeStats(
+                gunStats.damage,
+                gunStats.spread,
+                gunStats.timeDelayShoot,
+                gunStats.range,
+                gunStats.maxAmmo,
+                gunStats.magazineAmmo,
+                gunStats.bulletPerTap
+            );
+
+            // Pass reload parameter to WeaponReload
+            weaponReload.SetReloadTime(gunStats.reloadTime);
+        }
+        else
+        {
+            Debug.LogWarning("GunStats ScriptableObject is not assigned!");
+        }
+    }
+
+
+}

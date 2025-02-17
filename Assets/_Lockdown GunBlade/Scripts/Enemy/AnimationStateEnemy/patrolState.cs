@@ -1,7 +1,6 @@
-using UnityEngine.AI;
-using System.Collections.Generic;
-using System.Threading;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class patrolState : StateMachineBehaviour
 {
@@ -10,21 +9,42 @@ public class patrolState : StateMachineBehaviour
     NavMeshAgent agent;
     Transform player;
     float chaseRange = 12f;
-
+    [SerializeField] protected PathMoving enemyPath;
+    [SerializeField] protected Point currentPoint;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         agent = animator.GetComponent<NavMeshAgent>();
         timer = 0;
-        GameObject obj= GameObject.FindGameObjectWithTag("WayPoints");
+       // GameObject obj = GameObject.FindGameObjectWithTag("WayPoints");
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
-        foreach (Transform t in obj.transform)
+        /*foreach (Transform child in obj.transform)
         {
-            wayPoints.Add(t);
+            wayPoints.Add(child);
         }
 
-        agent.SetDestination(wayPoints[Random.Range(3, wayPoints.Count)].position);
+        agent.SetDestination(wayPoints[Random.Range(3, wayPoints.Count)].position);*/
+        LoadEnemyPath();
+
+        // Khởi tạo currentPoint từ enemyPath
+        if (enemyPath != null)
+        {
+            currentPoint = enemyPath.GetPoint(Random.Range(0, enemyPath.transform.childCount));
+            if (currentPoint != null)
+            {
+                agent.SetDestination(currentPoint.transform.position);
+            }
+            else
+            {
+                Debug.LogError("currentPoint is null, please check the points in enemyPath.");
+            }
+        }
+        else
+        {
+            Debug.LogError("enemyPath is null, please check the PathManager instance.");
+        }
+
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -32,12 +52,24 @@ public class patrolState : StateMachineBehaviour
     {
         timer += Time.deltaTime;
 
-        if(agent.remainingDistance <= agent.stoppingDistance)
+        /* if(agent.remainingDistance <= agent.stoppingDistance)
+         {
+             agent.SetDestination(wayPoints[Random.Range(3, wayPoints.Count)].position);
+         }*/
+
+        if (agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending)
         {
-            agent.SetDestination(wayPoints[Random.Range(3, wayPoints.Count)].position);
+            if (currentPoint != null)
+            {
+                currentPoint = currentPoint.NextPoint;
+                if (currentPoint != null)
+                {
+                    agent.SetDestination(currentPoint.transform.position);
+                }
+            }
         }
 
-        if(timer > 6)
+        if (timer > 6)
         {
             animator.SetBool("isPatrolling", false);
         }
@@ -55,15 +87,9 @@ public class patrolState : StateMachineBehaviour
         agent.SetDestination(agent.transform.position);
     }
 
-    // OnStateMove is called right after Animator.OnAnimatorMove()
-    //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that processes and affects root motion
-    //}
-
-    // OnStateIK is called right after Animator.OnAnimatorIK()
-    //override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that sets up animation IK (inverse kinematics)
-    //}
+    protected virtual void LoadEnemyPath()
+    {
+        if (this.enemyPath != null) return;
+        this.enemyPath = PathManager.Instance.GetPath("path_0");
+    }
 }

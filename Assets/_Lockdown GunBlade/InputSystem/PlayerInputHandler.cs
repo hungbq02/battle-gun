@@ -32,10 +32,10 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void OnLook(InputValue value)
     {
-        if (cursorInputForLook)
-        {
+       /* if (cursorInputForLook)
+        {*/
             LookInput(value.Get<Vector2>());
-        }
+      //  }
     }
     public void OnTouchZoneLookInput(Vector2 lookInput)
     {

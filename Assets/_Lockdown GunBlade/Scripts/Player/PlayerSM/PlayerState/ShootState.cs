@@ -28,25 +28,20 @@ public class ShootState : Grounded
     {
         base.UpdateLogic();
 
-        if (playerController.weapon.isReloading) return;
+        if (playerController.weapon.IsReloading) return;
 
-        if (playerController.weapon.readyToShoot)
+        if (playerController.weapon.ReadyToShoot)
         {
             if (playerController.input.shoot)
             {
                 //If the mouse pointer is pointing at the UI, do not shoot
-               /* if (IsPointerOverUIObject())
-                {
-                    return;
-                }
-*/
                 playerController.weapon.StartShooting();
 
             }
             else
             {
                 playerController.animator.SetFloat("ShootAnimSpeed", 1.0f); // reset speed animation shoot
-                                                                            //  playerController.weapon.StopShooting();
+                                                                            //  playerController.weaponShooting.StopShooting();
                 SmoothTransitionToLayer("UpperBodyLayer", 0f);
 
                 /*//Get layer shooting

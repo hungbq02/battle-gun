@@ -1,34 +1,61 @@
 using UnityEngine;
 
-public class PlayerCollision : MonoBehaviour
+public class PlayerCollision : BaseMonoBehaviour
 {
-    RaycastWeapon weapon;
-    HealthSystemPlayer healthPlayer;
-    private void Start()
+    private WeaponShooting weaponShooting;
+    [SerializeField] private HealthSystemPlayer healthPlayer;
+    [SerializeField] private WeaponUI weaponUI;
+
+    protected override void LoadComponents()
     {
-        healthPlayer = GetComponent<HealthSystemPlayer>();
+        base.LoadComponents();
+        LoadHealthSystemPlayer();
+        LoadWeaponUI();
     }
+
     private void OnTriggerEnter(Collider other)
     {
-        weapon = GetComponentInChildren<RaycastWeapon>();
+        if (weaponShooting == null)
+        {
+            LoadWeaponShooting();
+        }
 
         if (other.gameObject.CompareTag("HealItem"))
         {
             healthPlayer.Heal(200);
         }
-        if (other.gameObject.CompareTag("BulletItem"))
+        else if (other.gameObject.CompareTag("BulletItem"))
         {
             int ammoToAdd = 20;
 
-            weapon.currentAmmo += ammoToAdd;
+            weaponShooting.currentAmmo += ammoToAdd;
 
-            if (weapon.currentAmmo > weapon.maxAmmo)
+            if (weaponShooting.currentAmmo > weaponShooting.maxAmmo)
             {
-                int excessAmmo = weapon.currentAmmo - weapon.maxAmmo;
-                weapon.currentAmmo = weapon.maxAmmo;
-                weapon.magazineAmmo += excessAmmo;
+                int excessAmmo = weaponShooting.currentAmmo - weaponShooting.maxAmmo;
+                weaponShooting.currentAmmo = weaponShooting.maxAmmo;
+                weaponShooting.magazineAmmo += excessAmmo;
             }
-            weapon.weaponUI.UpdateInfo(weapon.currentAmmo, weapon.magazineAmmo);
+            //update UI
+            weaponUI.UpdateAmmoDisplay(weaponShooting.currentAmmo, weaponShooting.magazineAmmo);
         }
     }
+    //Load Components
+    protected virtual void LoadHealthSystemPlayer()
+    {
+        if (healthPlayer != null) return;
+        healthPlayer = GetComponent<HealthSystemPlayer>();
+    }
+    protected virtual void LoadWeaponShooting()
+    {
+
+        if (weaponShooting != null) return;
+        weaponShooting = transform.GetComponentInChildren<WeaponShooting>();
+    }
+    protected virtual void LoadWeaponUI()
+    {
+        if (weaponUI != null) return;
+        weaponUI = FindObjectOfType<WeaponUI>();
+    }
+
 }

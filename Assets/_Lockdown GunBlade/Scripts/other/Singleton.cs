@@ -1,8 +1,7 @@
 using UnityEngine;
 
-public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
+public class Singleton<T> : BaseMonoBehaviour where T : BaseMonoBehaviour
 {
-    [SerializeField] protected bool _dontDestroyOnLoad;
     private static T _instance;
 
     public static T Instance
@@ -11,42 +10,36 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         {
             if (_instance == null)
             {
+                //Find singleton instance in scene
                 _instance = FindObjectOfType<T>();
-                if(_instance == null)
+
+                if (_instance == null)
                 {
-                    GameObject singleton = new GameObject(typeof(T).Name);
-                    _instance = singleton.AddComponent<T>();
-                    DontDestroyOnLoad(singleton);
-                }    
-            }    
+                    Debug.LogError($"Singleton of {typeof(T).Name} has not been created!");
+                }
+            }
             return _instance;
         }
     }
 
+    protected override void Awake()
+    {
+        base.Awake();
+        this.LoadInstance();
+    }
 
-    protected virtual void Awake()
+    protected virtual void LoadInstance()
     {
         if (_instance == null)
         {
             _instance = this as T;
-            if(_dontDestroyOnLoad)
-            {
-                var root = transform.root;
-                if(root != transform)
-                {
-                    DontDestroyOnLoad(root);
-                }    
-                else
-                {
-                    DontDestroyOnLoad(this.gameObject);
-                }    
-            }    
+            if (transform.parent == null) DontDestroyOnLoad(gameObject);
         }
-        else
+        else if (_instance != this)
         {
-            Destroy(gameObject);
-        }    
-
+            Debug.LogWarning($"Another instance of {typeof(T).Name} already exists! Destroying duplicate.");
+            Destroy(gameObject); //Destroy duplicate
+        }
     }
 }
 

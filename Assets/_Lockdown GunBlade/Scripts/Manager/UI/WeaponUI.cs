@@ -5,8 +5,14 @@ public class WeaponUI : MonoBehaviour
 {
     [SerializeField] private Text txtCountBullet;
     public Sprite[] listIconWeapon;
-    public void UpdateInfo(int currentAmmo, int magazineAmmo)
+    public Image weaponIcon;
+
+    public void UpdateAmmoDisplay(int currentAmmo, int magazineAmmo)
     {
         txtCountBullet.text = $"{currentAmmo} / {magazineAmmo}";
+    }
+    public void UpdateWeaponIcon(int index)
+    {
+        weaponIcon.sprite = listIconWeapon[index];
     }
 }

@@ -36,12 +36,12 @@ public class MoveState : Grounded
             stateMachine.ChangeState(sm.rollingState);
             return;
         }
-        //Idle
+/*        //Idle
         if (inputDir.sqrMagnitude == 0f)
         {
             stateMachine.ChangeState(sm.idleState);
             return;
-        }
+        }*/
     }
 
     public override void UpdatePhysics()
