@@ -5917,12 +5917,12 @@ GameObject:
   - component: {fileID: 549699952}
   - component: {fileID: 549699951}
   m_Layer: 5
-  m_Name: CountdownReload
+  m_Name: ReloadCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &549699950
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20495,6 +20495,14 @@ PrefabInstance:
       value: 320
       objectReference: {fileID: 0}
     - target: {fileID: 4565588941737508368, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
+      propertyPath: cooldownText
+      value: 
+      objectReference: {fileID: 470860190}
+    - target: {fileID: 4565588941737508368, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
+      propertyPath: reloadCircle
+      value: 
+      objectReference: {fileID: 549699951}
+    - target: {fileID: 4565588941737508368, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
       propertyPath: playerController
       value: 
       objectReference: {fileID: 3820052475557561507}
@@ -20550,10 +20558,34 @@ PrefabInstance:
       propertyPath: whatIsEnemy.m_Bits
       value: 320
       objectReference: {fileID: 0}
+    - target: {fileID: 6991896185949178211, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
+      propertyPath: cooldownText
+      value: 
+      objectReference: {fileID: 470860190}
+    - target: {fileID: 6991896185949178211, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
+      propertyPath: reloadCircle
+      value: 
+      objectReference: {fileID: 549699951}
+    - target: {fileID: 6991896185949178211, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
+      propertyPath: playerController
+      value: 
+      objectReference: {fileID: 3820052475557561507}
     - target: {fileID: 8354594580741601026, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
       propertyPath: m_UpdateMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8404521248237256032, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
+      propertyPath: cooldownText
+      value: 
+      objectReference: {fileID: 470860190}
+    - target: {fileID: 8404521248237256032, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
+      propertyPath: reloadCircle
+      value: 
+      objectReference: {fileID: 549699951}
+    - target: {fileID: 8404521248237256032, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
+      propertyPath: playerController
+      value: 
+      objectReference: {fileID: 3820052475557561507}
     - target: {fileID: 8649678770402804744, guid: 6910d74e723c4dc4db58aa6a973ca6e9, type: 3}
       propertyPath: range
       value: 100

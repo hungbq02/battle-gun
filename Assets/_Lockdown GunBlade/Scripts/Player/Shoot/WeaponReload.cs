@@ -18,12 +18,14 @@ public class WeaponReload : BaseMonoBehaviour
     protected override void LoadComponents()
     {
         base.LoadComponents();
-        if (playerController == null)
-            playerController = transform.GetComponentInParent<PlayerController>();
+        LoadPlayerController();
+        LoadReloadCircle();
+        LoadCooldownText();
+
     }
 
     /// <summary>
-    /// Reset state reload.
+    /// Reset state reload return to default.
     /// </summary>
     public void ResetReloadState()
     {
@@ -71,7 +73,7 @@ public class WeaponReload : BaseMonoBehaviour
 
             DOTween.To(() => remainingTime, x => remainingTime = x, 0f, reloadTime)
                 .SetEase(Ease.Linear)
-                .OnUpdate(() => cooldownText.text = Mathf.Ceil(remainingTime).ToString("F2"))
+                .OnUpdate(() => cooldownText.text = remainingTime.ToString("F2"))
                 .OnComplete(() => reloadCircle.gameObject.SetActive(false));
         }
 
@@ -107,5 +109,20 @@ public class WeaponReload : BaseMonoBehaviour
     internal void SetReloadTime(float reloadTime)
     {
         this.reloadTime = reloadTime;
+    }
+    protected virtual void LoadPlayerController()
+    {
+        if (playerController != null) return;
+        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
+    }
+    protected virtual void LoadReloadCircle()
+    {
+        if (reloadCircle != null) return;
+        reloadCircle = GameObject.Find("ReloadCircle").GetComponent<Image>();
+    }
+    protected virtual void LoadCooldownText()
+    {
+        if (cooldownText != null) return;
+        cooldownText = GameObject.Find("txtCountdown").GetComponent<Text>();
     }
 }

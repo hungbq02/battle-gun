@@ -2306,7 +2306,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad9e871a9de182d48ad1ee8b5bf2ce9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dontDestroyOnLoad: 1
   musicSounds:
   - name: 
     clip: {fileID: 0}
@@ -6578,7 +6577,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8609ca795d4c85649a6235fcd72682bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dontDestroyOnLoad: 0
   loseDialog: {fileID: 0}
   winDialog: {fileID: 0}
 --- !u!1 &1960314596
