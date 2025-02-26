@@ -5,7 +5,7 @@ using UnityEngine.AI;
 public class patrolState : StateMachineBehaviour
 {
     float timer;
-    List<Transform> wayPoints = new List<Transform>();
+    private List<Transform> wayPoints = new List<Transform>();
     NavMeshAgent agent;
     Transform player;
     float chaseRange = 12f;
@@ -19,12 +19,6 @@ public class patrolState : StateMachineBehaviour
        // GameObject obj = GameObject.FindGameObjectWithTag("WayPoints");
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
-        /*foreach (Transform child in obj.transform)
-        {
-            wayPoints.Add(child);
-        }
-
-        agent.SetDestination(wayPoints[Random.Range(3, wayPoints.Count)].position);*/
         LoadEnemyPath();
 
         // Khởi tạo currentPoint từ enemyPath
