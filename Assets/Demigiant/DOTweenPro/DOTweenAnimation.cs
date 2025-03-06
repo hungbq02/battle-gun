@@ -145,7 +145,7 @@ namespace DG.Tweening
         public void CreateTween()
         {
 //            if (target == null) {
-//                Debug.LogWarning(string.Format("{0} :: This DOTweenAnimation's target is NULL, because the animation was created with a DOTween Pro version older than 0.9.255. To fix this, exit Play mode then simply select this object, and it will update automatically", this.gameObject.name), this.gameObject);
+//                Debug.LogWarning(string.Format("{0} :: This DOTweenAnimation's target is NULL, because the animation was created with a DOTween Pro version older than 0.9.255. To fix this, exit Play mode then simply select this object, and it will update automatically", this.gameObject.nameScreen), this.gameObject);
 //                return;
 //            }
 
@@ -528,7 +528,7 @@ namespace DG.Tweening
         /// <summary>
         /// Restarts the tween
         /// </summary>
-        /// <param name="fromHere">If TRUE, re-evaluates the tween's start and end values from its current position.
+        /// <param nameScreen="fromHere">If TRUE, re-evaluates the tween's start and end values from its current position.
         /// Set it to TRUE when spawning the same DOTweenAnimation in different positions (like when using a pooling system)</param>
         public override void DORestart(bool fromHere)
         {

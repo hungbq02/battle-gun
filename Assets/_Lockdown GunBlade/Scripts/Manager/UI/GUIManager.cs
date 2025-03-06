@@ -6,11 +6,11 @@ public class GUIManager : Singleton<GUIManager>
 {
     public GameObject loseDialog;
     public GameObject winDialog;
-    GameObject player;
+    PlayerController player;
 
     private void Start()
     {
-        player = GameObject.FindWithTag("Player");
+        player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
     }
     private void Update()
     {
@@ -26,14 +26,14 @@ public class GUIManager : Singleton<GUIManager>
     {
         Time.timeScale = 0f;
         isPauseGame = true;
-        player.GetComponent<PlayerController>().LockCameraPosition = true;
+        player.LockCameraPosition = true;
     }
 
     public void Resume()
     {
         Time.timeScale = 1f;
         isPauseGame = false;
-        player.GetComponent<PlayerController>().LockCameraPosition = false;
+        player.LockCameraPosition = false;
     }
     public void MainMenu()
     {
@@ -51,7 +51,6 @@ public class GUIManager : Singleton<GUIManager>
     }
     public void ShowWinDialog()
     {
-        player.GetComponent<Animator>().Play("Victory");
         StartCoroutine(DelayShowWinDialog());
     }
 

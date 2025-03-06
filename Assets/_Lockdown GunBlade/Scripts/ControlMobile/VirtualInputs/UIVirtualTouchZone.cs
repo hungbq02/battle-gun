@@ -3,12 +3,9 @@ using UnityEngine.EventSystems;
 
 public class UIVirtualTouchZone : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    [HideInInspector]
-    public Vector2 TouchDist;
-    [HideInInspector]
-    public Vector2 PointerOld;
-    [HideInInspector]
-    protected int PointerId;
+    [HideInInspector] public Vector2 TouchDist;
+    [HideInInspector] public Vector2 PointerOld;
+    [HideInInspector] protected int PointerId;
     //   [HideInInspector]
     public bool Pressed;
 

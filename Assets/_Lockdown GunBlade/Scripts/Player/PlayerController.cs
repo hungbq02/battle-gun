@@ -102,11 +102,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         if (!HealthSystemPlayer.isAlive) return;
-        input.look = touchField.TouchDist;
-        input.move = moveJoystick.Coordinate();
         RotateTowardsCamera();
-/*        Debug.Log("Joystick Direction: " + input.move);
-        Debug.Log("TouchZone Distance: " + touchField.TouchDist);*/
 
     }
     private void LateUpdate()
@@ -123,8 +119,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void CameraRotation()
-    {
-
+    { 
         // if there is an inputDir and camera position is not fixed
         if (input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
         {

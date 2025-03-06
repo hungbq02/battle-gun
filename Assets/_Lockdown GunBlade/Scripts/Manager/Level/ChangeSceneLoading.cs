@@ -4,9 +4,11 @@ public class ChangeSceneLoading : MonoBehaviour
 {
     public void PlayLevel()
     {
+
         int idScene = PlayerPrefs.GetInt("ID_LEVEL");
         Time.timeScale = 1f;
         SceneLoading.Instance.LoadScene(idScene);
+        Debug.Log("Play Level " + idScene);
     }
     public void BackToMainMenu()
     {

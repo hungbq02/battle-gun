@@ -25,13 +25,13 @@ namespace DG.Tweening
 
         /// <summary>Tweens a Transform's localPosition in a spiral shape.
         /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
-        /// <param name="duration">The duration of the tween</param>
-        /// <param name="axis">The axis around which the spiral will rotate</param>
-        /// <param name="mode">The type of spiral movement</param>
-        /// <param name="speed">Speed of the rotations</param>
-        /// <param name="frequency">Frequency of the rotation. Lower values lead to wider spirals</param>
-        /// <param name="depth">Indicates how much the tween should move along the spiral's axis</param>
-        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        /// <param nameScreen="duration">The duration of the tween</param>
+        /// <param nameScreen="axis">The axis around which the spiral will rotate</param>
+        /// <param nameScreen="mode">The type of spiral movement</param>
+        /// <param nameScreen="speed">Speed of the rotations</param>
+        /// <param nameScreen="frequency">Frequency of the rotation. Lower values lead to wider spirals</param>
+        /// <param nameScreen="depth">Indicates how much the tween should move along the spiral's axis</param>
+        /// <param nameScreen="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener DOSpiral(
             this Transform target, float duration, Vector3? axis = null, SpiralMode mode = SpiralMode.Expand,
             float speed = 1, float frequency = 10, float depth = 0, bool snapping = false

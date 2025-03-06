@@ -25,6 +25,7 @@ public class SceneLoading : MonoBehaviour
 
         var scene = SceneManager.LoadSceneAsync(idScene);
         scene.allowSceneActivation = false;
+        Debug.Log("Loading Scene " + idScene);
 
         canvasLoading.SetActive(true);
 

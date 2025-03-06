@@ -8,13 +8,12 @@ public class WeaponSwiching: BaseMonoBehaviour
     [SerializeField] private Animator animPlayer;
 
     [SerializeField] private WeaponAnimatorSO DataWeaponAnimator;
+
     private AnimatorOverrideController pistolAnimatorOverride;
     private AnimatorOverrideController rifleAnimatorOverride;
     private AnimatorOverrideController shotgunAnimatorOverride;
 
     [SerializeField] private WeaponUI weaponUI;
-    [SerializeField] private Image weaponIcon;
-    [SerializeField] private WeaponShooting weaponShooting;
     protected override void Awake()
     {
         base.Awake();
@@ -30,8 +29,6 @@ public class WeaponSwiching: BaseMonoBehaviour
         LoadPistolAnimatorOverride();
         LoadRifleAnimatorOverride();
         LoadShotgunAnimatorOverride();
-
-        LoadWeaponShooting();
     }
     public void SwitchWeapon()
     {
@@ -101,11 +98,5 @@ public class WeaponSwiching: BaseMonoBehaviour
     {
         if (shotgunAnimatorOverride != null) return;
         shotgunAnimatorOverride = DataWeaponAnimator.shotgunAnimator;
-    }
-    protected virtual void LoadWeaponShooting()
-    {
-        Debug.Log("LoadWeaponShooting");
-        if (weaponShooting != null) return;
-        weaponShooting = GetComponentInChildren<WeaponShooting>();
     }
 }

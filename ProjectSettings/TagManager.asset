@@ -24,8 +24,8 @@ TagManager:
   - Ground
   - Bullet
   - Enemy
-  - 
-  - 
+  - WeaponUI
+  - CharacterUI
   - 
   - 
   - 

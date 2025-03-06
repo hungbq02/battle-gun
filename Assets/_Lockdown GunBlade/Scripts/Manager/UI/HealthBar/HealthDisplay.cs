@@ -22,4 +22,5 @@ public class HealthDisplay : MonoBehaviour
     {
         healthBar.color = color;
     }
+
 }
